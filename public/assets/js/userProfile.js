@@ -84,7 +84,7 @@ async function createNewProfile() {
             document.querySelector('.welcome h1').innerHTML =
                 `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon"> Willkommen ${name}!`;
             showProgressOverview();
-            
+
             await sendEvent(userData.identification_code, 'welcome');
 
             await Swal.fire({

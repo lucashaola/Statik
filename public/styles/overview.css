@@ -18,7 +18,7 @@ html {
     box-sizing: border-box;
 }
 
-.swal2-confirm, 
+.swal2-confirm,
 .swal2-cancel {
     color: black !important;
 }
@@ -26,7 +26,7 @@ html {
 .close-btn {
     border: none;
     cursor: pointer;
-    padding: 10px 15px; 
+    padding: 10px 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
     position: fixed;
@@ -134,13 +134,12 @@ html {
 }
 
 
-
 .bookmark-btn {
     position: absolute;
-    top: 100%;       
-    left: 20%;         
-    transform: translateX(-50%); 
-    margin-top: 20px; 
+    top: 100%;
+    left: 20%;
+    transform: translateX(-50%);
+    margin-top: 20px;
     background: none;
     border: none;
     cursor: pointer;
@@ -155,12 +154,12 @@ html {
 }
 
 .bookmark-icon {
-    width: 40px; 
-    height: 40px; 
+    width: 40px;
+    height: 40px;
     color: black;
     position: absolute;
-    left: 50%;      
-    top: 50%;       
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
 }
 
@@ -234,7 +233,7 @@ html {
 
 
 .button-container {
-    position: relative; 
+    position: relative;
     display: flex;
     justify-content: center;
     gap: 50px;

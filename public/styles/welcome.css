@@ -18,7 +18,7 @@ html {
     box-sizing: border-box;
 }
 
-.swal2-confirm, 
+.swal2-confirm,
 .swal2-cancel {
     color: black !important;
 }
@@ -31,7 +31,7 @@ html {
     box-sizing: border-box;
 }
 
-.user-switch{
+.user-switch {
     color: #333333;
     border: none;
     font-size: 20px;
@@ -94,13 +94,12 @@ html {
     flex: 1;
     min-width: calc(33.33% - 14px);
     background-color: whitesmoke;
-    box-shadow: 
-        0 -4px 8px rgba(0, 0, 0, 0.1),
-        0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     padding: 20px;
-    height: auto; 
-    min-height: 60vh; 
+    height: auto;
+    min-height: 60vh;
     display: flex;
     flex-direction: column;
 }
@@ -152,7 +151,7 @@ html {
     color: #1d2e51;
     font-size: large !important;
     flex: 1;
-    background-color: #e1e7f4; 
+    background-color: #e1e7f4;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     border: none;
     padding: 14px 28px;
@@ -260,9 +259,9 @@ html {
 .progress-fill {
     height: 100%;
     background-color: #8daddd;
-    border-radius: 15px; 
+    border-radius: 15px;
     transition: width 0.3s ease;
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -275,8 +274,7 @@ html {
 /* Tutorial Progress Styling*/
 .progress-circle-item {
     background: whitesmoke;
-    box-shadow:
-    0 -2px 4px rgba(0, 0, 0, 0.05),
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05),
     0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 15px;
     border-radius: 10px;
@@ -345,7 +343,7 @@ html {
 }
 
 .completed .circle-icon {
-    color: white; 
+    color: white;
 }
 
 
@@ -360,7 +358,7 @@ html {
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     scrollbar-width: none;
-    max-height: 400px; 
+    max-height: 400px;
 }
 
 .scenario-page {
@@ -414,7 +412,6 @@ html {
     gap: 8px;
     margin-top: 10px;
 }
-
 
 
 /* Footer Styling */

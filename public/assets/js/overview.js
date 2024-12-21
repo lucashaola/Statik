@@ -3,24 +3,24 @@ let currentPage = 1;
 
 function createDots() {
     const dotsContainer = document.getElementById('paginationDots');
-    
+
     for (let i = 1; i <= totalPages; i++) {
         const dotContainer = document.createElement('div');
         dotContainer.className = 'dot-container';
-        
+
         const dot = document.createElement('div');
         dot.className = 'dot';
         const span = document.createElement('span');
         span.textContent = i;
         dot.appendChild(span);
         dotContainer.appendChild(dot);
-        
+
         if (i < totalPages) {
             const line = document.createElement('div');
             line.className = 'connecting-line';
             dotContainer.appendChild(line);
         }
-        
+
         if (i === totalPages) {
             dotContainer.innerHTML += `
                 <button class="bookmark-btn">
@@ -31,7 +31,7 @@ function createDots() {
                 </button>
             `;
         }
-        
+
         dotsContainer.appendChild(dotContainer);
     }
     updateDots();
@@ -40,7 +40,7 @@ function createDots() {
 function updateDots() {
     const dots = document.querySelectorAll('.dot');
     const lines = document.querySelectorAll('.connecting-line');
-    
+
     dots.forEach((dot, index) => {
         dot.className = 'dot';
         if (index + 1 === currentPage) {
@@ -82,7 +82,7 @@ async function navigatePage(direction) {
         window.location.href = '../../views/welcome';
         return;
     }
-    if (currentPage === totalPages){
+    if (currentPage === totalPages) {
         if (direction === 1) {
             const result = await Swal.fire({
                 title: 'Sie haben alle Folien abgeschlossen!',
@@ -95,13 +95,13 @@ async function navigatePage(direction) {
                 cancelButtonColor: '#e4e4e7',
                 reverseButtons: true,
             });
-    
+
             if (result.isConfirmed) {
                 window.location.href = '../../views/profile?view=test';
             } else {
                 window.location.href = '../../views/welcome';
             }
-    
+
             return;
         }
 

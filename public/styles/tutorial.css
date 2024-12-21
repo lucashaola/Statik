@@ -11,12 +11,12 @@ html, body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    
+
     background: whitesmoke;
     color: #333333;
 }
 
-.swal2-confirm, 
+.swal2-confirm,
 .swal2-cancel {
     color: black !important;
 }
@@ -37,17 +37,17 @@ html, body {
     width: flex;
     color: rgb(0, 0, 0);
     padding-top: 10px;
-    padding-right: 10px; 
+    padding-right: 10px;
 }
 
 .sidebar::after {
     content: '';
     position: absolute;
-    top: 93px; 
+    top: 93px;
     right: 3px;
-    width: 1.5px; 
+    width: 1.5px;
     height: calc(100% - 165px); /* Stop before reaching the bottom */
-    background-color: #b2b2b2; 
+    background-color: #b2b2b2;
 }
 
 .sidebar-item.selected {
@@ -56,17 +56,17 @@ html, body {
 }
 
 .sidebar-item.selected img {
-    filter: none; 
+    filter: none;
 }
 
 
 .sidebar-heading {
     display: flex;
     align-items: center;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     padding: 0 15px 0 0;
     font-size: 22px;
-    text-align: left; 
+    text-align: left;
     border-bottom: 3px solid rgb(81, 81, 81);
     position: sticky;
     top: 0;
@@ -81,7 +81,7 @@ html, body {
 
 .sidebar-heading img.arrow {
     width: 60px;
-    margin-left: 0; 
+    margin-left: 0;
     margin-right: 10px;
     transform: scaleX(-1);
 }
@@ -91,7 +91,7 @@ html, body {
     overflow-y: auto;
     max-height: calc(100vh - 165px);
     margin-top: 20px;
-    padding-right: 10px; 
+    padding-right: 10px;
 }
 
 ::-webkit-scrollbar {
@@ -133,7 +133,7 @@ html, body {
     display: flex;
     align-items: center;
 }
- 
+
 .sidebar-item:hover {
     background-color: #c4c4c46b;
 }
@@ -147,7 +147,7 @@ html, body {
 .search, .close-btn {
     border: none;
     cursor: pointer;
-    padding: 10px 15px; 
+    padding: 10px 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
     position: fixed;
@@ -160,7 +160,7 @@ html, body {
     font-size: large;
     width: 560px;
     margin-right: 130px;
-    height: 50px; 
+    height: 50px;
     background: whitesmoke;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1),
 }
@@ -207,7 +207,7 @@ html, body {
 .bookmark-icon {
     width: 30px;
     height: 30px;
-    color: black; 
+    color: black;
 }
 
 .bookmark-icon .filled {
@@ -311,7 +311,7 @@ h2t h2,
 .brems-image,
 .tutorial-video {
     display: block;
-    margin: 20px auto; 
+    margin: 20px auto;
     height: auto;
 }
 
@@ -320,15 +320,15 @@ h2t h2,
 }
 
 .tutorial-video {
-    width: 50%; 
+    width: 50%;
 }
 
 .pagination {
     display: flex;
     justify-content: center;
     margin: 10px 0;
-    margin-top: 70px; 
-    margin-bottom: 20px; 
+    margin-top: 70px;
+    margin-bottom: 20px;
 }
 
 .page-indicator {
@@ -373,43 +373,43 @@ h2t h2,
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 60px;  
-  }
-  
-  .flipped {
+    height: 60px;
+}
+
+.flipped {
     transform: scaleX(-1);
-  }
-  
-  .left-section,
-  .right-section {
+}
+
+.left-section,
+.right-section {
     display: flex;
     align-items: center;
     overflow: visible;
-  }
-  
-  .icon-left, .icon-right {
+}
+
+.icon-left, .icon-right {
     width: 30px;
     margin: 0 5px;
     transform: translateY(10px);
-  }
-  
-  .icon-right.flipped {
+}
+
+.icon-right.flipped {
     margin-left: 40px;
     transform: scaleX(-1) translateY(10px);
-  }
-  
-  .icon-left {
+}
+
+.icon-left {
     margin-right: 25px;
-  }
-  
-  .icon-center img {
-    transform: translateY(5px); 
-    width: 30px; 
+}
+
+.icon-center img {
+    transform: translateY(5px);
+    width: 30px;
     margin-right: 30px;
-  }
-  
-  /* Temperature Styling */
-  .temperature-control {
+}
+
+/* Temperature Styling */
+.temperature-control {
     position: relative;
     display: flex;
     align-items: center;
@@ -417,37 +417,37 @@ h2t h2,
     font-size: 30px;
     font-weight: bold;
     color: #FFF;
-  }
-  
-  .temperature-control button {
+}
+
+.temperature-control button {
     background: none;
     border: none;
     color: #FFF;
     font-size: 30px;
     cursor: pointer;
     padding: 0 5px;
-  }
-  
-  .temperature-control button:first-of-type {
+}
+
+.temperature-control button:first-of-type {
     margin-right: 10px;
-  }
-  
-  .temperature-control button:last-of-type {
+}
+
+.temperature-control button:last-of-type {
     margin-left: 10px;
-  }
-  
-  .temperature-line {
+}
+
+.temperature-line {
     overflow: visible;
     position: absolute;
     bottom: -10px;
-  }
-  
-  .left-line {
+}
+
+.left-line {
     left: 50%;
     transform: translateX(-50%);
-  }
-  
-  .right-line {
+}
+
+.right-line {
     right: 50%;
     transform: translateX(50%);
-  }
+}

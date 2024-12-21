@@ -54,7 +54,7 @@ class CustomScrollbar {
             const deltaY = e.clientY - startY;
             const percentDelta = deltaY / this.scrollbar.clientHeight;
             const scrollAmount = percentDelta * this.content.scrollHeight;
-            
+
             this.content.scrollTop = startTop + scrollAmount;
             e.preventDefault();
         });
@@ -66,11 +66,11 @@ class CustomScrollbar {
 
         this.scrollbar.addEventListener('click', (e) => {
             if (e.target === this.thumb) return;
-            
+
             const clickPosition = e.clientY - this.scrollbar.getBoundingClientRect().top;
             const thumbHalf = this.thumb.clientHeight / 2;
             const percentClicked = (clickPosition - thumbHalf) / (this.scrollbar.clientHeight - this.thumb.clientHeight);
-            
+
             this.content.scrollTop = percentClicked * (this.content.scrollHeight - this.content.clientHeight);
         });
 

@@ -68,7 +68,7 @@ function showBonusOverview() {
         fetch(`/api/bonus/${identificationCode}`),
         fetch(`/api/events/${identificationCode}`)
     ])
-        .then(([bonusResponse, eventsResponse]) => 
+        .then(([bonusResponse, eventsResponse]) =>
             Promise.all([bonusResponse.json(), eventsResponse.json()])
         )
         .then(([bonusData, events]) => {
@@ -77,7 +77,7 @@ function showBonusOverview() {
 
             const dashArray = (points / 100) * 113;
 
-            const bonusHTML = `
+            bonusOverviewContainer.innerHTML = `
                 <div class="bonus-circle">
                      <svg class="bonus-svg" viewBox="0 0 100 50">
                         <path class="bonus-background" d="M 10 45 A 40 40 0 0 1 90 45" stroke-linecap="round" />
@@ -96,8 +96,6 @@ function showBonusOverview() {
                 </div>
                 <div class="event-messages"></div>
             `;
-            
-            bonusOverviewContainer.innerHTML = bonusHTML;
 
 
             const eventContainer = bonusOverviewContainer.querySelector('.event-messages');
@@ -108,7 +106,7 @@ function showBonusOverview() {
                     const date = new Date(event.timestamp).toLocaleDateString('de-DE');
                     const score = event.score;
                     const scoreClass = score > 0 ? 'positive-score' : 'negative-score';
-                    
+
                     eventElement.innerHTML = `
                         <div class="event-message-content">
                             <p>${eventTypes[event.event_type]?.message || 'Keine Beschreibung verfügbar'}</p>

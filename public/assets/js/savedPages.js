@@ -13,9 +13,9 @@ async function initializeBookmark() {
     try {
         const response = await fetch(`/api/users/${identificationCode}/saved-pages?pageType=${pageType}`);
         const data = await response.json();
-        
-        if (data.success && 
-            data.savedPages[currentPage.page] && 
+
+        if (data.success &&
+            data.savedPages[currentPage.page] &&
             data.savedPages[currentPage.page].includes(currentPage.slideIndex)) {
             bookmarkBtn.classList.add('saved');
         } else {
@@ -38,28 +38,28 @@ async function toggleBookmark() {
         if (bookmarkBtn.classList.contains('saved')) {
             const response = await fetch(`/api/users/${identificationCode}/delete-slide`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    page: currentPage.page, 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    page: currentPage.page,
                     slideIndex: currentPage.slideIndex,
                     pageType: pageType
                 })
             });
-            
+
             if (response.ok) {
                 bookmarkBtn.classList.remove('saved');
             }
         } else {
             const response = await fetch(`/api/users/${identificationCode}/save-page`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    page: currentPage.page, 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    page: currentPage.page,
                     slideIndex: currentPage.slideIndex,
                     pageType: pageType
                 })
             });
-            
+
             if (response.ok) {
                 bookmarkBtn.classList.add('saved');
             }
@@ -75,10 +75,10 @@ function getCurrentPage() {
     if (pageType === 'tutorial') {
         const activeContent = document.querySelector('.content.active');
         if (!activeContent) return null;
-        
+
         const activeSlide = activeContent.querySelector('.slide[style*="display: block"]');
         if (!activeSlide) return null;
-        
+
         return {
             page: activeContent.id,
             displayName: 'Detailliertes Tutorial: ' + activeContent.id,
@@ -113,7 +113,7 @@ async function showSavedPages() {
     try {
         const tutorialResponse = await fetch(`/api/users/${identificationCode}/saved-pages?pageType=tutorial`);
         const overviewResponse = await fetch(`/api/users/${identificationCode}/saved-pages?pageType=overview`);
-        
+
         const tutorialData = await tutorialResponse.json();
         const overviewData = await overviewResponse.json();
 
@@ -141,11 +141,11 @@ async function showSavedPages() {
             for (const index of slideIndices) {
                 const contentResponse = await fetch(`/api/slide-content/${category}/${index}`);
                 const contentData = await contentResponse.json();
-                
+
                 if (contentData.success) {
                     savedPagesHTML.push(createSavedPageHTML(
-                        category, 
-                        index, 
+                        category,
+                        index,
                         'tutorial',
                         categoryTitles[category] || category,
                         contentData.content.heading,
@@ -160,11 +160,11 @@ async function showSavedPages() {
             for (const index of slideIndices) {
                 const contentResponse = await fetch(`/api/slide-content/${category}/${index}?pageType=overview`);
                 const contentData = await contentResponse.json();
-                
+
                 if (contentData.success) {
                     savedPagesHTML.push(createSavedPageHTML(
-                        category, 
-                        index, 
+                        category,
+                        index,
                         'overview',
                         categoryTitles[category] || category,
                         contentData.content.heading,
@@ -212,7 +212,7 @@ function createSavedPageHTML(category, index, pageType, categoryTitle, heading, 
 function navigateToSlide(category, index, pageType) {
     localStorage.setItem('selectedCategory', category);
     localStorage.setItem('selectedSlide', index);
-    
+
     if (pageType === 'tutorial') {
         window.location.href = '../../views/tutorial';
     } else {
@@ -223,13 +223,13 @@ function navigateToSlide(category, index, pageType) {
 
 async function deleteSavedPage(category, slideIndex, pageType = 'tutorial') {
     const identificationCode = localStorage.getItem('userCode');
-    
+
     try {
         const response = await fetch(`/api/users/${identificationCode}/delete-slide`, {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                page: category, 
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                page: category,
                 slideIndex: slideIndex,
                 pageType: pageType
             })
@@ -249,7 +249,7 @@ async function deleteSavedPage(category, slideIndex, pageType = 'tutorial') {
 
 document.addEventListener('DOMContentLoaded', function () {
     const bookmarkBtn = document.querySelector('.bookmark-btn');
-    if(bookmarkBtn){
+    if (bookmarkBtn) {
         bookmarkBtn.addEventListener('click', toggleBookmark);
         initializeBookmark();
     }

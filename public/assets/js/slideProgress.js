@@ -1,17 +1,17 @@
 const progressTracker = {
-    verifyUser: async function() {
+    verifyUser: async function () {
         const userCode = localStorage.getItem('userCode');
         if (!userCode) return false;
 
         try {
             const response = await fetch(`/api/users/${userCode}/verify`);
             const data = await response.json();
-            
+
             if (!data.exists) {
                 this.clearUserData();
                 return false;
             }
-            
+
             return true;
         } catch (error) {
             console.error('Error verifying user:', error);
@@ -19,15 +19,15 @@ const progressTracker = {
         }
     },
 
-    isUserLoggedIn: function() {
+    isUserLoggedIn: function () {
         return !!localStorage.getItem('userCode');
     },
 
-    clearUserData: function() {
+    clearUserData: function () {
         localStorage.removeItem('userCode');
     },
 
-    handleResponse: async function(response) {
+    handleResponse: async function (response) {
         if (response.status === 401) {
             const data = await response.json();
             if (data.action === 'CLEAR_LOCAL_STORAGE') {
@@ -38,7 +38,7 @@ const progressTracker = {
         return response;
     },
 
-    getViewedSlides: async function(category) {
+    getViewedSlides: async function (category) {
         if (!this.isUserLoggedIn()) {
             return [];
         }
@@ -48,7 +48,7 @@ const progressTracker = {
             const response = await fetch(`/api/users/${userCode}/viewed-slides/${category}`);
             const handledResponse = await this.handleResponse(response);
             if (!handledResponse) return [];
-            
+
             const data = await handledResponse.json();
             return data.viewedSlides || [];
         } catch (error) {
@@ -57,7 +57,7 @@ const progressTracker = {
         }
     },
 
-    markSlideAsViewed: async function(category, slideIndex) {
+    markSlideAsViewed: async function (category, slideIndex) {
         if (!this.isUserLoggedIn()) {
             return;
         }
@@ -69,20 +69,20 @@ const progressTracker = {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ slideIndex })
+                body: JSON.stringify({slideIndex})
             });
 
             const viewedSlides = await this.getViewedSlides(category);
             const totalSlides = document.querySelectorAll(`#${category} .slide`).length;
             const progress = Math.round((viewedSlides.length / totalSlides) * 100);
-            
+
             await this.updateProgress(category, progress);
         } catch (error) {
             console.error('Error marking slide as viewed:', error);
         }
     },
 
-    calculateProgress: async function(category, totalSlides) {
+    calculateProgress: async function (category, totalSlides) {
         if (!this.isUserLoggedIn()) {
             return 0;
         }
@@ -91,7 +91,7 @@ const progressTracker = {
         return Math.round((viewedSlides.length / totalSlides) * 100);
     },
 
-    updateProgress: async function(category, progress) {
+    updateProgress: async function (category, progress) {
         if (!this.isUserLoggedIn()) {
             return;
         }
@@ -108,7 +108,7 @@ const progressTracker = {
                     progress: progress
                 })
             });
-            
+
             await this.handleResponse(response);
 
             if (progress === 100) {
@@ -144,7 +144,7 @@ async function showProgressOverview() {
     try {
         const verifyResponse = await fetch(`/api/users/${identificationCode}/verify`);
         const verifyData = await verifyResponse.json();
-        
+
         if (!verifyData.exists) {
             localStorage.removeItem('userCode');
             return;
@@ -152,18 +152,18 @@ async function showProgressOverview() {
 
         const response = await fetch(`/api/users/${identificationCode}/progress`);
         const progressData = await response.json();
-        
+
         const categories = [
-            { key: 'aktivierung', name: 'Aktivierung' },
-            { key: 'verkehrszeichen', name: 'Verkehrszeichenassistent' },
-            { key: 'geschwindigkeit', name: 'Adaptiver Geschwindigkeitsassistent' },
-            { key: 'stau', name: 'Stauassistent' },
-            { key: 'ampelerkennung', name: 'Ampelerkennung' },
-            { key: 'spurführung', name: 'Spurführungsassistent' },
-            { key: 'spurwechsel', name: 'Spurwechselassistent' },
-            { key: 'notbrems', name: 'Notbremsassistent' },
-            { key: 'deaktivierung', name: 'Deaktivierung' },
-            { key: 'risiken', name: 'Risiken und Verantwortung' }
+            {key: 'aktivierung', name: 'Aktivierung'},
+            {key: 'verkehrszeichen', name: 'Verkehrszeichenassistent'},
+            {key: 'geschwindigkeit', name: 'Adaptiver Geschwindigkeitsassistent'},
+            {key: 'stau', name: 'Stauassistent'},
+            {key: 'ampelerkennung', name: 'Ampelerkennung'},
+            {key: 'spurführung', name: 'Spurführungsassistent'},
+            {key: 'spurwechsel', name: 'Spurwechselassistent'},
+            {key: 'notbrems', name: 'Notbremsassistent'},
+            {key: 'deaktivierung', name: 'Deaktivierung'},
+            {key: 'risiken', name: 'Risiken und Verantwortung'}
         ].map(category => ({
             ...category,
             icon: `../../assets/icons/tutorial/${category.name}.svg`
@@ -178,10 +178,10 @@ async function showProgressOverview() {
         const isWelcomeScreen = document.querySelector('#tutorial') !== null;
 
         const renderCategoryItem = (category, progress) => {
-            const categoryName = isWelcomeScreen ? 
-                category.name.replace('Adaptiver Geschwindigkeitsassistent', 'Adaptiver <br>Geschwindigkeitsassistent') : 
+            const categoryName = isWelcomeScreen ?
+                category.name.replace('Adaptiver Geschwindigkeitsassistent', 'Adaptiver <br>Geschwindigkeitsassistent') :
                 category.name;
-            
+
             return `
                 <div class="progress-circle-item">
                     <img src="${category.icon}" class="progress-icon">
@@ -214,7 +214,7 @@ async function showProgressOverview() {
                     for (let j = i * 2; j < Math.min((i * 2) + 2, categories.length); j++) {
                         const category = categories[j];
                         const progress = progressData[`${category.key}_progress`] || 0;
-                        
+
                         page.insertAdjacentHTML('beforeend', renderCategoryItem(category, progress));
                         const lastItem = page.lastElementChild;
                         updateProgressCircle(lastItem, progress);
@@ -254,7 +254,7 @@ async function showProgressOverview() {
                 suppressScrollX: true,
                 minScrollbarLength: 40,
                 scrollbarYMargin: 0,
-                railYVisible: true 
+                railYVisible: true
             });
         }
 

@@ -10,11 +10,11 @@ const slideIndex = {
     'deaktivierung': 0,
     'risiken': 0
 };
-  
+
 function changeSlide(sectionId, direction) {
     const slides = document.querySelectorAll(`#${sectionId} .slide`);
     const totalSlides = slides.length;
-    
+
     let currentIndex = 0;
     slides.forEach((slide, index) => {
         if (slide.style.display === 'block') {
@@ -40,9 +40,9 @@ function changeSlide(sectionId, direction) {
     if (slides[newIndex]) {
         slides[newIndex].style.display = 'block';
 
-    progressTracker.markSlideAsViewed(sectionId, newIndex);
-    const progress = progressTracker.calculateProgress(sectionId, totalSlides);
-    progressTracker.updateProgress(sectionId, progress);
+        progressTracker.markSlideAsViewed(sectionId, newIndex);
+        const progress = progressTracker.calculateProgress(sectionId, totalSlides);
+        progressTracker.updateProgress(sectionId, progress);
     }
 
     const indicators = document.querySelectorAll(`#${sectionId} .pagination .page-indicator`);
@@ -52,7 +52,7 @@ function changeSlide(sectionId, direction) {
 
     initializeBookmark();
 }
-  
+
 function showContent(contentId, selectFirstSlide = true) {
     const previousSelected = document.querySelector('.sidebar-item.selected');
     if (previousSelected) {
@@ -62,8 +62,8 @@ function showContent(contentId, selectFirstSlide = true) {
     const selectedItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
     if (selectedItem) {
         selectedItem.classList.add('selected');
-        selectedItem.scrollIntoView({ 
-            behavior: 'smooth', 
+        selectedItem.scrollIntoView({
+            behavior: 'smooth',
             block: 'nearest'
         });
     }
@@ -87,107 +87,107 @@ function showContent(contentId, selectFirstSlide = true) {
     }
     initializeBookmark();
 }
-  
+
 function filterResults() {
-const searchInput = document.querySelector('.search');
-const resultsDiv = document.getElementById('results');
-if (!searchInput || !resultsDiv) return;
+    const searchInput = document.querySelector('.search');
+    const resultsDiv = document.getElementById('results');
+    if (!searchInput || !resultsDiv) return;
 
-const searchTerm = searchInput.value.toLowerCase().trim();
+    const searchTerm = searchInput.value.toLowerCase().trim();
 
-if (searchTerm === '') {
-    resultsDiv.style.display = 'none';
-    return;
-}
+    if (searchTerm === '') {
+        resultsDiv.style.display = 'none';
+        return;
+    }
 
-const mainContent = document.querySelector('.main-content');
-const contents = mainContent.querySelectorAll('.content');
-let searchResults = [];
+    const mainContent = document.querySelector('.main-content');
+    const contents = mainContent.querySelectorAll('.content');
+    let searchResults = [];
 
-contents.forEach(content => {
-    const slides = content.querySelectorAll('.slide');
-    
-    slides.forEach((slide, index) => {
-        const title = slide.querySelector('h2')?.textContent || '';
-        const paragraph = slide.querySelector('p')?.textContent || '';
-        
-        if (title.toLowerCase().includes(searchTerm) || 
-            paragraph.toLowerCase().includes(searchTerm)) {
-            searchResults.push({
-                title: title,
-                text: paragraph,
-                contentId: content.id,
-                slideIndex: index
-            });
-        }
+    contents.forEach(content => {
+        const slides = content.querySelectorAll('.slide');
+
+        slides.forEach((slide, index) => {
+            const title = slide.querySelector('h2')?.textContent || '';
+            const paragraph = slide.querySelector('p')?.textContent || '';
+
+            if (title.toLowerCase().includes(searchTerm) ||
+                paragraph.toLowerCase().includes(searchTerm)) {
+                searchResults.push({
+                    title: title,
+                    text: paragraph,
+                    contentId: content.id,
+                    slideIndex: index
+                });
+            }
+        });
     });
-});
 
-if (searchResults.length > 0) {
-    resultsDiv.style.display = 'block';
-    resultsDiv.innerHTML = searchResults.map(result => `
+    if (searchResults.length > 0) {
+        resultsDiv.style.display = 'block';
+        resultsDiv.innerHTML = searchResults.map(result => `
         <div class="result-item" onclick="showSearchResult('${result.contentId}', ${result.slideIndex})">
             <strong>${result.title}</strong><br>
             <small>${result.text ? result.text.substring(0, 100) + '...' : ''}</small>
         </div>
     `).join('');
-} else {
-    resultsDiv.style.display = 'block';
-    resultsDiv.innerHTML = '<div class="result-item">Keine Ergebnisse gefunden</div>';
+    } else {
+        resultsDiv.style.display = 'block';
+        resultsDiv.innerHTML = '<div class="result-item">Keine Ergebnisse gefunden</div>';
+    }
 }
-}
-  
-function showSearchResult(contentId, slideIndex) {
-const contents = document.querySelectorAll('.main-content .content');
-contents.forEach(content => {
-    content.classList.remove('active');
-});
 
-const selectedContent = document.getElementById(contentId);
-if (selectedContent) {
-    selectedContent.classList.add('active');
-    
-    const slides = selectedContent.querySelectorAll('.slide');
-    slides.forEach(slide => {
-        slide.style.display = 'none';
+function showSearchResult(contentId, slideIndex) {
+    const contents = document.querySelectorAll('.main-content .content');
+    contents.forEach(content => {
+        content.classList.remove('active');
     });
-    
-    const selectedSlide = slides[slideIndex];
-    if (selectedSlide) {
-        selectedSlide.style.display = 'block';
+
+    const selectedContent = document.getElementById(contentId);
+    if (selectedContent) {
+        selectedContent.classList.add('active');
+
+        const slides = selectedContent.querySelectorAll('.slide');
+        slides.forEach(slide => {
+            slide.style.display = 'none';
+        });
+
+        const selectedSlide = slides[slideIndex];
+        if (selectedSlide) {
+            selectedSlide.style.display = 'block';
+        }
+
+        // Mark slide as viewed and update progress
+        progressTracker.markSlideAsViewed(contentId, slideIndex);
+        const progress = progressTracker.calculateProgress(contentId, slides.length);
+        progressTracker.updateProgress(contentId, progress);
+        initializeBookmark();
     }
 
-    // Mark slide as viewed and update progress
-    progressTracker.markSlideAsViewed(contentId, slideIndex);
-    const progress = progressTracker.calculateProgress(contentId, slides.length);
-    progressTracker.updateProgress(contentId, progress);
-    initializeBookmark();
-}
-
-const indicators = selectedContent.querySelectorAll('.pagination .page-indicator');
-indicators.forEach((indicator, index) => {
-    indicator.classList.toggle('active', index === parseInt(slideIndex));
-});
-
-const sidebarItems = document.querySelectorAll('.sidebar-item');
-sidebarItems.forEach(item => {
-    item.classList.remove('selected');
-});
-
-const matchingSidebarItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
-if (matchingSidebarItem) {
-    matchingSidebarItem.classList.add('selected');
-    
-    const sidebarContent = document.querySelector('.sidebar-content');
-    matchingSidebarItem.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'nearest'
+    const indicators = selectedContent.querySelectorAll('.pagination .page-indicator');
+    indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === parseInt(slideIndex));
     });
-}
 
-const resultsDiv = document.getElementById('results');
-resultsDiv.style.display = 'none';
-document.querySelector('.search').value = '';
+    const sidebarItems = document.querySelectorAll('.sidebar-item');
+    sidebarItems.forEach(item => {
+        item.classList.remove('selected');
+    });
+
+    const matchingSidebarItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
+    if (matchingSidebarItem) {
+        matchingSidebarItem.classList.add('selected');
+
+        const sidebarContent = document.querySelector('.sidebar-content');
+        matchingSidebarItem.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest'
+        });
+    }
+
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.style.display = 'none';
+    document.querySelector('.search').value = '';
 }
 
 document.addEventListener('DOMContentLoaded', function () {

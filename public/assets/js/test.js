@@ -1,14 +1,14 @@
 categories = [
-    { key: 'aktivierung', name: 'Aktivierung' },
-    { key: 'verkehrszeichen', name: 'Verkehrszeichenassistent' },
-    { key: 'geschwindigkeit', name: 'Adaptiver Geschwindigkeitsassistent' },
-    { key: 'stau', name: 'Stauassistent' },
-    { key: 'ampelerkennung', name: 'Ampelerkennung' },
-    { key: 'spurführung', name: 'Spurführungsassistent' },
-    { key: 'spurwechsel', name: 'Spurwechselassistent' },
-    { key: 'notbrems', name: 'Notbremsassistent' },
-    { key: 'deaktivierung', name: 'Deaktivierung' },
-    { key: 'risiken', name: 'Risiken und Verantwortung' }
+    {key: 'aktivierung', name: 'Aktivierung'},
+    {key: 'verkehrszeichen', name: 'Verkehrszeichenassistent'},
+    {key: 'geschwindigkeit', name: 'Adaptiver Geschwindigkeitsassistent'},
+    {key: 'stau', name: 'Stauassistent'},
+    {key: 'ampelerkennung', name: 'Ampelerkennung'},
+    {key: 'spurführung', name: 'Spurführungsassistent'},
+    {key: 'spurwechsel', name: 'Spurwechselassistent'},
+    {key: 'notbrems', name: 'Notbremsassistent'},
+    {key: 'deaktivierung', name: 'Deaktivierung'},
+    {key: 'risiken', name: 'Risiken und Verantwortung'}
 ].map(category => ({
     ...category,
     icon: `../../assets/icons/tutorial/${category.name}.svg`
@@ -40,7 +40,7 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
 
                 if (remainingQuestionsInCategory.length > 0) {
                     hasRemainingQuestions = true;
-                    
+
                     const isLocked = await categoryLocked(currentCategory);
                     if (!isLocked) continue;
 
@@ -67,7 +67,7 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
                 showLockedCategoryMessage();
                 return;
             }
-            
+
             totalQuestions = questionsToHandle.length;
         }
 
@@ -82,7 +82,7 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
                         Frage ${currentQuestionIndex + 1} / ${totalQuestions}
                     </div>
                     ${questionItem.question.options
-                        .map((option, index) => `
+                    .map((option, index) => `
                             <div class="question-option">
                                 <label class="question-label" for="option${index}">
                                     <input type="radio" id="option${index}" name="question" value="${index}">
@@ -90,7 +90,7 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
                                 </label>
                             </div>
                         `)
-                        .join('')}
+                    .join('')}
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Bestätigen',
@@ -182,11 +182,11 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
         }
 
         if (questionsToRetry.length > 0) {
-            showCategoryQuestions(category, questionsToRetry);
+            await showCategoryQuestions(category, questionsToRetry);
         } else if (!category) {
-            (hasLockedCategories() ? showPartialCompletionMessage() : showCompletionMessage());
+            (await hasLockedCategories() ? showPartialCompletionMessage() : showCompletionMessage());
         } else {
-            showTestOverview();
+            await showTestOverview();
         }
 
     } catch (error) {
@@ -195,16 +195,15 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
 }
 
 async function hasLockedCategories() {
-    const identificationCode = localStorage.
-    getItem('userCode');
+    const identificationCode = localStorage.getItem('userCode');
     const response = await fetch(`/api/test/${identificationCode}`);
     const testData = await response.json();
-    
+
     for (const category of Object.keys(categoryQuestions)) {
         const isLocked = await categoryLocked(category);
         const correctlyAnswered = JSON.parse(testData.correctly_answered || '{}')[category] || [];
         const hasRemainingQuestions = categoryQuestions[category].length > correctlyAnswered.length;
-        
+
         if (isLocked && hasRemainingQuestions) {
             return true;
         }
@@ -213,7 +212,7 @@ async function hasLockedCategories() {
 }
 
 
-function showCompletedCategoryMessage(categoryName){
+function showCompletedCategoryMessage(categoryName) {
     Swal.fire({
         title: 'Keine Fragen übrig!',
         text: `Sie haben bereits alle Fragen in der Kategorie "${categoryName}" richtig beantwortet.`,
@@ -224,14 +223,14 @@ function showCompletedCategoryMessage(categoryName){
 
 function showPartialCompletionMessage() {
     Swal.fire({
-      title: 'Test abgeschlossen!',
-      text: 'Sie haben bereits alle verfügbaren Fragen richtig beantwortet. Schalten Sie mehr frei, indem Sie entweder die Schnellübersicht oder alle Folien zur Kategorie im detaillierten Tutorial anschauen.',
-      icon: 'success',
-      confirmButtonColor: '#6182b3'
+        title: 'Test abgeschlossen!',
+        text: 'Sie haben bereits alle verfügbaren Fragen richtig beantwortet. Schalten Sie mehr frei, indem Sie entweder die Schnellübersicht oder alle Folien zur Kategorie im detaillierten Tutorial anschauen.',
+        icon: 'success',
+        confirmButtonColor: '#6182b3'
     });
 }
 
-  function showCompletionMessage(){
+function showCompletionMessage() {
     Swal.fire({
         title: 'Test abgeschlossen!',
         text: 'Sie haben alle Kategorien durchlaufen. Gut gemacht!',
@@ -268,9 +267,9 @@ async function updateTestProgress(identificationCode, category, questionIndex, i
         if (!response.ok) {
             throw new Error('Failed to update test progress');
         }
-        
+
         await showTestOverview();
-        
+
     } catch (error) {
         console.error('Error updating test progress:', error);
     }
@@ -297,7 +296,7 @@ async function showTestOverview() {
         const totalQuestions = Object.values(categoryQuestions).reduce((sum, category) => sum + category.length, 0);
         const correctlyAnswered = Object.values(JSON.parse(testData.correctly_answered || '{}')).reduce((sum, answers) => sum + answers.length, 0);
 
-        const testHTML = `
+        testOverviewContainer.innerHTML = `
         <div class="test-header">
             <h2>Gesamt Fortschritt</h2>
             <div class="total-progress-container">
@@ -313,16 +312,16 @@ async function showTestOverview() {
             <button class="start-btn">Starten ▶</button>
         </div>
         <h2 class="categories-heading">Beantworten nach Kategorien</h2>
-        <div class="test-circles">
+        <div class="progress-circles">
             ${categories.map(category => {
-                const correctlyAnsweredCategory = JSON.parse(testData.correctly_answered || '{}')[category.key] || [];
-                const incorrectlyAnswered = JSON.parse(testData.incorrectly_answered || '{}')[category.key] || [];
-                const totalQuestionsCategory = categoryQuestions[category.key].length;
-                const isLocked = !unlockedCategories.includes(category.key);
+            const correctlyAnsweredCategory = JSON.parse(testData.correctly_answered || '{}')[category.key] || [];
+            const incorrectlyAnswered = JSON.parse(testData.incorrectly_answered || '{}')[category.key] || [];
+            const totalQuestionsCategory = categoryQuestions[category.key].length;
+            const isLocked = !unlockedCategories.includes(category.key);
 
-                return `
-                    <div class="test-circle-item ${isLocked ? 'locked' : 'unlocked'}" data-category="${category.key}">
-                        <img src="${category.icon}" class="test-icon">
+            return `
+                    <div class="progress-circle-item ${isLocked ? 'locked' : 'unlocked'}" data-category="${category.key}">
+                        <img src="${category.icon}" class="test-icon" alt="">
                         <div class="category-info">
                             <div class="category-name">${category.name}</div>
                             <div class="test-stats">
@@ -339,30 +338,28 @@ async function showTestOverview() {
                         </div>
                     </div>
                 `;
-            }).join('')}
+        }).join('')}
         </div>`;
 
-        testOverviewContainer.innerHTML = testHTML;
-
-        const container = document.querySelector('.test-circles');
+        const container = document.querySelector('.progress-circles');
         new PerfectScrollbar(container, {
             wheelSpeed: 1,
             wheelPropagation: true,
             suppressScrollX: true,
             minScrollbarLength: 40,
             scrollbarYMargin: 0,
-            railYVisible: true 
+            railYVisible: true
         });
 
-        document.querySelectorAll('.test-circle-item').forEach(item => {
+        document.querySelectorAll('.progress-circle-item').forEach(item => {
             const category = item.dataset.category;
-            
+
             item.addEventListener('click', async () => {
                 const isUnlocked = await categoryLocked(category);
                 if (isUnlocked) {
-                    showCategoryQuestions(category);
+                    await showCategoryQuestions(category);
                 } else {
-                    showLockedCategoryMessage();
+                    await showLockedCategoryMessage();
                 }
             });
 
@@ -407,5 +404,5 @@ async function categoryLocked(category) {
 
 async function unlockCategory(category) {
     const userCode = localStorage.getItem('userCode');
-    await fetch(`/api/users/${userCode}/unlock-category/${category}`, { method: 'POST' });
+    await fetch(`/api/users/${userCode}/unlock-category/${category}`, {method: 'POST'});
 }

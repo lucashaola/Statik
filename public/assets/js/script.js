@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updateTemperatureDisplay();
     initializeFooterIcons();
     initializeCloseButtons();
-    
+
     initializeWelcomeScreen();
 
 
@@ -27,7 +27,7 @@ function preventDoubleTapZoom() {
         if (event.touches.length > 1) {
             event.preventDefault();
         }
-    }, { passive: false });
+    }, {passive: false});
 
     document.addEventListener('touchend', function (event) {
         const now = (new Date()).getTime();
@@ -35,7 +35,7 @@ function preventDoubleTapZoom() {
             event.preventDefault();
         }
         this.lastTouchEnd = now;
-    }, { passive: false });
+    }, {passive: false});
 }
 
 function updateTemperatureDisplay() {
@@ -97,7 +97,8 @@ function initializeCloseButtons() {
 function initializeWelcomeScreen() {
     const welcomeHeading = document.querySelector('.welcome h1');
     if (welcomeHeading) {
-        const username = localStorage.getItem('userName');;
+        const username = localStorage.getItem('userName');
+        ;
         if (username) {
             welcomeHeading.innerHTML = `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon"> Willkommen ${username}!`;
         }
@@ -133,7 +134,7 @@ function initializeProfileScreen() {
     if (username) {
         profileName.textContent = username;
     }
-    
+
     const buttons = {
         overview: {
             button: document.querySelector('.overview-btn'),
@@ -163,7 +164,7 @@ function initializeProfileScreen() {
         history.replaceState({}, '', newUrl);
 
         Object.keys(buttons).forEach((key) => {
-            const { button, overview, callback } = buttons[key];
+            const {button, overview, callback} = buttons[key];
             const isActive = key === activeKey;
 
             button?.classList.toggle('selected', isActive);
@@ -176,12 +177,12 @@ function initializeProfileScreen() {
     };
 
     Object.keys(buttons).forEach((key) => {
-        const { button } = buttons[key];
+        const {button} = buttons[key];
         button?.addEventListener('click', () => setActiveView(key));
     });
 
     const urlParams = new URLSearchParams(window.location.search);
     const viewParam = urlParams.get('view');
-    
+
     setActiveView(viewParam || 'overview');
 }

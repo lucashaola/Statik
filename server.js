@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
-const { JSDOM } = require('jsdom');
+const {JSDOM} = require('jsdom');
 const eventTypes = require('./public/assets/js/eventTypes.js');
 const categoryQuestions = import('./public/assets/js/categoryQuestions.js');
 
@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const db = new sqlite3.Database('users.db', (err) => {
     if (err) {
         console.error('Error opening database:', err);
-    } else {       
+    } else {
         db.run(`CREATE TABLE IF NOT EXISTS profiles (
             identification_code TEXT PRIMARY KEY,
             name TEXT NOT NULL,
@@ -74,41 +74,41 @@ const db = new sqlite3.Database('users.db', (err) => {
 // API Routes
 // User Handling
 app.get('/api/users/:code/verify', (req, res) => {
-    const { code } = req.params;
-    
+    const {code} = req.params;
+
     if (!code) {
-        return res.status(401).json({ exists: false });
+        return res.status(401).json({exists: false});
     }
 
     db.get('SELECT * FROM profiles WHERE identification_code = ?', [code], (err, user) => {
         if (err) {
-            return res.status(500).json({ error: err.message });
+            return res.status(500).json({error: err.message});
         }
-        res.json({ exists: !!user });
+        res.json({exists: !!user});
     });
 });
 
 app.post('/api/users', (req, res) => {
-    const { name, identificationCode } = req.body;
-    
+    const {name, identificationCode} = req.body;
+
     db.run(
         `INSERT INTO profiles (identification_code, name, unlocked_categories, total_bonus_score, assistance_kilometer) VALUES (?, ?, ?, 0, 0)`,
         [identificationCode, name, JSON.stringify([])],
-        function(err) {
+        function (err) {
             if (err) {
-                res.status(400).json({ error: err.message });
+                res.status(400).json({error: err.message});
                 return;
             }
 
             db.run(
                 `INSERT INTO slide_progress (identification_code) VALUES (?)`,
                 [identificationCode],
-                function(err) {
+                function (err) {
                     if (err) {
-                        res.status(400).json({ error: err.message });
+                        res.status(400).json({error: err.message});
                         return;
                     }
-                    
+
                     res.json({
                         identification_code: identificationCode,
                         name: name,
@@ -126,10 +126,10 @@ app.get('/api/users', (req, res) => {
         `SELECT p.*, sp.* 
          FROM profiles p 
          LEFT JOIN slide_progress sp ON p.identification_code = sp.identification_code`,
-        [], 
+        [],
         (err, rows) => {
             if (err) {
-                res.status(400).json({ error: err.message });
+                res.status(400).json({error: err.message});
                 return;
             }
             res.json(rows);
@@ -146,7 +146,7 @@ app.get('/api/users/:code', (req, res) => {
         [req.params.code],
         (err, row) => {
             if (err) {
-                res.status(400).json({ error: err.message });
+                res.status(400).json({error: err.message});
                 return;
             }
             res.json(row);
@@ -156,20 +156,20 @@ app.get('/api/users/:code', (req, res) => {
 
 // Slide Progress Handeling
 app.post('/api/users/:code/progress', (req, res) => {
-    const { code } = req.params;
-    const { category, progress } = req.body;
+    const {code} = req.params;
+    const {category, progress} = req.body;
 
     if (!code) {
-        return res.status(400).json({ error: 'No user code provided' });
+        return res.status(400).json({error: 'No user code provided'});
     }
 
     db.get('SELECT * FROM profiles WHERE identification_code = ?', [code], (err, user) => {
         if (err) {
-            return res.status(500).json({ error: err.message });
+            return res.status(500).json({error: err.message});
         }
 
         if (!user) {
-            return res.status(401).json({ 
+            return res.status(401).json({
                 error: 'User not found',
                 action: 'CLEAR_LOCAL_STORAGE'
             });
@@ -187,21 +187,21 @@ app.post('/api/users/:code/progress', (req, res) => {
             'deaktivierung': 'deaktivierung_progress',
             'risiken': 'risiken_progress'
         };
-    
+
         const dbColumn = columnMapping[category];
-        
+
         if (!dbColumn) {
-            return res.status(400).json({ error: 'Invalid category' });
+            return res.status(400).json({error: 'Invalid category'});
         }
-    
+
         db.run(
             `UPDATE slide_progress SET ${dbColumn} = ? WHERE identification_code = ?`,
             [progress, code],
-            function(err) {
+            function (err) {
                 if (err) {
-                    return res.status(400).json({ error: err.message });
+                    return res.status(400).json({error: err.message});
                 }
-    
+
                 db.get(
                     `SELECT sp.*, tp.correctly_answered
                      FROM slide_progress sp 
@@ -210,14 +210,14 @@ app.post('/api/users/:code/progress', (req, res) => {
                     [code],
                     (err, row) => {
                         if (err) {
-                            return res.status(400).json({ error: err.message });
+                            return res.status(400).json({error: err.message});
                         }
-                
+
                         // Calculate slide part (90% max)
                         const progressValues = Object.values(columnMapping).map(col => row[col] || 0);
                         const slideProgress = progressValues.reduce((sum, val) => sum + val, 0) / progressValues.length;
                         const slideProgressPart = Math.round(slideProgress * 0.9);
-    
+
                         // Calculate test part (10% max)
                         const correctlyAnswered = JSON.parse(row.correctly_answered || '{}');
                         let testProgressPart = 0;
@@ -226,20 +226,20 @@ app.post('/api/users/:code/progress', (req, res) => {
                                 testProgressPart += 1; // Add 1% for each completed category
                             }
                         });
-    
+
                         const totalProgress = slideProgressPart + testProgressPart;
-                
+
                         db.run(
                             'UPDATE profiles SET total_progress = ? WHERE identification_code = ?',
                             [totalProgress, code],
                             (err) => {
                                 if (err) {
-                                    return res.status(400).json({ error: err.message });
+                                    return res.status(400).json({error: err.message});
                                 }
-                                res.json({ 
-                                    success: true, 
+                                res.json({
+                                    success: true,
                                     progress: progress,
-                                    totalProgress: totalProgress 
+                                    totalProgress: totalProgress
                                 });
                             }
                         );
@@ -250,22 +250,22 @@ app.post('/api/users/:code/progress', (req, res) => {
     });
 });
 
-app.get('/api/users/:code/progress',  (req, res) => {
-    const { code } = req.params;
-    
+app.get('/api/users/:code/progress', (req, res) => {
+    const {code} = req.params;
+
     if (!code) {
-        return res.json({ error: 'No user code provided' });
+        return res.json({error: 'No user code provided'});
     }
 
     db.get('SELECT * FROM profiles WHERE identification_code = ?', [code], (err, user) => {
         if (err) {
-            return res.status(500).json({ error: err.message });
+            return res.status(500).json({error: err.message});
         }
 
         if (!user) {
-            return res.status(401).json({ 
-                error: 'User not found', 
-                action: 'CLEAR_LOCAL_STORAGE' 
+            return res.status(401).json({
+                error: 'User not found',
+                action: 'CLEAR_LOCAL_STORAGE'
             });
         }
 
@@ -277,7 +277,7 @@ app.get('/api/users/:code/progress',  (req, res) => {
             [code],
             (err, row) => {
                 if (err) {
-                    return res.status(500).json({ error: err.message });
+                    return res.status(500).json({error: err.message});
                 }
                 res.json(row || {});
             }
@@ -286,52 +286,52 @@ app.get('/api/users/:code/progress',  (req, res) => {
 });
 
 app.get('/api/users/:code/viewed-slides/:category', (req, res) => {
-    const { code, category } = req.params;
-    
+    const {code, category} = req.params;
+
     if (!code) {
-        return res.json({ viewedSlides: [] });
+        return res.json({viewedSlides: []});
     }
-    
+
     db.get('SELECT * FROM profiles WHERE identification_code = ?', [code], (err, user) => {
         if (err) {
-            return res.status(500).json({ error: err.message });
+            return res.status(500).json({error: err.message});
         }
 
         if (!user) {
-            return res.status(401).json({ 
+            return res.status(401).json({
                 error: 'User not found',
-                action: 'CLEAR_LOCAL_STORAGE' 
+                action: 'CLEAR_LOCAL_STORAGE'
             });
         }
 
-        db.get('SELECT viewed_slides FROM slide_progress WHERE identification_code = ?', 
-        [code], 
-        (err, row) => {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-            
-            const viewedSlides = JSON.parse(row?.viewed_slides || '{}');
-            res.json({ 
-                viewedSlides: viewedSlides[category] || [] 
+        db.get('SELECT viewed_slides FROM slide_progress WHERE identification_code = ?',
+            [code],
+            (err, row) => {
+                if (err) {
+                    return res.status(500).json({error: err.message});
+                }
+
+                const viewedSlides = JSON.parse(row?.viewed_slides || '{}');
+                res.json({
+                    viewedSlides: viewedSlides[category] || []
+                });
             });
-        });
     });
 });
 
 app.post('/api/users/:code/viewed-slides/:category', (req, res) => {
-    const { code, category } = req.params;
-    const { slideIndex } = req.body;
+    const {code, category} = req.params;
+    const {slideIndex} = req.body;
 
     db.get('SELECT viewed_slides FROM slide_progress WHERE identification_code = ?',
         [code],
         (err, row) => {
             if (err) {
-                return res.status(400).json({ error: err.message });
+                return res.status(400).json({error: err.message});
             }
 
             if (!row) {
-                return res.json({ success: false, message: 'User not found' });
+                return res.json({success: false, message: 'User not found'});
             }
 
             const viewedSlides = JSON.parse(row.viewed_slides || '{}');
@@ -349,9 +349,9 @@ app.post('/api/users/:code/viewed-slides/:category', (req, res) => {
                 [JSON.stringify(viewedSlides), code],
                 (updateErr) => {
                     if (updateErr) {
-                        return res.status(400).json({ error: updateErr.message });
+                        return res.status(400).json({error: updateErr.message});
                     }
-                    res.json({ success: true });
+                    res.json({success: true});
                 }
             );
         }
@@ -360,21 +360,21 @@ app.post('/api/users/:code/viewed-slides/:category', (req, res) => {
 
 // Test Questions Handeling
 app.post('/api/test/:code/update', (req, res) => {
-    const { code } = req.params;
-    const { category, questionIndex, isCorrect } = req.body;
+    const {code} = req.params;
+    const {category, questionIndex, isCorrect} = req.body;
 
     if (!code || category === undefined || questionIndex === undefined || isCorrect === undefined) {
-        return res.status(400).json({ error: 'Missing required fields' });
+        return res.status(400).json({error: 'Missing required fields'});
     }
 
     db.get(
         `SELECT tp.correctly_answered, tp.incorrectly_answered, p.total_progress 
          FROM test_progress tp 
          JOIN profiles p ON tp.identification_code = p.identification_code 
-         WHERE tp.identification_code = ?`, 
-        [code], 
+         WHERE tp.identification_code = ?`,
+        [code],
         (err, row) => {
-            if (err) return res.status(500).json({ error: err.message });
+            if (err) return res.status(500).json({error: err.message});
 
             let correctlyAnswered = {};
             let incorrectlyAnswered = {};
@@ -386,7 +386,7 @@ app.post('/api/test/:code/update', (req, res) => {
                 if (!correctlyAnswered[category]) correctlyAnswered[category] = [];
                 if (!incorrectlyAnswered[category]) incorrectlyAnswered[category] = [];
 
-                const previousCompleted = Object.keys(categoryQuestions).filter(cat => 
+                const previousCompleted = Object.keys(categoryQuestions).filter(cat =>
                     correctlyAnswered[cat]?.length === categoryQuestions[cat].length
                 ).length;
 
@@ -404,7 +404,7 @@ app.post('/api/test/:code/update', (req, res) => {
                     }
                 }
 
-                const newCompleted = Object.keys(categoryQuestions).filter(cat => 
+                const newCompleted = Object.keys(categoryQuestions).filter(cat =>
                     correctlyAnswered[cat]?.length === categoryQuestions[cat].length
                 ).length;
 
@@ -416,14 +416,14 @@ app.post('/api/test/:code/update', (req, res) => {
                     'UPDATE test_progress SET correctly_answered = ?, incorrectly_answered = ? WHERE identification_code = ?',
                     [JSON.stringify(correctlyAnswered), JSON.stringify(incorrectlyAnswered), code],
                     (updateErr) => {
-                        if (updateErr) return res.status(500).json({ error: updateErr.message });
+                        if (updateErr) return res.status(500).json({error: updateErr.message});
 
                         db.run(
                             'UPDATE profiles SET total_progress = ? WHERE identification_code = ?',
                             [newTotalProgress, code],
                             (err) => {
-                                if (err) return res.status(500).json({ error: err.message });
-                                res.json({ 
+                                if (err) return res.status(500).json({error: err.message});
+                                res.json({
                                     success: true,
                                     correctlyAnswered,
                                     incorrectlyAnswered,
@@ -434,7 +434,7 @@ app.post('/api/test/:code/update', (req, res) => {
                     }
                 );
             } catch (parseError) {
-                return res.status(500).json({ error: 'Error parsing stored data' });
+                return res.status(500).json({error: 'Error parsing stored data'});
             }
         }
     );
@@ -446,17 +446,17 @@ app.get('/api/test/:code', (req, res) => {
         [req.params.code],
         (err, row) => {
             if (err) {
-                res.status(400).json({ error: err.message });
+                res.status(400).json({error: err.message});
                 return;
             }
-            
+
             if (!row) {
                 db.run(
                     'INSERT INTO test_progress (identification_code) VALUES (?)',
                     [req.params.code],
                     (err) => {
                         if (err) {
-                            res.status(400).json({ error: err.message });
+                            res.status(400).json({error: err.message});
                             return;
                         }
                         res.json({
@@ -480,21 +480,21 @@ app.get('/api/users/:userCode/unlocked-categories', (req, res) => {
         [req.params.userCode],
         (err, row) => {
             if (err) {
-                res.status(500).json({ error: err.message });
+                res.status(500).json({error: err.message});
                 return;
             }
-            res.json({ unlockedCategories: JSON.parse(row?.unlocked_categories || '[]') });
+            res.json({unlockedCategories: JSON.parse(row?.unlocked_categories || '[]')});
         }
     );
 });
 
 app.post('/api/users/:code/unlock-category/:category', (req, res) => {
-    const { code, category } = req.params;
+    const {code, category} = req.params;
 
     db.get('SELECT * FROM profiles WHERE identification_code = ?', [code], (err, userData) => {
         if (err) {
             console.error('Error fetching user:', err);
-            return res.status(500).json({ error: 'Database error' });
+            return res.status(500).json({error: 'Database error'});
         }
 
         let unlockedCategories;
@@ -514,30 +514,30 @@ app.post('/api/users/:code/unlock-category/:category', (req, res) => {
                 (err) => {
                     if (err) {
                         console.error('Error updating user:', err);
-                        return res.status(500).json({ error: 'Database error' });
+                        return res.status(500).json({error: 'Database error'});
                     }
-                    res.json({ success: true, unlockedCategories });
+                    res.json({success: true, unlockedCategories});
                 }
             );
         } else {
-            res.json({ success: true, unlockedCategories });
+            res.json({success: true, unlockedCategories});
         }
     });
 });
 
 // Saved Slides Handeling
 app.post('/api/users/:code/save-page', (req, res) => {
-    const { code } = req.params;
-    const { page, slideIndex, pageType } = req.body;
+    const {code} = req.params;
+    const {page, slideIndex, pageType} = req.body;
 
     if (!page || !pageType) {
-        return res.status(400).json({ error: 'No page or page type specified for saving' });
+        return res.status(400).json({error: 'No page or page type specified for saving'});
     }
 
     const column = pageType === 'tutorial' ? 'saved_tutorial_pages' : 'saved_overview_pages';
 
     db.get(`SELECT ${column} FROM saved_pages WHERE identification_code = ?`, [code], (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) return res.status(500).json({error: err.message});
 
         let savedPages = {};
         if (row) {
@@ -557,40 +557,40 @@ app.post('/api/users/:code/save-page', (req, res) => {
         const query = `UPDATE saved_pages SET ${column} = ? WHERE identification_code = ?`;
         db.run(query, [JSON.stringify(savedPages), code],
             (err) => {
-                if (err) return res.status(500).json({ error: err.message });
-                res.json({ success: true, message: 'Page saved' });
+                if (err) return res.status(500).json({error: err.message});
+                res.json({success: true, message: 'Page saved'});
             }
         );
     });
 });
 
 app.get('/api/users/:code/saved-pages', (req, res) => {
-    const { code } = req.params;
-    const { pageType } = req.query;
+    const {code} = req.params;
+    const {pageType} = req.query;
 
     const column = pageType === 'tutorial' ? 'saved_tutorial_pages' : 'saved_overview_pages';
 
     db.get(`SELECT ${column} FROM saved_pages WHERE identification_code = ?`, [code], (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) return res.status(500).json({error: err.message});
 
         const savedPages = row ? JSON.parse(row[column]) : {};
-        res.json({ success: true, savedPages });
+        res.json({success: true, savedPages});
     });
 });
 
 app.delete('/api/users/:code/delete-slide', (req, res) => {
-    const { code } = req.params;
-    const { page, slideIndex, pageType } = req.body;
+    const {code} = req.params;
+    const {page, slideIndex, pageType} = req.body;
 
     if (!page || !pageType) {
-        return res.status(400).json({ error: 'No page or page type specified for deletion' });
+        return res.status(400).json({error: 'No page or page type specified for deletion'});
     }
 
     const column = pageType === 'tutorial' ? 'saved_tutorial_pages' : 'saved_overview_pages';
 
     db.get(`SELECT ${column} FROM saved_pages WHERE identification_code = ?`, [code], (err, row) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (!row) return res.status(404).json({ error: 'No saved pages found' });
+        if (err) return res.status(500).json({error: err.message});
+        if (!row) return res.status(404).json({error: 'No saved pages found'});
 
         let savedPages = JSON.parse(row[column]);
         if (savedPages[page]) {
@@ -603,29 +603,29 @@ app.delete('/api/users/:code/delete-slide', (req, res) => {
         const query = `UPDATE saved_pages SET ${column} = ? WHERE identification_code = ?`;
         db.run(query, [JSON.stringify(savedPages), code],
             (err) => {
-                if (err) return res.status(500).json({ error: err.message });
-                res.json({ success: true, message: 'Page deleted' });
+                if (err) return res.status(500).json({error: err.message});
+                res.json({success: true, message: 'Page deleted'});
             }
         );
     });
 });
 
 app.get('/api/slide-content/:category/:index', (req, res) => {
-    const { category, index } = req.params;
-    const { pageType } = req.query;
-    
+    const {category, index} = req.params;
+    const {pageType} = req.query;
+
     if (pageType === 'overview') {
         const overviewPath = path.join(__dirname, 'public', 'views', 'overview', 'index.html');
-        
+
         try {
             const overviewContent = fs.readFileSync(overviewPath, 'utf8');
             const dom = new JSDOM(overviewContent);
             const document = dom.window.document;
-            
+
             const page = document.querySelector(`.content-container .page:nth-child(${parseInt(index) + 1})`);
-            
+
             if (!page) {
-                return res.status(404).json({ error: 'Page not found' });
+                return res.status(404).json({error: 'Page not found'});
             }
 
             const heading = page.querySelector('h1, h2, h3')?.textContent || 'Overview Page';
@@ -640,20 +640,20 @@ app.get('/api/slide-content/:category/:index', (req, res) => {
             });
         } catch (error) {
             console.error('Error reading overview content:', error);
-            res.status(500).json({ error: 'Failed to read overview content' });
+            res.status(500).json({error: 'Failed to read overview content'});
         }
     } else {
         const tutorialPath = path.join(__dirname, 'public', 'views', 'tutorial', 'index.html');
-    
+
         try {
             const tutorialContent = fs.readFileSync(tutorialPath, 'utf8');
             const dom = new JSDOM(tutorialContent);
             const document = dom.window.document;
-            
+
             const slide = document.querySelector(`#${category} .slide[data-index="${index}"]`);
-            
+
             if (!slide) {
-                return res.status(404).json({ error: 'Slide not found' });
+                return res.status(404).json({error: 'Slide not found'});
             }
 
             const heading = slide.querySelector('h2, h3')?.textContent || 'Untitled';
@@ -668,25 +668,20 @@ app.get('/api/slide-content/:category/:index', (req, res) => {
             });
         } catch (error) {
             console.error('Error reading slide content:', error);
-            res.status(500).json({ error: 'Failed to read slide content' });
+            res.status(500).json({error: 'Failed to read slide content'});
         }
     }
 
 
-
-
-
-    
-    
 });
 
 // Bonus Points Handeling
 app.post('/api/events', (req, res) => {
-    const { identificationCode, eventType, score } = req.body;
+    const {identificationCode, eventType, score} = req.body;
 
     if (!identificationCode || !eventType || score === undefined) {
         console.error("Missing required fields:", req.body);
-        return res.status(400).json({ error: "Missing required fields" });
+        return res.status(400).json({error: "Missing required fields"});
     }
 
     const message = eventTypes[eventType] ? eventTypes[eventType].message : "No message available for this event.";
@@ -699,7 +694,7 @@ app.post('/api/events', (req, res) => {
         function (err) {
             if (err) {
                 console.error("Error inserting event into database:", err.message);
-                return res.status(500).json({ error: err.message });
+                return res.status(500).json({error: err.message});
             }
 
             db.get(
@@ -707,7 +702,7 @@ app.post('/api/events', (req, res) => {
                 [identificationCode],
                 (err, row) => {
                     if (err) {
-                        return res.status(500).json({ error: err.message });
+                        return res.status(500).json({error: err.message});
                     }
 
                     const currentScore = row ? row.total_bonus_score : 0;
@@ -719,7 +714,7 @@ app.post('/api/events', (req, res) => {
                         (err) => {
                             if (err) {
                                 console.error("Error updating total score:", err.message);
-                                return res.status(500).json({ error: err.message });
+                                return res.status(500).json({error: err.message});
                             }
                             res.json({
                                 success: true,
@@ -735,14 +730,14 @@ app.post('/api/events', (req, res) => {
 });
 
 app.get('/api/events/:code', (req, res) => {
-    const { code } = req.params;
+    const {code} = req.params;
 
     db.all(
         `SELECT * FROM bonus_events WHERE identification_code = ? ORDER BY timestamp DESC`,
         [code],
         (err, rows) => {
             if (err) {
-                return res.status(500).json({ error: err.message });
+                return res.status(500).json({error: err.message});
             }
             res.json(rows);
         }
@@ -750,7 +745,7 @@ app.get('/api/events/:code', (req, res) => {
 });
 
 app.get('/api/bonus/:identificationCode', (req, res) => {
-    const { identificationCode } = req.params;
+    const {identificationCode} = req.params;
 
     db.get(
         `SELECT total_bonus_score, assistance_kilometer 
@@ -764,7 +759,7 @@ app.get('/api/bonus/:identificationCode', (req, res) => {
             }
 
             if (!row) {
-                return res.status(404).json({ error: 'User not found' });
+                return res.status(404).json({error: 'User not found'});
             }
 
             res.json({
@@ -777,7 +772,7 @@ app.get('/api/bonus/:identificationCode', (req, res) => {
 
 // Get events for a user
 app.get('/api/users/:code/events', (req, res) => {
-    const { code } = req.params;
+    const {code} = req.params;
 
     db.all(
         `SELECT event_type, timestamp FROM bonus_events WHERE identification_code = ? ORDER BY timestamp DESC`,
@@ -785,13 +780,13 @@ app.get('/api/users/:code/events', (req, res) => {
         (err, rows) => {
             if (err) {
                 console.error('Error fetching events:', err.message);
-                return res.status(500).json({ error: err.message });
+                return res.status(500).json({error: err.message});
             }
 
             const events = rows.map(row => {
                 const event = eventTypes[row.event_type];
                 return {
-                    message: event ? event.message : 'Keine Beschreibung verfügbar', 
+                    message: event ? event.message : 'Keine Beschreibung verfügbar',
                     timestamp: row.timestamp
                 };
             });
@@ -806,9 +801,9 @@ app.delete('/api/events/expired', (req, res) => {
         `DELETE FROM bonus_events WHERE expiry_date IS NOT NULL AND expiry_date < DATETIME('now')`,
         (err) => {
             if (err) {
-                return res.status(500).json({ error: err.message });
+                return res.status(500).json({error: err.message});
             }
-            res.json({ success: true, message: "Expired events removed." });
+            res.json({success: true, message: "Expired events removed."});
         }
     );
 });

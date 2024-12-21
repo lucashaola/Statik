@@ -3,129 +3,129 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Profil</title>
-    <link rel="icon" type="image/x-icon" href="../../assets/icons/shared/TUM.svg">
-    <link rel="stylesheet" href="../../styles/profile.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/css/perfect-scrollbar.css">
-    <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/dist/perfect-scrollbar.min.js"></script>
+    <link href="../../assets/icons/shared/TUM.svg" rel="icon" type="image/x-icon">
+    <link href="../../styles/profile.css" rel="stylesheet">
+    <link href="../../assets/vendor/sweetalert2.min.css" rel="stylesheet">
+    <script src="../../assets/vendor/sweetalert2.js"></script>
+
+    <link href="../../assets/vendor/perfect-scrollbar.css" rel="stylesheet">
+    <script src="../../assets/vendor/perfect-scrollbar.min.js"></script>
 </head>
 
 <body>
-    <div class="header">
-        <div class="profile-heading">
-            <img src="../../assets/icons/welcome/Profile.svg" class="profile-icon">
-            <h1 id="profileName">No user selected
-                <!-- java script -->
-            </h1>
-        </div>
-        <button class="close-btn" id="closeButton">
-            <img src="../../assets/icons/shared/Close.svg" class="close-icon">
-        </button>
+<div class="header">
+    <div class="profile-heading">
+        <img class="profile-icon" src="../../assets/icons/welcome/Profile.svg">
+        <h1 id="profileName">No user selected
+            <!-- java script -->
+        </h1>
+    </div>
+    <button class="close-btn" id="closeButton">
+        <img class="close-icon" src="../../assets/icons/shared/Close.svg">
+    </button>
+</div>
+
+<div class="main-content">
+    <div class="button-container">
+        <button class="overview-btn selected">Übersicht</button>
+        <button class="test-btn">Testen</button>
+        <button class="saved-btn">Gespeichert</button>
+        <button class="bonus-btn">Fahrpunkte</button>
     </div>
 
-    <div class="main-content">
-        <div class="button-container">
-            <button class="overview-btn selected">Übersicht</button>
-            <button class="test-btn">Testen</button>
-            <button class="saved-btn">Gespeichert</button>
-            <button class="bonus-btn">Fahrpunkte</button>
-        </div>
+    <div class="progress-overview" style="display: none;">
+        <div class="total-progress">
+            <h2>Gesamt Fortschritt</h2>
+            <div class="progress-bar-container">
+                <!-- slideProgess.js -->
+                <div class="progress-bar">
 
-        <div class="progress-overview" style="display: none;">
-            <div class="total-progress">
-                <h2>Gesamt Fortschritt</h2>
-                <div class="progress-bar-container">
-                    <!-- slideProgess.js -->
-                    <div class="progress-bar">
-                    
-                        <div class="progress-fill">
-                            <span class="progress-text"></span>
-                        </div>
+                    <div class="progress-fill">
+                        <span class="progress-text"></span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <h2>Kategorien</h2>
-            <div class="category-progress">
-                <div class="progress-circles">
-                    <!-- slideProgess.js -->
-                </div>
+        <h2>Kategorien</h2>
+        <div class="category-progress">
+            <div class="progress-circles">
+                <!-- slideProgess.js -->
             </div>
-        </div>
-
-        <div class="test-overview">
-            <!-- test.js -->
-        </div>
-
-        <div class="saved-pages">
-            <!-- savedPages.js -->
-        </div>
-
-        <div class="bonus-overview">
-            <!-- bonusPoints.js -->
         </div>
     </div>
 
-    <div class="footer">
-        <div class="left-section">
-            <img src="../../assets/icons/footer/Seat Heating left.svg" class="icon-left">
-            <div class="temperature-control">
-                <svg class="temperature-line left-line" height="30" width="150">
-                    <path d="M-20 -15 L20 20 L140 20" stroke="url(#gradient-left)" stroke-width="4" fill="none" />
-                    <defs>
-                        <linearGradient id="gradient-left" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#FF2D55" />
-                            <stop offset="50%" style="stop-color:#FFFFFF" />
-                            <stop offset="100%" style="stop-color:#3498db" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <button onclick="changeTemperature(-1)">-</button>
-                <span id="temperature-left"></span>
-                <button onclick="changeTemperature(1)">+</button>
-                <div class="temperature-line left-line"></div>
-            </div>
-        </div>
+    <div class="test-overview">
+        <!-- test.js -->
+    </div>
 
-        <div class="icon-center">
-            <img src="../../assets/icons/footer/Profile.svg" class="footer-icon" id="profileIcon">
-            <img src="../../assets/icons/footer/Home.svg" class="footer-icon" id="homeIcon">
-            <img src="../../assets/icons/footer/Navigation.svg" class="footer-icon" id="menuIcon">
-        </div>
+    <div class="saved-pages">
+        <!-- savedPages.js -->
+    </div>
 
-        <div class="right-section">
-            <div class="temperature-control">
-                <svg class="temperature-line right-line" height="30" width="110">
-                    <path d="M-15 20 L110 20 L160 -15" stroke="url(#gradient-right)" stroke-width="4" fill="none" />
-                    <defs>
-                        <linearGradient id="gradient-right" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#3498db" />
-                            <stop offset="50%" style="stop-color:#FFFFFF" />
-                            <stop offset="100%" style="stop-color:#FF2D55" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <button onclick="changeTemperature(-1)">-</button>
-                <span id="temperature-right"></span>
-                <button onclick="changeTemperature(1)">+</button>
-                <div class="temperature-line right-line"></div>
-            </div>
-            <img src="../../assets/icons/footer/Seat Heating left.svg" class="icon-right flipped">
+    <div class="bonus-overview">
+        <!-- bonusPoints.js -->
+    </div>
+</div>
+
+<div class="footer">
+    <div class="left-section">
+        <img class="icon-left" src="../../assets/icons/footer/Seat Heating left.svg">
+        <div class="temperature-control">
+            <svg class="temperature-line left-line" height="30" width="150">
+                <path d="M-20 -15 L20 20 L140 20" fill="none" stroke="url(#gradient-left)" stroke-width="4"/>
+                <defs>
+                    <linearGradient id="gradient-left" x1="0%" x2="100%" y1="0%" y2="0%">
+                        <stop offset="0%" style="stop-color:#FF2D55"/>
+                        <stop offset="50%" style="stop-color:#FFFFFF"/>
+                        <stop offset="100%" style="stop-color:#3498db"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <button onclick="changeTemperature(-1)">-</button>
+            <span id="temperature-left"></span>
+            <button onclick="changeTemperature(1)">+</button>
+            <div class="temperature-line left-line"></div>
         </div>
     </div>
 
-    <script src="../../assets/js/script.js"></script>
-    <script src="/assets/js/categoryQuestions.js"></script>
-    <script src="../../assets/js/slideProgress.js"></script>
-    <script src="../../assets/js/slideManager.js"></script>
-    <script src="../../assets/js/eventTypes.js"></script>
-    <script src="../../assets/js/test.js"></script>
-    <script src="../../assets/js/savedPages.js"></script>
-    <script src="../../assets/js/bonusPoints.js"></script>
+    <div class="icon-center">
+        <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg">
+        <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg">
+        <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg">
+    </div>
+
+    <div class="right-section">
+        <div class="temperature-control">
+            <svg class="temperature-line right-line" height="30" width="110">
+                <path d="M-15 20 L110 20 L160 -15" fill="none" stroke="url(#gradient-right)" stroke-width="4"/>
+                <defs>
+                    <linearGradient id="gradient-right" x1="0%" x2="100%" y1="0%" y2="0%">
+                        <stop offset="0%" style="stop-color:#3498db"/>
+                        <stop offset="50%" style="stop-color:#FFFFFF"/>
+                        <stop offset="100%" style="stop-color:#FF2D55"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <button onclick="changeTemperature(-1)">-</button>
+            <span id="temperature-right"></span>
+            <button onclick="changeTemperature(1)">+</button>
+            <div class="temperature-line right-line"></div>
+        </div>
+        <img class="icon-right flipped" src="../../assets/icons/footer/Seat Heating left.svg">
+    </div>
+</div>
+
+<script src="../../assets/js/script.js"></script>
+<script src="/assets/js/categoryQuestions.js"></script>
+<script src="../../assets/js/slideProgress.js"></script>
+<script src="../../assets/js/slideManager.js"></script>
+<script src="../../assets/js/eventTypes.js"></script>
+<script src="../../assets/js/test.js"></script>
+<script src="../../assets/js/savedPages.js"></script>
+<script src="../../assets/js/bonusPoints.js"></script>
 </body>
 
 </html>

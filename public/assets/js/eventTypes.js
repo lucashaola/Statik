@@ -1,4 +1,4 @@
-(function(root) {
+(function (root) {
     const eventTypes = {
         welcome: {
             score: 80,
@@ -17,7 +17,7 @@
     // Node.js environment
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = eventTypes;
-    } 
+    }
     // Browser environment
     else {
         root.eventTypes = eventTypes;
