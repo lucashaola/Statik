@@ -1,0 +1,122 @@
+const totalPages = 10;
+let currentPage = 1;
+
+function createDots() {
+    const dotsContainer = document.getElementById('paginationDots');
+    
+    for (let i = 1; i <= totalPages; i++) {
+        const dotContainer = document.createElement('div');
+        dotContainer.className = 'dot-container';
+        
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        const span = document.createElement('span');
+        span.textContent = i;
+        dot.appendChild(span);
+        dotContainer.appendChild(dot);
+        
+        if (i < totalPages) {
+            const line = document.createElement('div');
+            line.className = 'connecting-line';
+            dotContainer.appendChild(line);
+        }
+        
+        if (i === totalPages) {
+            dotContainer.innerHTML += `
+                <button class="bookmark-btn">
+                   <svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0">
+                        <path class="outline" d="m75 9.375h-50c-4.0195 0.023438-7.2695 3.2734-7.293 7.293v66.664c-0.027343 2.6914 1.4102 5.1797 3.75 6.5 2.2227 1.3164 4.9883 1.3164 7.2109 0l20.832-12.5c0.28516-0.16406 0.63281-0.16406 0.91797 0l20.832 12.5c2.293 1.3477 5.1367 1.3438 7.4297-0.003906 2.293-1.3516 3.6758-3.8359 3.6133-6.4961v-66.664c-0.023438-4.0195-3.2734-7.2695-7.293-7.293zm1.043 73.957c0.015625 0.44141-0.20703 0.85547-0.58594 1.0859-0.28125 0.16406-0.63281 0.16406-0.91406 0l-20.832-12.5h-0.003907c-2.2461-1.3945-5.0859-1.3945-7.332 0l-20.832 12.5c-0.28516 0.16406-0.63281 0.16406-0.91797 0-0.41016-0.20703-0.66797-0.625-0.66797-1.0859v-66.664c0-0.57812 0.46875-1.043 1.043-1.043h50c0.27734 0 0.54297 0.10938 0.73828 0.30469 0.19531 0.19531 0.30469 0.46094 0.30469 0.73828z" fill="currentColor"/>
+                        <path class="filled" d="m75 9.375h-50c-4.0195 0.023438-7.2695 3.2734-7.293 7.293v66.664c-0.027343 2.6914 1.4102 5.1797 3.75 6.5 2.2227 1.3164 4.9883 1.3164 7.2109 0l20.832-12.5c0.28516-0.16406 0.63281-0.16406 0.91797 0l20.832 12.5c2.293 1.3477 5.1367 1.3438 7.4297-0.003906 2.293-1.3516 3.6758-3.8359 3.6133-6.4961v-66.664c-0.023438-4.0195-3.2734-7.2695-7.293-7.293z" fill="currentColor"/>
+                    </svg>
+                </button>
+            `;
+        }
+        
+        dotsContainer.appendChild(dotContainer);
+    }
+    updateDots();
+}
+
+function updateDots() {
+    const dots = document.querySelectorAll('.dot');
+    const lines = document.querySelectorAll('.connecting-line');
+    
+    dots.forEach((dot, index) => {
+        dot.className = 'dot';
+        if (index + 1 === currentPage) {
+            dot.classList.add('active');
+        } else if (index + 1 < currentPage) {
+            dot.classList.add('completed');
+        }
+    });
+
+    // Update connecting lines
+    lines.forEach((line, index) => {
+        line.className = 'connecting-line';
+        if (index + 1 < currentPage) {
+            line.classList.add('completed');
+        }
+    });
+}
+
+function updatePages() {
+    const pages = document.querySelectorAll('.content-container .page');
+    pages.forEach((page, index) => {
+        if (index + 1 === currentPage) {
+            page.classList.add('page-active');
+            activeCategory = page.id;
+        } else {
+            page.classList.remove('page-active');
+        }
+    });
+
+    if (activeCategory) {
+        unlockCategory(activeCategory);
+    }
+
+    initializeBookmark();
+}
+
+async function navigatePage(direction) {
+    if (currentPage === 1 && direction === -1) {
+        window.location.href = '../../views/welcome';
+        return;
+    }
+    if (currentPage === totalPages){
+        if (direction === 1) {
+            const result = await Swal.fire({
+                title: 'Sie haben alle Folien abgeschlossen!',
+                text: 'Möchten Sie Ihr Wissen testen?',
+                icon: 'question',
+                showCancelButton: true,
+                cancelButtonText: 'Nein, zurück zur Übersicht',
+                confirmButtonText: 'Ja, testen!',
+                confirmButtonColor: '#e4e4e7',
+                cancelButtonColor: '#e4e4e7',
+                reverseButtons: true,
+            });
+    
+            if (result.isConfirmed) {
+                window.location.href = '../../views/profile?view=test';
+            } else {
+                window.location.href = '../../views/welcome';
+            }
+    
+            return;
+        }
+
+    }
+    const newPage = currentPage + direction;
+    if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        updateDots();
+        updatePages();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.pathname.includes('/views/overview')) {
+        createDots();
+        updatePages();
+    }
+});
