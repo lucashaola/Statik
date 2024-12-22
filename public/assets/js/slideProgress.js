@@ -136,8 +136,14 @@ function updateProgressCircle(element, progress) {
 
 async function showProgressOverview() {
     const identificationCode = localStorage.getItem('userCode');
+    const progressOverview = document.querySelector('.progress-overview');
 
     if (!identificationCode) {
+        progressOverview.innerHTML = `
+            <div class="no-content">
+                <p>Melden Sie sich an, um Ihren Fortschritt zu sehen</p>
+            </div>
+        `;
         return;
     }
 
@@ -152,6 +158,7 @@ async function showProgressOverview() {
 
         const response = await fetch(`/api/users/${identificationCode}/progress`);
         const progressData = await response.json();
+        const isWelcomeScreen = document.querySelector('#tutorial') !== null;
 
         const categories = [
             {key: 'aktivierung', name: 'Aktivierung'},
@@ -170,12 +177,15 @@ async function showProgressOverview() {
         }));
 
         const totalProgress = progressData.total_progress || 0;
-        const progressFill = document.querySelector('.progress-fill');
-        const progressText = document.querySelector('.progress-text');
-        progressFill.style.width = `${totalProgress}%`;
-        progressText.textContent = `${totalProgress}%`;
-
-        const isWelcomeScreen = document.querySelector('#tutorial') !== null;
+        const totalProgressHTML = `
+            <div class="total-progress-container">
+                <div class="total-progress-bar">
+                    <div class="total-progress-fill ${totalProgress === 0 ? 'zero-progress' : ''}" style="width: ${totalProgress}%">
+                        ${totalProgress}%
+                    </div>
+                </div>
+            </div>
+        `;
 
         const renderCategoryItem = (category, progress) => {
             const categoryName = isWelcomeScreen ?
@@ -184,7 +194,7 @@ async function showProgressOverview() {
 
             return `
                 <div class="progress-circle-item">
-                    <img src="${category.icon}" class="progress-icon">
+                    <img src="${category.icon}" class="category-icon" alt="">
                     <div class="category-info">
                         <div class="category-name">${categoryName}</div>
                     </div>
@@ -200,6 +210,11 @@ async function showProgressOverview() {
         };
 
         if (isWelcomeScreen) {
+            const progressContainer = document.querySelector('.progress-container');
+            if (progressContainer) {
+                progressContainer.innerHTML = totalProgressHTML;
+            }
+
             const slider = document.querySelector('.progress-slider');
             const paginationContainer = document.querySelector('.pagination-dots');
 
@@ -236,18 +251,18 @@ async function showProgressOverview() {
             }
         } else {
             // Profile Screen
-            document.querySelector('.progress-overview').style.display = 'block';
-            const circlesContainer = document.querySelector('.progress-circles');
-            circlesContainer.innerHTML = '';
+            progressOverview.innerHTML = `
+                <div class="overview-header">
+                    <h2>Gesamter Fortschritt</h2>
+                        ${totalProgressHTML}
+                </div>
+                <h2 class="categories-heading">Kategorien</h2>
+                <div class="progress-circles">
+                            ${categories.map(category => renderCategoryItem(category, category.progress)).join('')}
+                </div>
+            `;
 
-            categories.forEach(category => {
-                const progress = progressData[`${category.key}_progress`] || 0;
-                circlesContainer.insertAdjacentHTML('beforeend', renderCategoryItem(category, progress));
-                const lastItem = circlesContainer.lastElementChild;
-                updateProgressCircle(lastItem, progress);
-            });
-
-            const container = document.querySelector('.progress-circle-item');
+            const container = document.querySelector('.progress-circles');
             new PerfectScrollbar(container, {
                 wheelSpeed: 1,
                 wheelPropagation: true,
@@ -255,6 +270,15 @@ async function showProgressOverview() {
                 minScrollbarLength: 40,
                 scrollbarYMargin: 0,
                 railYVisible: true
+            });
+
+            document.querySelectorAll('.progress-circle-item').forEach(item => {
+                const categoryName = item.querySelector('.category-name').textContent;
+                const category = categories.find(cat => cat.name === categoryName);
+                if (category) {
+                    const progress = progressData[`${category.key}_progress`] || 0;
+                    updateProgressCircle(item, progress);
+                }
             });
         }
 

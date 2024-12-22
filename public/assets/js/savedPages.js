@@ -156,6 +156,19 @@ async function showSavedPages() {
             }
         }
 
+        /*
+        const container = document.querySelector('.saved-pages');
+        new PerfectScrollbar(container, {
+            wheelSpeed: 1,
+            wheelPropagation: true,
+            suppressScrollX: true,
+            minScrollbarLength: 40,
+            scrollbarYMargin: 0,
+            railYVisible: true
+        });
+
+         */
+
         for (const [category, slideIndices] of Object.entries(overviewData.savedPages)) {
             for (const index of slideIndices) {
                 const contentResponse = await fetch(`/api/slide-content/${category}/${index}?pageType=overview`);

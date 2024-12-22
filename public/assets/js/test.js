@@ -211,7 +211,6 @@ async function hasLockedCategories() {
     return false;
 }
 
-
 function showCompletedCategoryMessage(categoryName) {
     Swal.fire({
         title: 'Keine Fragen übrig!',
@@ -248,7 +247,6 @@ function showLockedCategoryMessage() {
         confirmButtonColor: '#e4e4e7',
     });
 }
-
 
 async function updateTestProgress(identificationCode, category, questionIndex, isCorrect) {
     try {
@@ -297,47 +295,47 @@ async function showTestOverview() {
         const correctlyAnswered = Object.values(JSON.parse(testData.correctly_answered || '{}')).reduce((sum, answers) => sum + answers.length, 0);
 
         testOverviewContainer.innerHTML = `
-        <div class="test-header">
-            <h2>Gesamt Fortschritt</h2>
-            <div class="total-progress-container">
-                <div class="total-progress-bar">
-                    <div class="total-progress-fill ${correctlyAnswered === 0 ? 'zero-progress' : ''}" style="width: ${(correctlyAnswered / totalQuestions) * 100}%">
-                        ${correctlyAnswered}/${totalQuestions}
+            <div class="test-header">
+                <h2>Gesamter Fortschritt</h2>
+                <div class="total-progress-container">
+                    <div class="total-progress-bar">
+                        <div class="total-progress-fill ${correctlyAnswered === 0 ? 'zero-progress' : ''}" style="width: ${(correctlyAnswered / totalQuestions) * 100}%">
+                            ${correctlyAnswered}/${totalQuestions}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="question-action-container">
-            <h2 class="heading">Alle verfügbaren Fragen auf einmal beantworten</h2>
-            <button class="start-btn">Starten ▶</button>
-        </div>
-        <h2 class="categories-heading">Beantworten nach Kategorien</h2>
-        <div class="progress-circles">
-            ${categories.map(category => {
-            const correctlyAnsweredCategory = JSON.parse(testData.correctly_answered || '{}')[category.key] || [];
-            const incorrectlyAnswered = JSON.parse(testData.incorrectly_answered || '{}')[category.key] || [];
-            const totalQuestionsCategory = categoryQuestions[category.key].length;
-            const isLocked = !unlockedCategories.includes(category.key);
-
-            return `
-                    <div class="progress-circle-item ${isLocked ? 'locked' : 'unlocked'}" data-category="${category.key}">
-                        <img src="${category.icon}" class="test-icon" alt="">
-                        <div class="category-info">
-                            <div class="category-name">${category.name}</div>
-                            <div class="test-stats">
-                                <span class="correct-answers">Richtig: ${correctlyAnsweredCategory.length}/${totalQuestionsCategory}</span>
-                                ${incorrectlyAnswered.length > 0 ? `<span class="incorrect-answers">Falsch: ${incorrectlyAnswered.length}</span>` : ''}
+            <div class="question-action-container">
+                <h2 class="heading">Alle verfügbaren Fragen auf einmal beantworten</h2>
+                <button class="start-btn">Starten ▶</button>
+            </div>
+            <h2 class="categories-heading">Beantworten nach Kategorien</h2>
+            <div class="progress-circles">
+                ${categories.map(category => {
+                const correctlyAnsweredCategory = JSON.parse(testData.correctly_answered || '{}')[category.key] || [];
+                const incorrectlyAnswered = JSON.parse(testData.incorrectly_answered || '{}')[category.key] || [];
+                const totalQuestionsCategory = categoryQuestions[category.key].length;
+                const isLocked = !unlockedCategories.includes(category.key);
+    
+                return `
+                            <div class="progress-circle-item ${isLocked ? 'locked' : 'unlocked'}" data-category="${category.key}">
+                                <img src="${category.icon}" class="category-icon" alt="">
+                                <div class="category-info">
+                                    <div class="category-name">${category.name}</div>
+                                    <div class="test-stats">
+                                        <span class="correct-answers">Richtig: ${correctlyAnsweredCategory.length}/${totalQuestionsCategory}</span>
+                                        ${incorrectlyAnswered.length > 0 ? `<span class="incorrect-answers">Falsch: ${incorrectlyAnswered.length}</span>` : ''}
+                                    </div>
+                                </div>
+                                <div class="progress-circle ${correctlyAnsweredCategory.length === totalQuestionsCategory ? 'completed' : ''}">
+                                    <div class="circle-icon">✓</div>
+                                    <svg class="progress-ring">
+                                        <circle class="progress-ring-bg" cx="16" cy="16" r="12" />
+                                        <circle class="progress-ring-progress" cx="16" cy="16" r="12" />
+                                    </svg>
+                                </div>
                             </div>
-                        </div>
-                        <div class="progress-circle ${correctlyAnsweredCategory.length === totalQuestionsCategory ? 'completed' : ''}">
-                            <div class="circle-icon">✓</div>
-                            <svg class="progress-ring">
-                                <circle class="progress-ring-bg" cx="16" cy="16" r="12" />
-                                <circle class="progress-ring-progress" cx="16" cy="16" r="12" />
-                            </svg>
-                        </div>
-                    </div>
-                `;
+            `;
         }).join('')}
         </div>`;
 

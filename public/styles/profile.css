@@ -109,45 +109,18 @@ html {
 }
 
 /*  Progress Overview Styling */
-.progress-overview {
-    display: none;
-    margin-top: -20px;
-    padding: 0 20px;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.total-progress {
-    margin-top: 0;
-    margin-bottom: 30px;
+.progress-overview,
+.overview-header,
+.test-header,
+.heading,
+.question-action-container,
+.categories-heading,
+.progress-circles {
     width: 80%;
-    max-width: 800px;
-}
-
-.progress-bar-container {
-    width: 100%;
-    background: rgba(102, 69, 69, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 30px;
-    border-radius: 10px;
-}
-
-.progress-fill {
-    height: 100%;
-    background: #8daddd;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: width 0.5s ease-in-out;
+    margin: 0 auto;
+    text-align: left;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .progress-text {
@@ -166,7 +139,7 @@ html {
     color: #504848;
 }
 
-.progress-icon {
+.category-icon {
     width: 40px;
     height: 40px;
     margin-right: 15px;
@@ -180,26 +153,7 @@ html {
 .category-name {
     font-weight: bold;
     margin-bottom: 5px;
-}
-
-.category-progress-bar {
-    width: 100%;
-    height: 8px;
-    background: rgba(102, 69, 69, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.category-progress-fill {
-    height: 100%;
-    background: #b7c6de;
-    border-radius: 4px;
-    transition: width 0.5s ease-in-out;
-}
-
-.category-percentage {
-    font-size: 0.9em;
-    margin-left: 10px;
+    line-height: 1.2;
 }
 
 /*Test Overview Styling */
@@ -208,25 +162,12 @@ h2 {
     padding: 0;
 }
 
-.test-header,
-.heading,
-.question-action-container,
-.categories-heading,
-.progress-circles {
-    width: 80%;
-    margin: 0 auto;
-    text-align: left;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .question-action-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
 }
-
 
 .heading {
     font-size: 1.2rem;
@@ -281,6 +222,7 @@ h2 {
     padding-right: 0;
 }
 
+.progress-overview,
 .test-overview {
     display: none;
     flex-direction: column;
@@ -333,12 +275,6 @@ h2 {
     background: rgba(230, 230, 230, 0.811);
 }
 
-.test-icon {
-    width: 40px;
-    height: 40px;
-    margin-right: 15px;
-}
-
 .progress-circle-item.locked {
     opacity: 0.5;
     background: #e8e8e8;
@@ -358,20 +294,9 @@ h2 {
     z-index: 10;
 }
 
-
 .progress-circle-item.unlocked {
     opacity: 1;
     cursor: pointer;
-}
-
-
-.category-info {
-    flex-grow: 1;
-}
-
-.category-name {
-    font-weight: bold;
-    line-height: 1.2;
 }
 
 .test-stats {
@@ -389,7 +314,7 @@ h2 {
     color: #f44336;
 }
 
-/* Test Progress Circle Styling*/
+/* Progress Circle Styling*/
 .progress-circle {
     position: relative;
     width: 32px;
@@ -468,8 +393,9 @@ h2 {
 .saved-pages {
     width: 100%;
     height: 70vh;
-    overflow-y: auto;
+    overflow-y: scroll;
     padding: 10px 30px;
+    margin-left: 20px;
     margin-top: -10px;
     box-sizing: border-box;
     flex-direction: column;
@@ -571,6 +497,7 @@ h2 {
 
 /* Bonus Overview Styling */
 .bonus-overview {
+    margin-left: 20px;
     display: none;
     flex-direction: column;
     align-items: center;
