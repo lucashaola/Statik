@@ -58,7 +58,7 @@ function showBonusOverview() {
     if (!identificationCode) {
         bonusOverviewContainer.innerHTML = `
             <div class="no-content">
-                <p>Melden Sie sich an, um Ihren Fahrpunkte zu sehen</p>
+                <p>Melden Sie sich an, um Ihre Fahrpunkte zu sehen</p>
             </div>
         `;
         return;
@@ -98,29 +98,38 @@ function showBonusOverview() {
             `;
 
 
-            const eventContainer = bonusOverviewContainer.querySelector('.event-messages');
-            if (eventContainer && events) {
-                events.forEach(event => {
-                    const eventElement = document.createElement('div');
-                    eventElement.className = 'event-message';
-                    const date = new Date(event.timestamp).toLocaleDateString('de-DE');
-                    const score = event.score;
-                    const scoreClass = score > 0 ? 'positive-score' : 'negative-score';
+        const eventContainer = bonusOverviewContainer.querySelector('.event-messages');
+        if (eventContainer && events) {
+            events.forEach(event => {
+                const eventElement = document.createElement('div');
+                eventElement.className = 'event-message';
+                const date = new Date(event.timestamp).toLocaleDateString('de-DE');
+                const score = event.score;
+                const scoreClass = score > 0 ? 'positive-score' : 'negative-score';
 
-                    eventElement.innerHTML = `
-                        <div class="event-message-content">
-                            <p>${eventTypes[event.event_type]?.message || 'Keine Beschreibung verfügbar'}</p>
-                            <div class="event-score ${scoreClass}">
-                                ${score > 0 ? '+' : ''}${score}
-                            </div>
+                eventElement.innerHTML = `
+                    <div class="event-message-content">
+                        <p>${eventTypes[event.event_type]?.message || 'Keine Beschreibung verfügbar'}</p>
+                        <div class="event-score ${scoreClass}">
+                            ${score > 0 ? '+' : ''}${score}
                         </div>
-                        <div class="event-date">${date}</div>
-                    `;
-                    eventContainer.appendChild(eventElement);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching or displaying bonus data:', error);
+                    </div>
+                    <div class="event-date">${date}</div>
+                `;
+                eventContainer.appendChild(eventElement);
+            });
+        }
+
+        new PerfectScrollbar(eventContainer, {
+            wheelSpeed: 1,
+            wheelPropagation: true,
+            suppressScrollX: true,
+            minScrollbarLength: 40,
+            scrollbarYMargin: 0,
+            railYVisible: true
         });
+    })
+    .catch(error => {
+        console.error('Error fetching or displaying bonus data:', error);
+    });
 }

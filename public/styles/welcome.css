@@ -20,7 +20,7 @@ html {
 
 .swal2-confirm,
 .swal2-cancel {
-    color: black !important;
+    color: black;
 }
 
 /* Header Styles */
@@ -156,7 +156,7 @@ html {
 .overview-button,
 .start-button {
     color: #1d2e51;
-    font-size: large !important;
+    font-size: large;
     flex: 1;
     background-color: #e1e7f4;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -375,7 +375,7 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: fit-content !important;
+    height: fit-content;
 }
 
 .scenario-item img {

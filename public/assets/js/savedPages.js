@@ -156,7 +156,6 @@ async function showSavedPages() {
             }
         }
 
-        /*
         const container = document.querySelector('.saved-pages');
         new PerfectScrollbar(container, {
             wheelSpeed: 1,
@@ -166,8 +165,6 @@ async function showSavedPages() {
             scrollbarYMargin: 0,
             railYVisible: true
         });
-
-         */
 
         for (const [category, slideIndices] of Object.entries(overviewData.savedPages)) {
             for (const index of slideIndices) {
@@ -251,7 +248,7 @@ async function deleteSavedPage(category, slideIndex, pageType = 'tutorial') {
         const data = await response.json();
 
         if (data.success) {
-            showSavedPages();
+            await showSavedPages();
         } else {
             console.error(`Failed to delete page: ${data.error}`);
         }

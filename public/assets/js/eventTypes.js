@@ -6,7 +6,7 @@
         },
         assist_engaged_10km: {
             score: 2,
-            message: "Perfektes Fahren mit Assistenzfunktion: komulierte 10km"
+            message: "Perfektes Fahren mit Assistenzfunktion: kumulierte 10km"
         },
         assist_disengaged_unsafe: {
             score: -5,

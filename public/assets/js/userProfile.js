@@ -3,7 +3,7 @@ function checkForExistingProfile(isButtonClick = false) {
     const userName = localStorage.getItem('userName');
 
     if (hasCheckedProfile && userName && !isButtonClick) {
-        document.querySelector('.welcome h1').innerHTML = `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon"> Willkommen ${userName}!`;
+        document.querySelector('.welcome h1').innerHTML = `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon" alt=""> Willkommen ${userName}!`;
         return;
     }
 
@@ -82,7 +82,7 @@ async function createNewProfile() {
             localStorage.setItem('userCode', userData.identification_code);
 
             document.querySelector('.welcome h1').innerHTML =
-                `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon"> Willkommen ${name}!`;
+                `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon" alt=""> Willkommen ${name}!`;
             showProgressOverview();
 
             await sendEvent(userData.identification_code, 'welcome');
@@ -190,7 +190,7 @@ async function showExistingProfiles() {
             localStorage.setItem('userName', selectedProfile.name);
 
             document.querySelector('.welcome h1').innerHTML =
-                `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon"> Willkommen ${selectedProfile.name}!`;
+                `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon" alt=""> Willkommen ${selectedProfile.name}!`;
 
             await Swal.fire({
                 title: 'Willkommen zurück!',

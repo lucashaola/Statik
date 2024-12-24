@@ -75,7 +75,6 @@ function showContent(contentId, selectFirstSlide = true) {
     if (targetContent) {
         targetContent.classList.add('active');
 
-        // Only mark first slide if selectFirstSlide is true
         if (selectFirstSlide) {
             const slides = targetContent.querySelectorAll('.slide');
             if (slides.length > 0) {
@@ -191,7 +190,20 @@ function showSearchResult(contentId, slideIndex) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    if (document.querySelector('.sidebar')) {
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarContent = document.querySelector('.sidebar-content');
+
+
+    if (sidebar) {
+        new PerfectScrollbar(sidebarContent, {
+            wheelSpeed: 1,
+            wheelPropagation: true,
+            suppressScrollX: true,
+            minScrollbarLength: 40,
+            scrollbarYMargin: 0,
+            railYVisible: true
+        });
+
         Object.keys(slideIndex).forEach(sectionId => {
             const slides = document.querySelectorAll(`#${sectionId} .slide`);
             if (slides.length > 0) slides[0].style.display = 'block';

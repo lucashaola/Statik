@@ -74,6 +74,7 @@ function updatePages() {
         unlockCategory(activeCategory);
     }
 
+    scrollToTop();
     initializeBookmark();
 }
 
@@ -114,9 +115,29 @@ async function navigatePage(direction) {
     }
 }
 
+function scrollToTop() {
+    const contentContainer = document.querySelector('.content-container');
+    if (contentContainer) {
+        contentContainer.scrollTop = 0; // Resets the scroll position
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('/views/overview')) {
         createDots();
         updatePages();
+    }
+
+    const contentContainer = document.querySelector('.content-container');
+    if (contentContainer) {
+        new PerfectScrollbar(contentContainer, {
+            wheelSpeed: 1,
+            wheelPropagation: true,
+            suppressScrollX: true,
+            minScrollbarLength: 40,
+            scrollbarYMargin: 0,
+            railYVisible: true
+        });
     }
 });
