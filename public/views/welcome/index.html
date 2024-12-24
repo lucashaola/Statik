@@ -8,6 +8,7 @@
     <link href="../../assets/icons/shared/TUM.svg" rel="icon" type="image/x-icon">
     <link href="data:," rel="icon">
     <link href="../../styles/welcome.css" rel="stylesheet">
+    <link href="../../styles/footer.css" rel="stylesheet">
     <link href="../../assets/vendor/sweetalert2.min.css" rel="stylesheet">
     <script src="../../assets/vendor/sweetalert2.js"></script>
 </head>
@@ -15,11 +16,12 @@
 <body>
 <div class="header">
     <button class="user-switch" id="userSwitch">
-        <img class="icon" src="../../assets/icons/welcome/exchangePerson.svg">Nutzerwechsel
+        <img class="icon" src="../../assets/icons/welcome/exchangePerson.svg" alt="">Nutzerwechsel
     </button>
 
     <div class="welcome">
-        <h1><img class="welcome-icon" src="../../assets/icons/welcome/Profile.svg">Willkommen!
+        <h1>
+            <img class="welcome-icon" src="../../assets/icons/welcome/Profile.svg" alt="">Willkommen!
         </h1>
     </div>
 </div>
@@ -37,7 +39,7 @@
                 </div>
 
                 <div class="tutorial-content">
-                    <div class="progress-container"></div>
+                    <div class="progress-overview"></div>
                     <div class="progress-slider"></div>
                     <div class="pagination-dots"></div>
                 </div>
@@ -63,7 +65,7 @@
 
 <div class="footer">
     <div class="left-section">
-        <img class="icon-left" src="../../assets/icons/footer/Seat Heating left.svg">
+        <img class="icon-left" src="../../assets/icons/footer/Seat Heating left.svg" alt="">
         <div class="temperature-control">
             <svg class="temperature-line left-line" height="30" width="150">
                 <path d="M-20 -15 L20 20 L140 20" fill="none" stroke="url(#gradient-left)" stroke-width="4"/>
@@ -83,9 +85,9 @@
     </div>
 
     <div class="icon-center">
-        <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg">
-        <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg">
-        <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg">
+        <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg" alt="">
+        <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg" alt="">
+        <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg" alt="">
     </div>
 
     <div class="right-section">
@@ -105,7 +107,7 @@
             <button onclick="changeTemperature(1)">+</button>
             <div class="temperature-line right-line"></div>
         </div>
-        <img class="icon-right flipped" src="../../assets/icons/footer/Seat Heating left.svg">
+        <img class="icon-right flipped" src="../../assets/icons/footer/Seat Heating left.svg" alt="">
     </div>
 </div>
 

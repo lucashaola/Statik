@@ -1,0 +1,91 @@
+.footer {
+    background-color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    box-sizing: border-box;
+}
+
+.flipped {
+    transform: scaleX(-1);
+}
+
+.left-section,
+.right-section {
+    display: flex;
+    align-items: center;
+    overflow: visible;
+}
+
+.icon-left,
+.icon-right {
+    width: 30px;
+    margin: 0 5px;
+    transform: translateY(10px);
+}
+
+.icon-right.flipped {
+    margin-left: 40px;
+    transform: scaleX(-1) translateY(10px);
+}
+
+.icon-left {
+    margin-right: 25px;
+}
+
+.icon-center img {
+    transform: translateY(5px);
+    width: 30px;
+    height: 30px;
+    margin-right: 30px;
+}
+
+/* Temperature Styling */
+.temperature-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #FFF;
+}
+
+.temperature-control button {
+    background: none;
+    border: none;
+    color: #FFF;
+    font-size: 30px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.temperature-control button:first-of-type {
+    margin-right: 10px;
+}
+
+.temperature-control button:last-of-type {
+    margin-left: 10px;
+}
+
+.temperature-line {
+    overflow: visible;
+    position: absolute;
+    bottom: -10px;
+}
+
+.left-line {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.right-line {
+    right: 50%;
+    transform: translateX(50%);
+}

@@ -138,12 +138,18 @@ async function showProgressOverview() {
     const identificationCode = localStorage.getItem('userCode');
     const progressOverview = document.querySelector('.progress-overview');
 
+    if (!progressOverview) {
+        console.warn('progressOverview element not found.');
+        return;
+    }
+
     if (!identificationCode) {
         progressOverview.innerHTML = `
             <div class="no-content">
                 <p>Melden Sie sich an, um Ihren Fortschritt zu sehen</p>
             </div>
         `;
+
         return;
     }
 
@@ -158,7 +164,6 @@ async function showProgressOverview() {
 
         const response = await fetch(`/api/users/${identificationCode}/progress`);
         const progressData = await response.json();
-        const isWelcomeScreen = document.querySelector('#tutorial') !== null;
 
         const categories = [
             {key: 'aktivierung', name: 'Aktivierung'},
@@ -186,7 +191,6 @@ async function showProgressOverview() {
                 </div>
             </div>
         `;
-
         const renderCategoryItem = (category, progress) => {
             const categoryName = isWelcomeScreen ?
                 category.name.replace('Adaptiver Geschwindigkeitsassistent', 'Adaptiver <br>Geschwindigkeitsassistent') :
@@ -209,12 +213,9 @@ async function showProgressOverview() {
             `;
         };
 
+        const isWelcomeScreen = document.querySelector('#tutorial') !== null;
         if (isWelcomeScreen) {
-            const progressContainer = document.querySelector('.progress-container');
-            if (progressContainer) {
-                progressContainer.innerHTML = totalProgressHTML;
-            }
-
+            progressOverview.innerHTML = totalProgressHTML;
             const slider = document.querySelector('.progress-slider');
             const paginationContainer = document.querySelector('.pagination-dots');
 

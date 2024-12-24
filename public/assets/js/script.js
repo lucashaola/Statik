@@ -1,19 +1,10 @@
-// Footer
 let temperature = localStorage.getItem('temperature') ? parseInt(localStorage.getItem('temperature')) : 20;
-
-function changeTemperature(change) {
-    temperature += change;
-    localStorage.setItem('temperature', temperature);
-    document.getElementById("temperature-left").textContent = temperature + "°";
-    document.getElementById("temperature-right").textContent = temperature + "°";
-}
 
 document.addEventListener('DOMContentLoaded', function () {
     preventDoubleTapZoom();
-    updateTemperatureDisplay();
+    changeTemperature();
     initializeFooterIcons();
     initializeCloseButtons();
-
     initializeWelcomeScreen();
 
 
@@ -21,6 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
         initializeProfileScreen();
     }
 });
+
+function changeTemperature(change = 0) {
+    temperature += change;
+    localStorage.setItem('temperature', temperature);
+    document.getElementById("temperature-left").textContent = temperature + "°";
+    document.getElementById("temperature-right").textContent = temperature + "°";
+}
 
 function preventDoubleTapZoom() {
     document.addEventListener('touchstart', function (event) {
@@ -38,23 +36,16 @@ function preventDoubleTapZoom() {
     }, {passive: false});
 }
 
-function updateTemperatureDisplay() {
-    document.getElementById("temperature-left").textContent = temperature + "°";
-    document.getElementById("temperature-right").textContent = temperature + "°";
-}
-
 function initializeFooterIcons() {
     const profileIcon = document.getElementById("profileIcon");
     if (profileIcon) {
         profileIcon.addEventListener("click", function () {
-            const name = localStorage.getItem('userName');
-            if (name) {
-                const currentPath = window.location.pathname;
-                if (currentPath.includes('/views/profile')) {
-                    return;
-                }
-                window.location.href = `/views/profile`;
-            }
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('/views/profile')) {
+            return;
+        }
+
+        window.location.href = `/views/profile`;
         });
     }
 
@@ -91,16 +82,14 @@ function initializeCloseButtons() {
             window.location.href = '/views/welcome';
         });
     }
-
 }
 
 function initializeWelcomeScreen() {
     const welcomeHeading = document.querySelector('.welcome h1');
     if (welcomeHeading) {
         const username = localStorage.getItem('userName');
-        ;
         if (username) {
-            welcomeHeading.innerHTML = `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon"> Willkommen ${username}!`;
+            welcomeHeading.innerHTML = `<img src="../../assets/icons/welcome/Profile.svg" class="welcome-icon" alt=""> Willkommen ${username}!`;
         }
 
         showProgressOverview();
@@ -161,7 +150,7 @@ function initializeProfileScreen() {
     const setActiveView = (activeKey) => {
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.set('view', activeKey);
-        history.replaceState({}, '', newUrl);
+        history.replaceState({}, '', newUrl.toString());
 
         Object.keys(buttons).forEach((key) => {
             const {button, overview, callback} = buttons[key];

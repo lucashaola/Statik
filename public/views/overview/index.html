@@ -7,6 +7,7 @@
     <title>Assisted Driving HMI - Overview</title>
     <link href="../../assets/icons/shared/TUM.svg" rel="icon" type="image/x-icon">
     <link href="../../styles/overview.css" rel="stylesheet">
+    <link href="../../styles/footer.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -15,7 +16,7 @@
 </head>
 
 <body class="js-loading">
-<button class="close-btn" id="closeBackToWelcome"><img class="close-icon" src="../../assets/icons/shared/Close.svg">
+<button class="close-btn" id="closeBackToWelcome"><img class="close-icon" src="../../assets/icons/shared/Close.svg" alt="">
 </button>
 
 <div class="container">
@@ -26,12 +27,12 @@
         <div class="page" id="aktivierung">
             <h1>Aktivierung DRIVING ASSIST</h1>
             <p>Wenn „DRIVING ASSIST READY“ weiß im Display aufleuchtet, ist das teilautomatisierte Fahren verfügbar.</p>
-            <img class="hmi-image" src="../../assets/pictures/overview/1.1DRIVING ASSIST READY.jpg">
+            <img class="hmi-image" src="../../assets/pictures/overview/1.1DRIVING ASSIST READY.jpg" alt="">
             Bei Bedingungen, wie zum Beispiel schlechtem Wetter, kann es unter Umständen nicht verfügbar sein. Drücke
             die Aktivierungstaste, um den DRIVING ASSIST zu aktivieren
-            <img class="image" src="../../assets/pictures/overview/Driving Assist Button.png">
-            Bei erfolgreicher Aktivierung, leuchtet „DRIVING ASSIST“ grün im Display auf.
-            <img class="hmi-image" src="../../assets/pictures/overview/1.2DRIVING ASSIST.jpg">
+            <img class="image" src="../../assets/pictures/overview/Driving Assist Button.png" alt="">
+            Bei erfolgreicher Aktivierung leuchtet „DRIVING ASSIST“ grün im Display auf.
+            <img class="hmi-image" src="../../assets/pictures/overview/1.2DRIVING ASSIST.jpg" alt="">
             Zudem leuchten die Lenkradlichter grün. Das Auto fährt dann teilautomatisiert.<br>
             Deine Hände müssen während der automatisierten Fahrt am Lenkrad bleiben, ohne zu lenken. Deine Füße musst du
             von den Pedalen nehmen
@@ -40,33 +41,33 @@
         <div class="page" id="verkehrszeichen">
             <h1>Verkehrszeichenassistent</h1>
             <p>Das Auto erkennt Tempolimits.</p>
-            <img class="hmi-image" src="../../assets/pictures/overview/2.1erkannte Tempolimit wird im Display.jpg">
+            <img class="hmi-image" src="../../assets/pictures/overview/2.1erkannte Tempolimit wird im Display.jpg" alt="">
             Das erkannte Tempolimit wird im Display angezeigt
-            <img class="hmi-image" src="../../assets/pictures/overview/2.2erkannte Geschwindigkeit zu übernehmen.jpg">
+            <img class="hmi-image" src="../../assets/pictures/overview/2.2erkannte Geschwindigkeit zu übernehmen.jpg" alt="">
             Drücke die Set-Taste, um die erkannte Geschwindigkeit zu übernehmen. Das Auto passt sich dann der
             Geschwindigkeit an.
-            <img class="image" src="../../assets/pictures/overview/Verkehrszeichenassistent Button.png">
+            <img class="image" src="../../assets/pictures/overview/Verkehrszeichenassistent Button.png" alt="">
             Drücke den Hebel nach oben oder unten, um die Geschwindigkeit individuell zu erhöhen (oben) oder zu
             verringern (unten)
-            <img class="image" src="../../assets/pictures/overview/Verkehrszeichenassistent Scroller.png">
+            <img class="image" src="../../assets/pictures/overview/Verkehrszeichenassistent Scroller.png" alt="">
         </div>
         <div class="page" id="geschwindigkeit">
             <h1>Abstandsassistent/Adaptiver Geschwindigkeitsassistent (ACC)</h1>
             Wenn das ACC-Symbol im Display grün aufleuchtet, ist der Abstandsassistent aktiviert.
-            <img class="image" src="../../assets/pictures/overview/3.ACC activated.png">
+            <img class="image" src="../../assets/pictures/overview/3.ACC activated.png" alt="">
             Das Auto hält dann den Abstand zum Vorderfahrzeug automatisch. Es bremst oder beschleunigt, falls nötig.<br>
             Drücke die Abstandstasten, um den Abstand zum Vorderfahrzeug individuell zu erhöhen (rechts) oder zu
             verringern (links)
-            <img class="image" src="../../assets/pictures/overview/3.ACC Button.png">
+            <img class="image" src="../../assets/pictures/overview/3.ACC Button.png" alt="">
         </div>
         <div class="page" id="stau">
             <h1>Stauassistent</h1>
             Erkennt das Fahrzeug eine Stausituation (bei weniger als 60 km/h), wird der Stauassistent automatisch
             aktiviert. Im Display leuchtet das Symbol TRAFFIC ASSIST grün auf
-            <img class="hmi-image" src="../../assets/pictures/overview/4.1TRAFFIC ASSIST .jpg">
+            <img class="hmi-image" src="../../assets/pictures/overview/4.1TRAFFIC ASSIST .jpg" alt="">
             Das Auto beschleunigt, bremst und lenkt dann selbstständig und hält den Abstand zum Vorderfahrzeug
             automatisch. <br>
-            Das Auto fährt aus dem Stillstand automatisch wieder an" ODER: "3. Drücke die Set-Taste, damit das Auto aus
+            Das Auto fährt aus dem Stillstand automatisch wieder an ODER: 3. Drücke die Set-Taste, damit das Auto aus
             dem Stillstand automatisch wieder losfährt <br>
             Wenn der Stauassistent aktiviert ist, kannst Du die Hände vom Lenkrad nehmen. Dein Blick muss aber weiterhin
             auf die Straße gerichtet sein.
@@ -74,45 +75,44 @@
         <div class="page" id="ampelerkennung">
             <h1>Ampelerkennung</h1>
             Das Auto erkennt Ampeln und zeigt diese im Display an.
-            <img class="hmi-image" src="../../assets/pictures/overview/5.1Ampelerkennung.JPG">
             Rote Ampeln müssen durch Drücken der Set-Taste bestätigt werden, damit das Auto anhält.
-            <img class="image" src="../../assets/pictures/overview/5.Ampelerkennung.png">
+            <img class="image" src="../../assets/pictures/overview/5.Ampelerkennung.png" alt="">
             Nach der Bestätigung erscheint im Display ein grüner Haken (✓).
-            <img class="hmi-image" src="../../assets/pictures/overview/5.2Ampeln bestätigt werden.jpg">
-            Nach Bestätigung der roten Ampel, bremst das Fahrzeug automatisch bis zum Stillstand ab. <br>
+            <img class="hmi-image" src="../../assets/pictures/overview/5.2Ampeln bestätigt werden.jpg" alt="">
+            Nach Bestätigung der roten Ampel bremst das Fahrzeug automatisch bis zum Stillstand ab. <br>
             Das Auto fährt bei Grün automatisch wieder los, wenn Dein Blick auf die Straße gerichtet ist, ohne dass Du
             das Gaspedal betätigen musst.
         </div>
         <div class="page" id="spurführung">
             <h1>Lenk- und Spurführungsassistent (LKA)</h1>
             Wenn das LKA-Symbol im Display grün aufleuchtet, ist der Spurhalteassistent aktiviert.
-            <img class="image" src="../../assets/pictures/overview/6.LKA acctivated.png">
+            <img class="image" src="../../assets/pictures/overview/6.LKA acctivated.png" alt="">
             Das Auto hält dann automatisch die Spur.
         </div>
         <div class="page" id="spurwechsel">
             <h1>Spurwechselassistent</h1>
             Das Auto wechselt auf mehrspurigen Straßen die Spur, wenn Du den Blinker antippst und es der Verkehr
             zulässt. Das Auto beobachtet die Umgebung dabei selbstständig
-            <img class="image" src="../../assets/pictures/overview/7. Spurwechselassistent Blinker.pmg.png">
+            <img class="image" src="../../assets/pictures/overview/7. Spurwechselassistent Blinker.pmg.png" alt="">
             Wenn das Auto einen Spurwechsel ausführt, zeigt es die Richtung des Spurwechsels über einen grünen Pfeil im
             Display an.
-            <img class="image" src="../../assets/pictures/overview/7. Spurwechselassistent activated.png">
+            <img class="image" src="../../assets/pictures/overview/7. Spurwechselassistent activated.png" alt="">
             Sind die Bedingungen für den Spurwechsel nicht erfüllt, erscheint im Display folgender Hinweis:
-            „Automatischer Spurwechsel, sobald die Bedingungen erfüllt sind.
+            Automatischer Spurwechsel, sobald die Bedingungen erfüllt sind.
         </div>
         <div class="page" id="notbrems">
             <h1>Notbremsassistent</h1>
             Das Auto erkennt Hindernisse und warnt bei Kollisionsgefahr.
-            <img class="hmi-image" src="../../assets/pictures/overview/8.Warnung vor Kollisionen mit Personen.jpg">
+            <img class="hmi-image" src="../../assets/pictures/overview/8.Warnung vor Kollisionen mit Personen.jpg" alt="">
             Das Auto bremst automatisch zum Stillstand, bevor es zum Zusammenstoß mit einem Hindernis, einer Person oder
             einem weiteren Fahrzeug kommt.
         </div>
         <div class="page" id="deaktivierung">
             <h1>Deaktivierung DRIVING ASSIST</h1>
             Der DRIVING ASSIST wird beendet, sobald Du die Aktivierungstaste erneut drückst
-            <img class="image" src="../../assets/pictures/overview/9. Deaktivierung DRIVING ASSIST.png">
-            Er wird auch beendet, wenn du lenkst oder das Bremspedal drückst. <br>
-            Bei erfolgreicher Deaktivierung, erlischen die Lenkradlichter und das Symbol „DRIVING ASSIST“ im Display
+            <img class="image" src="../../assets/pictures/overview/9. Deaktivierung DRIVING ASSIST.png" alt="">
+            Er wird auch beendet, wenn Du lenkst oder das Bremspedal drückst. <br>
+            Bei erfolgreicher Deaktivierung, erloschen die Lenkradlichter und das Symbol „DRIVING ASSIST“ im Display
         </div>
         <div class="page" id="risiken">
             <h1>Risiken und Verantwortung</h1>
@@ -137,7 +137,7 @@
 
 <div class="footer">
     <div class="left-section">
-        <img class="icon-left" src="../../assets/icons/footer/Seat Heating left.svg">
+        <img class="icon-left" src="../../assets/icons/footer/Seat Heating left.svg" alt="">
         <div class="temperature-control">
             <svg class="temperature-line left-line" height="30" width="150">
                 <path d="M-20 -15 L20 20 L140 20" fill="none" stroke="url(#gradient-left)" stroke-width="4"/>
@@ -157,9 +157,9 @@
     </div>
 
     <div class="icon-center">
-        <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg">
-        <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg">
-        <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg">
+        <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg" alt="">
+        <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg" alt="">
+        <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg" alt="">
     </div>
 
     <div class="right-section">
@@ -179,7 +179,7 @@
             <button onclick="changeTemperature(1)">+</button>
             <div class="temperature-line right-line"></div>
         </div>
-        <img class="icon-right flipped" src="../../assets/icons/footer/Seat Heating left.svg">
+        <img class="icon-right flipped" src="../../assets/icons/footer/Seat Heating left.svg" alt="">
     </div>
 </div>
 
