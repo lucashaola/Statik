@@ -129,15 +129,23 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePages();
     }
 
+
     const contentContainer = document.querySelector('.content-container');
-    if (contentContainer) {
-        new PerfectScrollbar(contentContainer, {
-            wheelSpeed: 1,
-            wheelPropagation: true,
-            suppressScrollX: true,
-            minScrollbarLength: 40,
-            scrollbarYMargin: 0,
-            railYVisible: true
-        });
+    const bookmarkIcon = document.querySelector('.bookmark-icon');
+
+    function updateScrollbarPosition() {
+        const bookmarkRect = bookmarkIcon.getBoundingClientRect();
+        const margin = window.innerWidth - bookmarkRect.right - 70;
+        document.documentElement.style.setProperty('--scrollbar-margin', margin + 'px');
     }
+
+    new PerfectScrollbar(contentContainer, {
+        wheelSpeed: 1,
+        suppressScrollX: true
+    });
+
+    updateScrollbarPosition();
+    window.addEventListener('resize', updateScrollbarPosition);
+
+
 });

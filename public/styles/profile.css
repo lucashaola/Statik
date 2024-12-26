@@ -393,6 +393,7 @@ h2 {
 
 /* Saved Pages Styling */
 .saved-pages {
+    position: relative;
     width: 100%;
     height: 70vh;
     padding: 10px 30px;
@@ -400,7 +401,6 @@ h2 {
     margin-top: -10px;
     box-sizing: border-box;
     flex-direction: column;
-    position: relative;
 }
 
 .saved-pages::-webkit-scrollbar {

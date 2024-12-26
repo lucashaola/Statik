@@ -60,7 +60,7 @@ html, body {
 }
 
 .sidebar-item.selected {
-    background: #c4c4c4;
+    background: #e1e7f4;
     color: black;
 }
 
@@ -97,7 +97,6 @@ html, body {
 
 
 .sidebar-content {
-    overflow-y: auto;
     max-height: calc(100vh - 165px);
     margin-top: 20px;
     padding-right: 10px;
@@ -145,7 +144,7 @@ html, body {
 }
 
 .sidebar-item:hover {
-    background-color: #c4c4c46b;
+    background-color: rgba(225, 231, 244, 0.51);
 }
 
 .main-content {
