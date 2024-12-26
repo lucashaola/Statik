@@ -146,7 +146,7 @@ async function showProgressOverview() {
     if (!identificationCode) {
         progressOverview.innerHTML = `
             <div class="no-content">
-                <p>Melden Sie sich an, um Ihren Fortschritt zu sehen</p>
+                <p>Melden Sie sich an, um Ihren Fortschritt zu sehen.</p>
             </div>
         `;
 
@@ -263,6 +263,15 @@ async function showProgressOverview() {
                 </div>
             `;
 
+            document.querySelectorAll('.progress-circle-item').forEach(item => {
+                const categoryName = item.querySelector('.category-name').textContent;
+                const category = categories.find(cat => cat.name === categoryName);
+                if (category) {
+                    const progress = progressData[`${category.key}_progress`] || 0;
+                    updateProgressCircle(item, progress);
+                }
+            });
+
             const container = document.querySelector('.progress-circles');
             new PerfectScrollbar(container, {
                 wheelSpeed: 1,
@@ -271,15 +280,6 @@ async function showProgressOverview() {
                 minScrollbarLength: 40,
                 scrollbarYMargin: 0,
                 railYVisible: true
-            });
-
-            document.querySelectorAll('.progress-circle-item').forEach(item => {
-                const categoryName = item.querySelector('.category-name').textContent;
-                const category = categories.find(cat => cat.name === categoryName);
-                if (category) {
-                    const progress = progressData[`${category.key}_progress`] || 0;
-                    updateProgressCircle(item, progress);
-                }
             });
         }
 

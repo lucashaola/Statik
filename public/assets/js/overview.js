@@ -99,8 +99,6 @@ async function navigatePage(direction) {
 
             if (result.isConfirmed) {
                 window.location.href = '../../views/profile?view=test';
-            } else {
-                window.location.href = '../../views/welcome';
             }
 
             return;

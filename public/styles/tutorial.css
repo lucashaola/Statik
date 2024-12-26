@@ -76,7 +76,8 @@ html, body {
     padding: 0 15px 0 0;
     font-size: 22px;
     text-align: left;
-    border-bottom: 3px solid rgb(81, 81, 81);
+    border-bottom: 3px solid rgb(102, 117, 154);
+    width: 102%;
     position: sticky;
     top: 0;
     margin: 0;

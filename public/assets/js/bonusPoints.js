@@ -58,7 +58,7 @@ function showBonusOverview() {
     if (!identificationCode) {
         bonusOverviewContainer.innerHTML = `
             <div class="no-content">
-                <p>Melden Sie sich an, um Ihre Fahrpunkte zu sehen</p>
+                <p>Melden Sie sich an, um Ihre Fahrpunkte zu sehen.</p>
             </div>
         `;
         return;

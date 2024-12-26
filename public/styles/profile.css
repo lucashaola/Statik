@@ -6,9 +6,7 @@ html {
     margin: 0;
     background: whitesmoke;
     overflow: hidden;
-
     position: relative;
-
 }
 
 .swal2-confirm,
@@ -132,7 +130,7 @@ html {
 .question-action-container,
 .categories-heading,
 .progress-circles {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     text-align: left;
     padding: 0;
@@ -149,7 +147,6 @@ html {
     box-sizing: border-box;
     padding: 10px 30px 20px 2px;
     margin-top: -30px;
-    width: 80%;
     max-width: 800px;
 
     color: #504848;
@@ -197,6 +194,7 @@ h2 {
 .start-btn {
     padding: 10px 20px;
     font-size: 1rem;
+    white-space: nowrap;
     background-color: #e1e7f4;
     color: #333;
     border: none;
@@ -245,11 +243,9 @@ h2 {
     padding-left: 20px;
     width: 100%;
     height: 70vh;
-    align-items: flex-start;
 }
 
 .progress-circles {
-    width: 80%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;

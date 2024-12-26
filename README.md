@@ -5,6 +5,10 @@ Icons:
 - https://thenounproject.com/icon/bookmark-7419377/
 - https://thenounproject.com/icon/trash-3465734/
 - https://thenounproject.com/icon/lock-7271224/
+- https://thenounproject.com/icon/warning-4718327/
+- https://thenounproject.com/icon/traffic-light-7092055/
+- https://thenounproject.com/icon/off-5706456/
+- https://thenounproject.com/icon/on-5706475/
 
 ISO:
 

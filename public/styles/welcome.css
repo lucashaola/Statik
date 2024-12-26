@@ -55,14 +55,14 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 100px;
+    margin-top: 13.5vh;
     margin-bottom: 80px;
 }
 
 
 /* Welcome Section */
 .welcome {
-    margin-top: 30px;
+    margin-top: 3vh;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -78,8 +78,8 @@ html {
 }
 
 .welcome-icon {
-    width: 100px;
-    height: 100px;
+    width: 14vh;
+    height: 14vh;
     margin-right: 15px;
 }
 
@@ -88,6 +88,7 @@ html {
     display: flex;
     justify-content: space-between;
     gap: 20px;
+    height: 60vh;
 }
 
 .menu-item {
