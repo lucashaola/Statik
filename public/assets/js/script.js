@@ -3,8 +3,6 @@ let temperature = localStorage.getItem('temperature') ? parseInt(localStorage.ge
 document.addEventListener('DOMContentLoaded', function () {
     preventDoubleTapZoom();
     changeTemperature();
-    initializeFooterIcons();
-    initializeCloseButtons();
     initializeWelcomeScreen();
 
 
@@ -36,54 +34,6 @@ function preventDoubleTapZoom() {
     }, {passive: false});
 }
 
-function initializeFooterIcons() {
-    const profileIcon = document.getElementById("profileIcon");
-    if (profileIcon) {
-        profileIcon.addEventListener("click", function () {
-        const currentPath = window.location.pathname;
-        if (currentPath.includes('/views/profile')) {
-            return;
-        }
-
-        window.location.href = `/views/profile`;
-        });
-    }
-
-    const homeIcon = document.getElementById("homeIcon");
-    if (homeIcon) {
-        homeIcon.addEventListener("click", function () {
-            const currentPath = window.location.pathname;
-            if (currentPath.includes('/views/welcome')) {
-                return;
-            }
-            window.location.href = `/views/welcome`;
-        });
-    }
-}
-
-function initializeCloseButtons() {
-    const closeButton = document.getElementById("closeButton");
-    if (closeButton) {
-        closeButton.addEventListener("click", function () {
-            window.history.back();
-        });
-    }
-
-    const arrowBackToWelcome = document.getElementById("arrowBackToWelcome");
-    if (arrowBackToWelcome) {
-        arrowBackToWelcome.addEventListener("click", function () {
-            window.location.href = '/views/welcome';
-        });
-    }
-
-    const closeBackToWelcome = document.getElementById("closeBackToWelcome");
-    if (closeBackToWelcome) {
-        closeBackToWelcome.addEventListener("click", function () {
-            window.location.href = '/views/welcome';
-        });
-    }
-}
-
 function initializeWelcomeScreen() {
     const welcomeHeading = document.querySelector('.welcome h1');
     if (welcomeHeading) {
@@ -100,21 +50,6 @@ function initializeWelcomeScreen() {
     if (userSwitch) {
         userSwitch.addEventListener("click", checkForExistingProfile);
     }
-
-    const overview = document.querySelector('#tutorial .overview-button');
-    if (overview) {
-        overview.addEventListener('click', function () {
-            window.location.href = '/views/overview';
-        });
-    }
-
-    const tutorialButton = document.querySelector('#tutorial .start-button');
-    if (tutorialButton) {
-        tutorialButton.addEventListener('click', function () {
-            window.location.href = `/views/tutorial`;
-        });
-    }
-
 }
 
 function initializeProfileScreen() {

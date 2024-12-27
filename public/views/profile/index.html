@@ -20,10 +20,11 @@
     <div class="profile-heading">
         <img class="profile-icon" src="../../assets/icons/welcome/Profile.svg" alt="">
         <h1 id="profileName">No user selected
-            <!-- java script -->
+            <!-- script.js -->
         </h1>
     </div>
-    <button class="close-btn" id="closeButton">
+
+    <button class="close-btn" onclick="window.history.back();">
         <img class="close-icon" src="../../assets/icons/shared/Close.svg" alt="">
     </button>
 </div>
@@ -75,10 +76,17 @@
     </div>
 
     <div class="icon-center">
-        <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg" alt="">
-        <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg" alt="">
-        <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg" alt="">
+        <a href="/views/profile">
+            <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg" alt="Profile">
+        </a>
+        <a href="/views/welcome">
+            <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg" alt="Home">
+        </a>
+        <a href="http://127.0.0.1:6969/ride?cfg=silab-resources/project/SILABDemo_City.cfg">
+            <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg" alt="Menu">
+        </a>
     </div>
+
 
     <div class="right-section">
         <div class="temperature-control">

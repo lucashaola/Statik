@@ -34,8 +34,8 @@
                 <h2>Fahrassistenzsysteme</h2>
 
                 <div class="tutorial-buttons">
-                    <button class="overview-button">Schnellüberblick</button>
-                    <button class="start-button">Detailliertes Tutorial</button>
+                    <button class="overview-button" onclick="window.location.href='/views/overview'">Schnellüberblick</button>
+                    <button class="start-button" onclick="window.location.href='/views/tutorial'">Detailliertes Tutorial</button>
                 </div>
 
                 <div class="tutorial-content">
@@ -85,9 +85,15 @@
     </div>
 
     <div class="icon-center">
-        <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg" alt="">
-        <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg" alt="">
-        <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg" alt="">
+        <a href="/views/profile">
+            <img class="footer-icon" id="profileIcon" src="../../assets/icons/footer/Profile.svg" alt="Profile">
+        </a>
+        <a href="/views/welcome">
+            <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg" alt="Home">
+        </a>
+        <a href="http://127.0.0.1:6969/ride?cfg=silab-resources/project/SILABDemo_City.cfg">
+            <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg" alt="Menu">
+        </a>
     </div>
 
     <div class="right-section">
