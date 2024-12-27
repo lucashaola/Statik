@@ -808,6 +808,9 @@ app.delete('/api/events/expired', (req, res) => {
     );
 });
 
+app.get('/', (req, res) => {
+    res.status(200).sendFile(path.join(__dirname, 'public', 'views', 'welcome', 'index.html'));
+})
 
 // Error handling for undefined routes
 app.use((req, res) => {
