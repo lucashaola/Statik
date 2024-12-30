@@ -339,16 +339,6 @@ async function showTestOverview() {
         }).join('')}
         </div>`;
 
-        const container = document.querySelector('.test-progress-circles');
-        new PerfectScrollbar(container, {
-            wheelSpeed: 1,
-            wheelPropagation: true,
-            suppressScrollX: true,
-            minScrollbarLength: 40,
-            scrollbarYMargin: 0,
-            railYVisible: true
-        });
-
         document.querySelectorAll('.test-progress-circle-item').forEach(item => {
             const category = item.dataset.category;
 
@@ -376,6 +366,16 @@ async function showTestOverview() {
         if (startBtn) {
             startBtn.addEventListener("click", () => showCategoryQuestions());
         }
+
+        const container = document.querySelector('.test-progress-circles');
+        new PerfectScrollbar(container, {
+            wheelSpeed: 1,
+            wheelPropagation: true,
+            suppressScrollX: true,
+            minScrollbarLength: 40,
+            scrollbarYMargin: 0,
+            railYVisible: true
+        });
 
     } catch (error) {
         console.error('Error fetching or displaying test data:', error);

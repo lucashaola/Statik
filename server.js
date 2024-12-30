@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const {JSDOM} = require('jsdom');
 const eventTypes = require('./public/assets/js/eventTypes.js');
-const categoryQuestions = import('./public/assets/js/categoryQuestions.js');
+const categoryQuestions = require('./public/assets/js/categoryQuestions.js');
 
 const app = express();
 const port = 3000;
@@ -808,6 +808,7 @@ app.delete('/api/events/expired', (req, res) => {
     );
 });
 
+// Routing
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, 'public', 'views', 'welcome', 'index.html'));
 })
