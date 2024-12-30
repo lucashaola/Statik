@@ -197,7 +197,7 @@ async function showProgressOverview() {
                 category.name;
 
             return `
-                <div class="progress-circle-item">
+                <div class="slideProgress-progress-circle-item">
                     <img src="${category.icon}" class="category-icon" alt="">
                     <div class="category-info">
                         <div class="category-name">${categoryName}</div>
@@ -258,12 +258,12 @@ async function showProgressOverview() {
                         ${totalProgressHTML}
                 </div>
                 <h2 class="categories-heading">Kategorien</h2>
-                <div class="progress-circles">
+                <div class="slideProgress-progress-circles">
                             ${categories.map(category => renderCategoryItem(category, category.progress)).join('')}
                 </div>
             `;
 
-            document.querySelectorAll('.progress-circle-item').forEach(item => {
+            document.querySelectorAll('.slideProgress-progress-circle-item').forEach(item => {
                 const categoryName = item.querySelector('.category-name').textContent;
                 const category = categories.find(cat => cat.name === categoryName);
                 if (category) {
@@ -272,7 +272,7 @@ async function showProgressOverview() {
                 }
             });
 
-            const container = document.querySelector('.progress-circles');
+            const container = document.querySelector('.slideProgress-progress-circles');
             new PerfectScrollbar(container, {
                 wheelSpeed: 1,
                 wheelPropagation: true,
@@ -283,7 +283,7 @@ async function showProgressOverview() {
             });
         }
 
-        document.querySelectorAll('.progress-circle-item').forEach(item => {
+        document.querySelectorAll('.slideProgress-progress-circle-item').forEach(item => {
             item.addEventListener('click', () => {
                 const categoryName = item.querySelector('.category-name').textContent;
                 const selectedCategory = categories.find(category => category.name === categoryName);

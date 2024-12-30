@@ -310,7 +310,7 @@ async function showTestOverview() {
                 <button class="start-btn">Starten ▶</button>
             </div>
             <h2 class="categories-heading">Beantworten nach Kategorien</h2>
-            <div class="progress-circles">
+            <div class="test-progress-circles">
                 ${categories.map(category => {
                 const correctlyAnsweredCategory = JSON.parse(testData.correctly_answered || '{}')[category.key] || [];
                 const incorrectlyAnswered = JSON.parse(testData.incorrectly_answered || '{}')[category.key] || [];
@@ -318,7 +318,7 @@ async function showTestOverview() {
                 const isLocked = !unlockedCategories.includes(category.key);
     
                 return `
-                            <div class="progress-circle-item ${isLocked ? 'locked' : 'unlocked'}" data-category="${category.key}">
+                            <div class="test-progress-circle-item ${isLocked ? 'locked' : 'unlocked'}" data-category="${category.key}">
                                 <img src="${category.icon}" class="category-icon" alt="">
                                 <div class="category-info">
                                     <div class="category-name">${category.name}</div>
@@ -339,7 +339,7 @@ async function showTestOverview() {
         }).join('')}
         </div>`;
 
-        const container = document.querySelector('.progress-circles');
+        const container = document.querySelector('.test-progress-circles');
         new PerfectScrollbar(container, {
             wheelSpeed: 1,
             wheelPropagation: true,
@@ -349,7 +349,7 @@ async function showTestOverview() {
             railYVisible: true
         });
 
-        document.querySelectorAll('.progress-circle-item').forEach(item => {
+        document.querySelectorAll('.test-progress-circle-item').forEach(item => {
             const category = item.dataset.category;
 
             item.addEventListener('click', async () => {

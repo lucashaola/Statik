@@ -129,7 +129,8 @@ html {
 .heading,
 .question-action-container,
 .categories-heading,
-.progress-circles {
+.test-progress-circles,
+.slideProgress-progress-circles {
     width: 90%;
     margin: 0 auto;
     text-align: left;
@@ -245,7 +246,8 @@ h2 {
     height: 70vh;
 }
 
-.progress-circles {
+.test-progress-circles,
+.slideProgress-progress-circles {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -257,7 +259,8 @@ h2 {
     position: relative;
 }
 
-.progress-circle-item {
+.test-progress-circle-item,
+.slideProgress-progress-circle-item {
     background: whitesmoke;
     padding: 15px;
     border-radius: 10px;
@@ -269,17 +272,20 @@ h2 {
     0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.progress-circle-item:hover {
+.test-progress-circle-item:hover,
+.slideProgress-progress-circle-item:hover {
     background: rgba(230, 230, 230, 0.811);
 }
 
-.progress-circle-item.locked {
+.test-progress-circle-item.locked,
+.slideProgress-progress-circle-item.locked {
     opacity: 0.5;
     background: #e8e8e8;
     position: relative;
 }
 
-.progress-circle-item.locked::after {
+.test-progress-circle-item.locked::after,
+.slideProgress-progress-circle-item.locked::after {
     content: '';
     position: absolute;
     top: 10px;
@@ -292,7 +298,8 @@ h2 {
     z-index: 10;
 }
 
-.progress-circle-item.unlocked {
+.test-progress-circle-item.unlocked,
+.slideProgress-progress-circle-item.unlocked {
     opacity: 1;
     cursor: pointer;
 }
