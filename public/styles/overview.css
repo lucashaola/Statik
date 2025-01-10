@@ -23,6 +23,17 @@ html {
     color: black;
 }
 
+.blue-text {
+    color: #5473d5;
+}
+
+.green-text {
+    color: #58a860;
+}
+
+.red-text {
+    color: #c55b71;
+}
 
 /* Perfect Scrollbar Styling*/
 .ps__rail-y {
@@ -239,7 +250,7 @@ html {
     margin: 15px 0;
 }
 
-.hmi-image,
+.media,
 .image {
     height: auto;
     margin: 20px auto;
@@ -247,7 +258,7 @@ html {
     border-radius: 8px;
 }
 
-.hmi-image {
+.media {
     width: 100%;
     max-width: 400px;
 }
@@ -257,6 +268,15 @@ html {
     max-height: 200px;
 }
 
+.bullet-points {
+    margin-left: 20px;
+    padding-left: 20px;
+}
+
+.bullet-points li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
 
 .button-container {
     display: flex;

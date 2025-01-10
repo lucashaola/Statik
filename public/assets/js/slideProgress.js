@@ -191,7 +191,7 @@ async function showProgressOverview() {
                 </div>
             </div>
         `;
-        const renderCategoryItem = (category, progress) => {
+        const renderCategoryItem = (category) => {
             const categoryName = isWelcomeScreen ?
                 category.name.replace('Adaptiver Geschwindigkeitsassistent', 'Adaptiver <br>Geschwindigkeitsassistent') :
                 category.name;
@@ -223,16 +223,20 @@ async function showProgressOverview() {
                 slider.innerHTML = '';
                 paginationContainer.innerHTML = '';
 
-                for (let i = 0; i < Math.ceil(categories.length / 2); i++) {
+                for (let i = 0; i < Math.ceil(categories.length / 4); i++) {
                     const page = document.createElement('div');
                     page.className = 'progress-page';
 
-                    for (let j = i * 2; j < Math.min((i * 2) + 2, categories.length); j++) {
+                    const gridContainer = document.createElement('div');
+                    gridContainer.className = 'progress-grid';
+                    page.appendChild(gridContainer);
+
+                    for (let j = i * 4; j < Math.min((i * 4) + 4, categories.length); j++) {
                         const category = categories[j];
                         const progress = progressData[`${category.key}_progress`] || 0;
 
-                        page.insertAdjacentHTML('beforeend', renderCategoryItem(category, progress));
-                        const lastItem = page.lastElementChild;
+                        gridContainer.insertAdjacentHTML('beforeend', renderCategoryItem(category, progress));
+                        const lastItem = gridContainer.lastElementChild;
                         updateProgressCircle(lastItem, progress);
                     }
 

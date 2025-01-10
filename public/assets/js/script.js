@@ -43,7 +43,6 @@ function initializeWelcomeScreen() {
         }
 
         showProgressOverview();
-        loadScenarios();
     }
 
     const userSwitch = document.getElementById("userSwitch");
