@@ -250,22 +250,29 @@ html {
     margin: 15px 0;
 }
 
-.media,
-.image {
+.media{
     height: auto;
     margin: 20px auto;
     display: block;
     border-radius: 8px;
-}
 
-.media {
     width: 100%;
     max-width: 400px;
 }
 
-.image {
-    height: 100%;
-    max-height: 200px;
+.media-row {
+    display: flex;
+    gap: 10px;
+    max-width: 810px;
+    margin: 20px auto;
+}
+
+.inline-media {
+    height: 1.5em;
+    width: auto;
+    display: inline;
+    margin: 0 5px;
+    vertical-align: middle;
 }
 
 .bullet-points {
