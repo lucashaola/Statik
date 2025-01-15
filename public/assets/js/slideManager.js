@@ -62,10 +62,18 @@ function showContent(contentId, selectFirstSlide = true) {
     const selectedItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
     if (selectedItem) {
         selectedItem.classList.add('selected');
-        selectedItem.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest'
-        });
+
+        const sidebarContent = document.querySelector('.sidebar-content');
+        const ps = sidebarContent._ps;  // get PerfectScrollbar instance
+        if (ps) {
+            const itemTop = selectedItem.offsetTop;
+            const containerTop = sidebarContent.scrollTop;
+            const containerHeight = sidebarContent.clientHeight;
+
+            if (itemTop < containerTop || itemTop > containerTop + containerHeight) {
+                ps.scrollTop = itemTop - (containerHeight / 2);
+            }
+        }
     }
 
     const contents = document.querySelectorAll('.content');
@@ -94,28 +102,25 @@ function filterResults() {
 
     const searchTerm = searchInput.value.toLowerCase().trim();
 
-    if (searchTerm === '') {
+    if (searchTerm.length < 2) {
         resultsDiv.style.display = 'none';
         return;
     }
 
-    const mainContent = document.querySelector('.main-content');
-    const contents = mainContent.querySelectorAll('.content');
+    const tutorialContent = JSON.parse(localStorage.getItem('tutorialContent') || '{}');
     let searchResults = [];
 
-    contents.forEach(content => {
-        const slides = content.querySelectorAll('.slide');
-
-        slides.forEach((slide, index) => {
-            const title = slide.querySelector('h2')?.textContent || '';
-            const paragraph = slide.querySelector('p')?.textContent || '';
+    Object.entries(tutorialContent).forEach(([contentId, content]) => {
+        content.slides.forEach((slide, index) => {
+            const title = slide.title || '';
+            const paragraph = slide.text || '';
 
             if (title.toLowerCase().includes(searchTerm) ||
                 paragraph.toLowerCase().includes(searchTerm)) {
                 searchResults.push({
                     title: title,
                     text: paragraph,
-                    contentId: content.id,
+                    contentId: contentId,
                     slideIndex: index
                 });
             }
@@ -125,8 +130,12 @@ function filterResults() {
     if (searchResults.length > 0) {
         resultsDiv.style.display = 'block';
         resultsDiv.innerHTML = searchResults.map(result => `
-        <div class="result-item" onclick="showSearchResult('${result.contentId}', ${result.slideIndex})">
-            <strong>${result.title}</strong><br>
+        <div class="result-item" onclick="${window.location.pathname.includes('tutorial') ?
+            `showSearchResult('${result.contentId}', ${result.slideIndex})` :
+            `localStorage.setItem('selectedCategory', '${result.contentId}'); 
+             localStorage.setItem('selectedSlide', '${result.slideIndex}'); 
+             window.location.href='/views/tutorial'`}">
+            <strong>${tutorialContent[result.contentId].sidebarTitle}</strong><br>
             <small>${result.text ? result.text.substring(0, 100) + '...' : ''}</small>
         </div>
     `).join('');
@@ -135,7 +144,6 @@ function filterResults() {
         resultsDiv.innerHTML = '<div class="result-item">Keine Ergebnisse gefunden</div>';
     }
 }
-
 function showSearchResult(contentId, slideIndex) {
     const contents = document.querySelectorAll('.main-content .content');
     contents.forEach(content => {
@@ -189,12 +197,36 @@ function showSearchResult(contentId, slideIndex) {
     document.querySelector('.search').value = '';
 }
 
+window.onload = function() {
+    if (window.location.pathname.includes('tutorial')) {
+        const tutorialContent = {};
+        document.querySelectorAll('.content').forEach(content => {
+            const id = content.id;
+            const sidebarTitle = document.querySelector(`.sidebar-item[onclick="showContent('${id}')"]`)?.textContent.trim();
+            tutorialContent[id] = {
+                sidebarTitle: sidebarTitle,
+                slides: Array.from(content.querySelectorAll('.slide')).map((slide, index) => ({
+                    title: slide.querySelector('h2')?.textContent || '',
+                    text: slide.querySelector('p')?.textContent || '',
+                    index: index
+                }))
+            };
+        });
+        localStorage.setItem('tutorialContent', JSON.stringify(tutorialContent));
+    }
+
+    if (window.location.hash) {
+        const [contentId, slideIndex] = window.location.hash.slice(1).split('-');
+        showSearchResult(contentId, parseInt(slideIndex));
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
-    const sidebar = document.querySelector('.sidebar');
+    const searchInput = document.querySelector('.search');
+    if (searchInput) searchInput.value = '';
+
     const sidebarContent = document.querySelector('.sidebar-content');
-
-
-    if (sidebar) {
+    if (sidebarContent) {
         new PerfectScrollbar(sidebarContent, {
             wheelSpeed: 1,
             wheelPropagation: true,
@@ -209,24 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (slides.length > 0) slides[0].style.display = 'block';
         });
 
-        const searchContainer = document.querySelector('.search-container');
-        if (searchContainer) {
-            const results = document.querySelector('.results');
-            if (results) {
-                results.addEventListener('click', function (event) {
-                    event.stopPropagation();
-                });
-            }
-
-            document.addEventListener('click', function (event) {
-                if (searchContainer && !searchContainer.contains(event.target)) {
-                    const results = document.getElementById('results');
-                    if (results) {
-                        results.style.display = 'none';
-                    }
-                }
-            });
-        }
+       closeResultsOnOutsideClick();
 
         // Preselect Aktivierung on page load
         showContent('aktivierung');
@@ -245,3 +260,24 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.removeItem('selectedCategory');
     }
 });
+
+function closeResultsOnOutsideClick(){
+    const searchContainer = document.querySelector('.search-container');
+    if (searchContainer) {
+        const results = document.querySelector('.results');
+        if (results) {
+            results.addEventListener('click', function (event) {
+                event.stopPropagation();
+            });
+        }
+
+        document.addEventListener('click', function (event) {
+            if (searchContainer && !searchContainer.contains(event.target)) {
+                const results = document.getElementById('results');
+                if (results) {
+                    results.style.display = 'none';
+                }
+            }
+        });
+    }
+}

@@ -145,11 +145,10 @@ html {
     margin-bottom: 20px;
 }
 
-.overview-button,
-.start-button {
+.overview-button{
     color: #1d2e51;
     font-size: large;
-    flex: 1;
+    flex: 0.3;
     background-color: #e1e7f4;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border: none;
@@ -159,6 +158,59 @@ html {
     transition: background-color 0.3s ease;
     margin-top: 20px;
     align-self: center;
+}
+
+.search-container {
+    flex: 0.7;
+    position: relative;
+}
+
+.search {
+    width: 100%;
+    padding: 14px 28px;
+    border-radius: 25px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 20px;
+    font-size: large;
+    background-color: whitesmoke;
+}
+
+.results {
+    position: absolute;
+    width: 100%;
+    background: whitesmoke;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+    border-radius: 10px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.result-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.result-item:hover {
+    background: #c4c4c4;
+}
+
+.result-item strong {
+    color: black;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 0;
+}
+
+.result-item small {
+    color: #333333;
+    font-size: 14px;
+    display: block;
 }
 
 .progress-slider {

@@ -49,6 +49,8 @@ function initializeWelcomeScreen() {
     if (userSwitch) {
         userSwitch.addEventListener("click", checkForExistingProfile);
     }
+
+    closeResultsOnOutsideClick(); //In SlideManager.js
 }
 
 function initializeProfileScreen() {

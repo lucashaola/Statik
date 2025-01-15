@@ -33,8 +33,13 @@
             <h2>Fahrassistenzsysteme</h2>
 
             <div class="tutorial-buttons">
+                <div class="search-container">
+                    <label>
+                        <input class="search" oninput="filterResults()" placeholder="Suche" type="text">
+                    </label>
+                    <div class="results" id="results"></div>
+                </div>
                 <button class="overview-button" onclick="window.location.href='/views/overview'">Schnellüberblick</button>
-                <button class="start-button" onclick="window.location.href='/views/tutorial'">Detailliertes Tutorial</button>
             </div>
 
             <div class="tutorial-content">
@@ -103,6 +108,7 @@
 </div>
 
 <script src="../../assets/js/script.js"></script>
+<script src="../../assets/js/tutorialData.js"></script>
 <script src="../../assets/js/eventTypes.js"></script>
 <script src="/assets/js/bonusPoints.js"></script>
 <script src="../../assets/js/slideProgress.js"></script>
