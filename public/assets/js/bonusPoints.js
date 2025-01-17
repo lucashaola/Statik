@@ -72,7 +72,7 @@ function showBonusOverview() {
             Promise.all([bonusResponse.json(), eventsResponse.json()])
         )
         .then(([bonusData, events]) => {
-            const points = bonusData.total_bonus_score || 0;
+            const points = bonusData.total_bonusPoints_score || 0;
             const assistanceKilometers = bonusData.assistance_kilometer || 0;
 
             const dashArray = (points / 100) * 113;

@@ -24,7 +24,7 @@ const db = new sqlite3.Database('users.db', (err) => {
             name TEXT NOT NULL,
             total_progress INTEGER DEFAULT 0,
             unlocked_categories TEXT DEFAULT '[]',
-            total_bonus_score INTEGER DEFAULT 0 CHECK (total_bonus_score >= 0 AND total_bonus_score <= 100),
+            total_bonusPoints_score INTEGER DEFAULT 0 CHECK (total_bonusPoints_score >= 0 AND total_bonusPoints_score <= 100),
             assistance_kilometer INTEGER DEFAULT 0,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
@@ -92,7 +92,7 @@ app.post('/api/users', (req, res) => {
     const {name, identificationCode} = req.body;
 
     db.run(
-        `INSERT INTO profiles (identification_code, name, unlocked_categories, total_bonus_score, assistance_kilometer) VALUES (?, ?, ?, 0, 0)`,
+        `INSERT INTO profiles (identification_code, name, unlocked_categories, total_bonusPoints_score, assistance_kilometer) VALUES (?, ?, ?, 0, 0)`,
         [identificationCode, name, JSON.stringify([])],
         function (err) {
             if (err) {
@@ -112,7 +112,7 @@ app.post('/api/users', (req, res) => {
                     res.json({
                         identification_code: identificationCode,
                         name: name,
-                        total_bonus_score: 0,
+                        total_bonusPoints_score: 0,
                         assistance_kilometer: 0
                     });
                 }
@@ -154,7 +154,7 @@ app.get('/api/users/:code', (req, res) => {
     );
 });
 
-// Slide Progress Handeling
+// Slide Progress Handling
 app.post('/api/users/:code/progress', (req, res) => {
     const {code} = req.params;
     const {category, progress} = req.body;
@@ -698,18 +698,18 @@ app.post('/api/events', (req, res) => {
             }
 
             db.get(
-                `SELECT total_bonus_score FROM profiles WHERE identification_code = ?`,
+                `SELECT total_bonusPoints_score FROM profiles WHERE identification_code = ?`,
                 [identificationCode],
                 (err, row) => {
                     if (err) {
                         return res.status(500).json({error: err.message});
                     }
 
-                    const currentScore = row ? row.total_bonus_score : 0;
+                    const currentScore = row ? row.total_bonusPoints_score : 0;
                     const newScore = Math.max(0, Math.min(100, currentScore + score));
 
                     db.run(
-                        `UPDATE profiles SET total_bonus_score = ? WHERE identification_code = ?`,
+                        `UPDATE profiles SET total_bonusPoints_score = ? WHERE identification_code = ?`,
                         [newScore, identificationCode],
                         (err) => {
                             if (err) {
@@ -748,7 +748,7 @@ app.get('/api/bonus/:identificationCode', (req, res) => {
     const {identificationCode} = req.params;
 
     db.get(
-        `SELECT total_bonus_score, assistance_kilometer 
+        `SELECT total_bonusPoints_score, assistance_kilometer 
          FROM profiles 
          WHERE identification_code = ?`,
         [identificationCode],
@@ -763,7 +763,7 @@ app.get('/api/bonus/:identificationCode', (req, res) => {
             }
 
             res.json({
-                total_bonus_score: row.total_bonus_score || 0,
+                total_bonusPoints_score: row.total_bonusPoints_score || 0,
                 assistance_kilometer: row.assistance_kilometer || 0
             });
         }

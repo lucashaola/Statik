@@ -144,6 +144,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateScrollbarPosition();
     window.addEventListener('resize', updateScrollbarPosition);
-
-
 });

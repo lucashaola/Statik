@@ -144,6 +144,7 @@ function filterResults() {
         resultsDiv.innerHTML = '<div class="result-item">Keine Ergebnisse gefunden</div>';
     }
 }
+
 function showSearchResult(contentId, slideIndex) {
     const contents = document.querySelectorAll('.main-content .content');
     contents.forEach(content => {
