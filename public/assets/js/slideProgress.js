@@ -220,32 +220,69 @@ async function showProgressOverview() {
             const paginationContainer = document.querySelector('.pagination-dots');
 
             if (slider && paginationContainer) {
-                slider.innerHTML = '';
-                paginationContainer.innerHTML = '';
+                // Function to get items per page based on container height
+                const getItemsPerPage = () => {
+                    const menuItem = slider.closest('.menu-item');
+                    if (!menuItem) return 6;
 
-                for (let i = 0; i < Math.ceil(categories.length / 4); i++) {
-                    const page = document.createElement('div');
-                    page.className = 'progress-page';
+                    const totalHeight = menuItem.clientHeight;
+                    const progressBarHeight = 50;
+                    const paginationHeight = 30;
+                    const padding = 40; // Total vertical padding
+                    const footer = 80;
 
-                    const gridContainer = document.createElement('div');
-                    gridContainer.className = 'progress-grid';
-                    page.appendChild(gridContainer);
+                    // Available height for grid items
+                    const availableHeight = totalHeight - (progressBarHeight + paginationHeight + padding + footer);
 
-                    for (let j = i * 4; j < Math.min((i * 4) + 4, categories.length); j++) {
-                        const category = categories[j];
-                        const progress = progressData[`${category.key}_progress`] || 0;
+                    // Height of a single grid item including gap
+                    const singleItemHeight = 70;
+                    const gridGap = 20;
+                    const itemHeightWithGap = singleItemHeight + gridGap;
 
-                        gridContainer.insertAdjacentHTML('beforeend', renderCategoryItem(category, progress));
-                        const lastItem = gridContainer.lastElementChild;
-                        updateProgressCircle(lastItem, progress);
+                    const possibleRows = Math.floor(availableHeight / itemHeightWithGap);
+                    const rows = Math.min(Math.max(possibleRows, 1), 3);
+
+                    return rows * 2;
+                };
+
+                const updateSliderContent = () => {
+                    slider.innerHTML = '';
+                    paginationContainer.innerHTML = '';
+
+                    const itemsPerPage = getItemsPerPage();
+
+                    for (let i = 0; i < Math.ceil(categories.length / itemsPerPage); i++) {
+                        const page = document.createElement('div');
+                        page.className = 'progress-page';
+
+                        const gridContainer = document.createElement('div');
+                        gridContainer.className = 'progress-grid';
+                        page.appendChild(gridContainer);
+
+                        for (let j = i * itemsPerPage; j < Math.min((i * itemsPerPage) + itemsPerPage, categories.length); j++) {
+                            const category = categories[j];
+                            const progress = progressData[`${category.key}_progress`] || 0;
+
+                            gridContainer.insertAdjacentHTML('beforeend', renderCategoryItem(category, progress));
+                            const lastItem = gridContainer.lastElementChild;
+                            updateProgressCircle(lastItem, progress);
+                        }
+
+                        slider.appendChild(page);
+
+                        const dot = document.createElement('div');
+                        dot.className = 'dot' + (i === 0 ? ' active' : '');
+                        paginationContainer.appendChild(dot);
                     }
+                };
 
-                    slider.appendChild(page);
+                updateSliderContent();
 
-                    const dot = document.createElement('div');
-                    dot.className = 'dot' + (i === 0 ? ' active' : '');
-                    paginationContainer.appendChild(dot);
-                }
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(updateSliderContent, 250);
+                });
 
                 slider.addEventListener('scroll', () => {
                     const index = Math.round(slider.scrollLeft / slider.offsetWidth);
