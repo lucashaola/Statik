@@ -36,6 +36,7 @@ function preventDoubleTapZoom() {
 
 function initializeWelcomeScreen() {
     const welcomeHeading = document.querySelector('.welcome h1');
+    if (!welcomeHeading) return;
     if (welcomeHeading) {
         const username = localStorage.getItem('userName');
         if (username) {

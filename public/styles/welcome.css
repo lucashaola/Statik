@@ -34,7 +34,7 @@ html {
 .user-switch {
     color: #333333;
     border: none;
-    font-size: 20px;
+    font-size: 1.5em;
     cursor: pointer;
     padding: 10px 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -45,8 +45,8 @@ html {
 }
 
 .user-switch img {
-    width: 24px;
-    height: 24px;
+    width: 1.5em;
+    height: 1.5em;
     margin-right: 10px;
 }
 
@@ -71,7 +71,7 @@ html {
 }
 
 .welcome h1 {
-    font-size: 48px;
+    font-size: 4em;
     display: flex;
     align-items: center;
     white-space: nowrap;
@@ -102,23 +102,32 @@ html {
     display: flex;
     flex-direction: column;
     text-align: center;
-
 }
+
+.menu-item {
+    height: 60vh;
+}
+
+@media (min-height: 800px) {
+    .menu-item {
+        height: 65vh;
+    }
+}
+
 .menu-item h2 {
-    font-size: 28px;
+    font-size: 2em;
 }
 
 .menu-item p {
     margin-bottom: auto;
     line-height: 1.6;
-    font-size: 18px;
 }
 
 
 /* Tutorial Styling */
 .no-content {
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.5em;
     color: #666;
     margin-top: 20px;
 }
@@ -202,14 +211,14 @@ html {
 
 .result-item strong {
     color: black;
-    font-size: 16px;
+    font-size: 1.5em;
     display: block;
     margin-bottom: 0;
 }
 
 .result-item small {
     color: #333333;
-    font-size: 14px;
+    font-size: 1em;
     display: block;
 }
 
@@ -303,11 +312,6 @@ html {
     padding-right: 0;
 }
 
-.progress-text {
-    font-size: 14px;
-    font-weight: bold;
-}
-
 /* Tutorial Progress Styling*/
 .progress-grid {
     display: grid;
@@ -338,13 +342,18 @@ html {
 }
 
 .category-icon {
-    width: 40px;
-    height: 40px;
+    width: 3em;
+    height: 3em;
 }
 
 .category-name {
     font-weight: bold;
     line-height: 1.2;
+}
+
+.category-name {
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 .progress-circle {

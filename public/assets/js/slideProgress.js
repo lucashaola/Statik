@@ -220,7 +220,6 @@ async function showProgressOverview() {
             const paginationContainer = document.querySelector('.pagination-dots');
 
             if (slider && paginationContainer) {
-                // Function to get items per page based on container height
                 const getItemsPerPage = () => {
                     const menuItem = slider.closest('.menu-item');
                     if (!menuItem) return 6;
@@ -228,19 +227,16 @@ async function showProgressOverview() {
                     const totalHeight = menuItem.clientHeight;
                     const progressBarHeight = 50;
                     const paginationHeight = 30;
-                    const padding = 40; // Total vertical padding
+                    const padding = 40;
                     const footer = 80;
 
-                    // Available height for grid items
                     const availableHeight = totalHeight - (progressBarHeight + paginationHeight + padding + footer);
-
-                    // Height of a single grid item including gap
                     const singleItemHeight = 70;
                     const gridGap = 20;
                     const itemHeightWithGap = singleItemHeight + gridGap;
 
                     const possibleRows = Math.floor(availableHeight / itemHeightWithGap);
-                    const rows = Math.min(Math.max(possibleRows, 1), 3);
+                    const rows = Math.min(Math.max(possibleRows, 1), 4);
 
                     return rows * 2;
                 };
