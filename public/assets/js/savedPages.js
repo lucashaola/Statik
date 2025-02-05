@@ -76,13 +76,10 @@ function getCurrentPage() {
         const activeContent = document.querySelector('.content.active');
         if (!activeContent) return null;
 
-        const activeSlide = activeContent.querySelector('.slide[style*="display: block"]');
-        if (!activeSlide) return null;
-
         return {
             page: activeContent.id,
-            displayName: 'Tutorial: ' + activeContent.id,
-            slideIndex: Array.from(activeContent.querySelectorAll('.slide')).indexOf(activeSlide)
+            displayName: 'Tutorial: ' + tutorialContent[activeContent.id].title,
+            slideIndex: 0  // We no longer have slides, so always 0
         };
     } else {
         const pages = document.querySelectorAll('.content-container .page');
@@ -122,57 +119,43 @@ async function showSavedPages() {
             return;
         }
 
-        const categoryTitles = {
-            'aktivierung': 'Aktivierung',
-            'verkehrszeichen': 'Verkehrszeichenassistent',
-            'geschwindigkeit': 'Geschwindigkeitsassistent',
-            'stau': 'Stauassistent',
-            'ampelerkennung': 'Ampelerkennung',
-            'spurführung': 'Spurführungsassistent',
-            'spurwechsel': 'Spurwechselassistent',
-            'notbrems': 'Notbremsassistent',
-            'deaktivierung': 'Deaktivierung',
-            'risiken': 'Risiken und Verantwortung'
-        };
-
         const savedPagesHTML = [];
 
+        // Handle tutorial pages
         for (const [category, slideIndices] of Object.entries(tutorialData.savedPages)) {
-            for (const index of slideIndices) {
-                const contentResponse = await fetch(`/api/slide-content/${category}/${index}`);
-                const contentData = await contentResponse.json();
-
-                if (contentData.success) {
-                    savedPagesHTML.push(createSavedPageHTML(
-                        category,
-                        index,
-                        'tutorial',
-                        categoryTitles[category] || category,
-                        contentData.content.heading,
-                        contentData.content.text,
-                        'Tutorial: ' + categoryTitles[category]
-                    ));
-                }
+            if (tutorialContent[category]) {
+                const content = tutorialContent[category];
+                savedPagesHTML.push(createSavedPageHTML(
+                    category,
+                    0,
+                    'tutorial',
+                    content.title,
+                    content.title,
+                    content.content[0].text || '',
+                    'Tutorial: ' + content.title
+                ));
             }
         }
 
-        for (const [category, slideIndices] of Object.entries(overviewData.savedPages)) {
-            for (const index of slideIndices) {
-                const contentResponse = await fetch(`/api/slide-content/${category}/${index}?pageType=overview`);
-                const contentData = await contentResponse.json();
-
-                if (contentData.success) {
+        // Handle overview pages - note the changes here
+        if (overviewData.savedPages.overview) {
+            overviewData.savedPages.overview.forEach(index => {
+                // Find the corresponding content based on index
+                const categoryKeys = Object.keys(tutorialContent);
+                if (index < categoryKeys.length) {
+                    const category = categoryKeys[index];
+                    const content = tutorialContent[category];
                     savedPagesHTML.push(createSavedPageHTML(
-                        category,
+                        'overview',
                         index,
                         'overview',
-                        categoryTitles[category] || category,
-                        contentData.content.heading,
-                        contentData.content.text,
-                        'Schnellüberblick: ' + contentData.content.heading
+                        content.title,
+                        content.title,
+                        content.content[0].text || '',
+                        'Schnellüberblick: ' + content.title
                     ));
                 }
-            }
+            });
         }
 
         if (savedPagesHTML.length === 0) {
@@ -200,19 +183,24 @@ async function showSavedPages() {
 }
 
 function createSavedPageHTML(category, index, pageType, categoryTitle, heading, text, displayName) {
-    const truncatedText = text.substring(0, 100) + (text.length > 100 ? '...' : '');
+    // Get content from tutorialContent without creating actual slides
+    const content = tutorialContent[category];
+    const title = content ? content.title : categoryTitle;
+    const firstContent = content ? content.content[0] : null;
+    const truncatedText = firstContent ?
+        (firstContent.text || '').substring(0, 100) + ((firstContent.text || '').length > 100 ? '...' : '') :
+        text;
 
     return `
         <div class="saved-page-item" onclick="navigateToSlide('${category}', ${index}, '${pageType}')">
             <div class="saved-page-content">
                 <div class="saved-page-header">
-                    <span class="saved-page-category">${displayName || categoryTitle}</span>
+                    <span class="saved-page-category">${displayName || title}</span>
                     <button class="delete-btn" 
                         onclick="event.stopPropagation(); deleteSavedPage('${category}', ${index}, '${pageType}')">
                         <img src="../../assets/icons/profile/Trash.svg" alt="Delete" class="delete-icon">
                     </button>
                 </div>
-                <h3 class="saved-page-title">${heading}</h3>
                 <p class="saved-page-preview">${truncatedText}</p>
             </div>
         </div>
@@ -221,7 +209,6 @@ function createSavedPageHTML(category, index, pageType, categoryTitle, heading, 
 
 function navigateToSlide(category, index, pageType) {
     localStorage.setItem('selectedCategory', category);
-    localStorage.setItem('selectedSlide', index);
 
     if (pageType === 'tutorial') {
         window.location.href = '../../views/tutorial';

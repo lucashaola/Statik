@@ -84,7 +84,7 @@ html, body {
     padding: 0 15px 0 0;
     font-size: 2em;
     text-align: left;
-    border-bottom: 3px solid rgb(102, 117, 154);
+    border-bottom: 3px solid rgb(66, 66, 66);
     width: 102%;
     position: sticky;
     top: 0;
@@ -125,12 +125,13 @@ html, body {
 .sidebar-item {
     display: flex;
     align-items: center;
-    padding: 15px;
     cursor: pointer;
     transition: 0.3s;
     gap: 15px;
     font-size: 1.5em;
     line-height: 1.5;
+    padding: 15px 50px 15px 15px;
+    position: relative;
 
     color: #808080; /* Grey color for unselected text */
 }
@@ -155,6 +156,28 @@ html, body {
 .sidebar-item:hover {
     background-color: rgba(225, 231, 244, 0.51);
 }
+
+.category-checkmark {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6f9ddc;
+    font-weight: bold;
+    visibility: hidden;
+    transition: visibility 0.2s ease;
+}
+
+.category-checkmark.visible {
+    visibility: visible;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 
 /* Search and Close Button Styling */
 .search, .close-btn {

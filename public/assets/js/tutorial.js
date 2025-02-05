@@ -11,6 +11,15 @@ const slideIndex = {
     'risiken': 0
 };
 let sidebarPS, mainPS;
+const hasShownCompletionMessage = () => {
+    const userCode = localStorage.getItem('userCode');
+    return localStorage.getItem(`completionMessageShown_${userCode}`) === 'true';
+};
+
+const setCompletionMessageShown = () => {
+    const userCode = localStorage.getItem('userCode');
+    localStorage.setItem(`completionMessageShown_${userCode}`, 'true');
+};
 
 function showContent(contentId) {
     // Handle sidebar selection
@@ -22,19 +31,6 @@ function showContent(contentId) {
     const selectedItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
     if (selectedItem) {
         selectedItem.classList.add('selected');
-
-        // Handle sidebar scroll position
-        const sidebarContent = document.querySelector('.sidebar-content');
-        const ps = sidebarContent._ps;  // get PerfectScrollbar instance
-        if (ps) {
-            const itemTop = selectedItem.offsetTop;
-            const containerTop = sidebarContent.scrollTop;
-            const containerHeight = sidebarContent.clientHeight;
-
-            if (itemTop < containerTop || itemTop > containerTop + containerHeight) {
-                ps.scrollTop = itemTop - (containerHeight / 2);
-            }
-        }
     }
 
     // Show selected content
@@ -48,70 +44,26 @@ function showContent(contentId) {
         // Reset scroll position of main content
         const mainContent = document.querySelector('.main-content');
         if (mainContent) {
-            mainContent.scrollTop = 0; // This will reset the scroll position
-
-            // If you're using PerfectScrollbar, also update it
-            if (mainContent._ps) {
-                mainContent._ps.scrollTop = 0;
-                mainContent._ps.update();
+            mainContent.scrollTop = 0;
+            if (mainPS) {
+                mainPS.scrollTop = 0;
+                mainPS.update();
             }
         }
+
+        // Scroll sidebar to selected item
+        const sidebarContent = document.querySelector('.sidebar-content');
+        const selectedItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
+
+        if (sidebarContent && selectedItem) {
+            sidebarContent.scrollTop = selectedItem.offsetTop - 100;
+        }
+
         unlockCategory(contentId);
+        updateUnlockedCategoryCheckmarks();
     }
 
     initializeBookmark();
-}
-
-function filterResults() {
-    const searchInput = document.querySelector('.search');
-    const resultsDiv = document.getElementById('results');
-    if (!searchInput || !resultsDiv) return;
-
-    const searchTerm = searchInput.value.toLowerCase().trim();
-
-    if (searchTerm.length < 2) {
-        resultsDiv.style.display = 'none';
-        return;
-    }
-
-    let searchResults = [];
-
-    Object.entries(tutorialContent).forEach(([contentId, content]) => {
-        content.content.forEach((slide, index) => {
-            const text = slide.text || '';
-            const subtext = slide.subtext || '';
-
-            if (text.toLowerCase().includes(searchTerm) ||
-                subtext.toLowerCase().includes(searchTerm) ||
-                content.title.toLowerCase().includes(searchTerm)) {
-                searchResults.push({
-                    title: content.title,
-                    text: text,
-                    subtext: subtext,
-                    contentId: contentId,
-                    slideIndex: index
-                });
-            }
-        });
-    });
-
-    if (searchResults.length > 0) {
-        resultsDiv.style.display = 'block';
-        resultsDiv.innerHTML = searchResults.map(result => `
-            <div class="result-item" onclick="${window.location.pathname.includes('tutorial') ?
-            `showSearchResult('${result.contentId}')` :
-            `localStorage.setItem('selectedCategory', '${result.contentId}'); 
-                 localStorage.setItem('selectedSlide', '${result.slideIndex}'); 
-                 window.location.href='/views/tutorial'`}">
-                <strong>${tutorialContent[result.contentId].title}</strong><br>
-                <small>${result.text ? result.text.substring(0, 100) + '...' : ''}</small>
-                ${result.subtext ? `<br><small>${result.subtext}</small>` : ''}
-            </div>
-        `).join('');
-    } else {
-        resultsDiv.style.display = 'block';
-        resultsDiv.innerHTML = '<div class="result-item">Keine Ergebnisse gefunden</div>';
-    }
 }
 
 function showSearchResult(contentId) {
@@ -124,15 +76,97 @@ function showSearchResult(contentId) {
     resultsDiv.style.display = 'none';
     document.querySelector('.search').value = '';
 
-    // Scroll sidebar to selected item
-    const sidebarContent = document.querySelector('.sidebar-content');
-    const selectedItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
+    initializeBookmark();
+}
 
-    if (sidebarContent && selectedItem) {
-        sidebarContent.scrollTop = selectedItem.offsetTop - 100;
+async function updateUnlockedCategoryCheckmarks() {
+    const identificationCode = localStorage.getItem('userCode');
+
+    if (!identificationCode) {
+        console.warn('No user code found.');
+        return;
     }
 
-    initializeBookmark();
+    try {
+        const verifyResponse = await fetch(`/api/users/${identificationCode}/verify`);
+        const verifyData = await verifyResponse.json();
+
+        if (!verifyData.exists) {
+            localStorage.removeItem('userCode');
+            return;
+        }
+
+        // Get user data
+        const response = await fetch(`/api/users/${identificationCode}`);
+        const userData = await response.json();
+        const unlockedCategories = JSON.parse(userData.unlocked_categories || '[]');
+
+        // Update sidebar items
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            const categoryId = item.getAttribute('onclick').match(/'(.*?)'/)[1];
+
+            // Check if checkmark already exists, if not create it
+            let checkmark = item.querySelector('.category-checkmark');
+            if (!checkmark) {
+                checkmark = document.createElement('span');
+                checkmark.className = 'category-checkmark';
+                checkmark.textContent = '✓';
+                item.appendChild(checkmark);
+            }
+
+            // Show/hide checkmark based on unlocked status
+            if (unlockedCategories.includes(categoryId)) {
+                checkmark.classList.add('visible');
+            } else {
+                checkmark.classList.remove('visible');
+            }
+        });
+    } catch (error) {
+        console.error('Error updating category checkmarks:', error);
+    }
+}
+
+async function areAllCategoriesUnlocked() {
+    const identificationCode = localStorage.getItem('userCode');
+    if (!identificationCode) return false;
+
+    try {
+        const response = await fetch(`/api/users/${identificationCode}`);
+        const userData = await response.json();
+        const unlockedCategories = JSON.parse(userData.unlocked_categories || '[]');
+
+        const allCategories = [
+            'aktivierung', 'verkehrszeichen', 'geschwindigkeit',
+            'stau', 'ampelerkennung', 'spurführung',
+            'spurwechsel', 'notbrems', 'deaktivierung', 'risiken'
+        ];
+
+        return allCategories.every(category => unlockedCategories.includes(category));
+    } catch (error) {
+        console.error('Error checking categories:', error);
+        return false;
+    }
+}
+
+async function showCompletionPopup() {
+    const result = await Swal.fire({
+        title: 'Haben Sie die Inhalte de Tutorials gesehen?',
+        text: 'Dann Testen Sie Ihr Wissen',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Weiter',
+        cancelButtonText: 'Wissen testen',
+        confirmButtonColor: '#e4e4e7',
+        cancelButtonColor: '#e4e4e7',
+        reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+        window.location.href = '/views/welcome';
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+        window.location.href = '/views/profile?view=test';
+
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -179,5 +213,29 @@ document.addEventListener('DOMContentLoaded', function () {
     if (selectedCategory) {
         showContent(selectedCategory);
         localStorage.removeItem('selectedCategory');
+    }
+
+    updateUnlockedCategoryCheckmarks();
+});
+
+document.addEventListener('click', async function(event) {
+    const target = event.target;
+    if (target.matches('.close-btn, .close-icon, .icon-right.arrow') || target.closest('a[href]')) {
+        event.preventDefault();
+
+        const userCode = localStorage.getItem('userCode');
+
+        try {
+            if (await areAllCategoriesUnlocked() && !hasShownCompletionMessage() && userCode) {
+                setCompletionMessageShown();
+                showCompletionPopup();
+            } else {
+                const destination = target.closest('a[href]')?.href || '/views/welcome';
+                window.location.href = destination;
+            }
+        } catch (error) {
+            const destination = target.closest('a[href]')?.href || '/views/welcome';
+            window.location.href = destination;
+        }
     }
 });

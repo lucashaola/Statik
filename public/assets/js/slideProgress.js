@@ -38,26 +38,6 @@ const progressTracker = {
         return response;
     },
 
-    getViewedSlides: async function (category) {
-        if (!this.isUserLoggedIn()) {
-            return [];
-        }
-
-        const userCode = localStorage.getItem('userCode');
-        try {
-            const response = await fetch(`/api/users/${userCode}/unlocked-categories`);
-            const handledResponse = await this.handleResponse(response);
-            if (!handledResponse) return [];
-
-            const data = await handledResponse.json();
-            const unlockedCategories = JSON.parse(data.unlocked_categories || '[]');
-            return unlockedCategories.includes(category) ? [0] : []; // Return [0] if category is unlocked, [] if not
-        } catch (error) {
-            console.error('Error getting unlocked categories:', error);
-            return [];
-        }
-    },
-
     calculateProgress: async function (category) {
         if (!this.isUserLoggedIn()) {
             return 0;
@@ -146,7 +126,7 @@ async function showProgressOverview() {
             return;
         }
 
-        const response = await fetch(`/api/users/${identificationCode}/unlocked-categories`);
+        const response = await fetch(`/api/users/${identificationCode}`); // Changed endpoint
         const userData = await response.json();
         const unlockedCategories = JSON.parse(userData.unlocked_categories || '[]');
 
@@ -163,14 +143,11 @@ async function showProgressOverview() {
             {key: 'risiken', name: 'Risiken und Verantwortung'}
         ].map(category => ({
             ...category,
+            progress: unlockedCategories.includes(category.key) ? 100 : 0,
             icon: `../../assets/icons/tutorial/${category.name}.svg`
         }));
 
-        const progressData = {};
-        categories.forEach(category => {
-            progressData[`${category.key}_progress`] = unlockedCategories.includes(category.key) ? 100 : 0;
-        });
-        const totalProgress = progressData.total_progress || 0;
+        const totalProgress = Math.round((unlockedCategories.length / categories.length) * 100);
         const totalProgressHTML = `
             <div class="total-progress-container">
                 <div class="total-progress-bar">
@@ -246,13 +223,10 @@ async function showProgressOverview() {
 
                         for (let j = i * itemsPerPage; j < Math.min((i * itemsPerPage) + itemsPerPage, categories.length); j++) {
                             const category = categories[j];
-                            const progress = progressData[`${category.key}_progress`] || 0;
-
-                            gridContainer.insertAdjacentHTML('beforeend', renderCategoryItem(category, progress));
+                            gridContainer.insertAdjacentHTML('beforeend', renderCategoryItem(category));
                             const lastItem = gridContainer.lastElementChild;
-                            updateProgressCircle(lastItem, progress);
+                            updateProgressCircle(lastItem, category.progress);
                         }
-
                         slider.appendChild(page);
 
                         const dot = document.createElement('div');
@@ -296,8 +270,7 @@ async function showProgressOverview() {
                 const categoryName = item.querySelector('.category-name').textContent;
                 const category = categories.find(cat => cat.name === categoryName);
                 if (category) {
-                    const progress = progressData[`${category.key}_progress`] || 0;
-                    updateProgressCircle(item, progress);
+                    updateProgressCircle(item, category.progress);
                 }
             });
 

@@ -51,7 +51,7 @@ function initializeWelcomeScreen() {
         userSwitch.addEventListener("click", checkForExistingProfile);
     }
 
-    closeResultsOnOutsideClick(); 
+    closeResultsOnOutsideClick();
 }
 
 function closeResultsOnOutsideClick(){
@@ -133,3 +133,56 @@ function initializeProfileScreen() {
 
     setActiveView(viewParam || 'overview');
 }
+
+function filterResults() {
+    const searchInput = document.querySelector('.search');
+    const resultsDiv = document.getElementById('results');
+    if (!searchInput || !resultsDiv) return;
+
+    const searchTerm = searchInput.value.toLowerCase().trim();
+
+    if (searchTerm.length < 2) {
+        resultsDiv.style.display = 'none';
+        return;
+    }
+
+    let searchResults = [];
+
+    Object.entries(tutorialContent).forEach(([contentId, content]) => {
+        content.content.forEach((slide, index) => {
+            const text = slide.text || '';
+            const subtext = slide.subtext || '';
+
+            if (text.toLowerCase().includes(searchTerm) ||
+                subtext.toLowerCase().includes(searchTerm) ||
+                content.title.toLowerCase().includes(searchTerm)) {
+                searchResults.push({
+                    title: content.title,
+                    text: text,
+                    subtext: subtext,
+                    contentId: contentId,
+                    slideIndex: index
+                });
+            }
+        });
+    });
+
+    if (searchResults.length > 0) {
+        resultsDiv.style.display = 'block';
+        resultsDiv.innerHTML = searchResults.map(result => `
+            <div class="result-item" onclick="${window.location.pathname.includes('tutorial') ?
+            `showSearchResult('${result.contentId}')` :
+            `localStorage.setItem('selectedCategory', '${result.contentId}'); 
+                 localStorage.setItem('selectedSlide', '${result.slideIndex}'); 
+                 window.location.href='/views/tutorial'`}">
+                <strong>${tutorialContent[result.contentId].title}</strong><br>
+                <small>${result.text ? result.text.substring(0, 100) + '...' : ''}</small>
+                ${result.subtext ? `<br><small>${result.subtext}</small>` : ''}
+            </div>
+        `).join('');
+    } else {
+        resultsDiv.style.display = 'block';
+        resultsDiv.innerHTML = '<div class="result-item">Keine Ergebnisse gefunden</div>';
+    }
+}
+

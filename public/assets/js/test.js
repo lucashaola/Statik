@@ -240,8 +240,8 @@ function showCompletionMessage() {
 
 function showLockedCategoryMessage() {
     Swal.fire({
-        title: 'Test nicht verfügbar',
-        text: 'Sie müssen zuerst entweder die Schnellübersicht oder alle Folien zur Kategorie im detaillierten Tutorial anschauen.',
+        title: 'Testfragen nicht verfügbar',
+        text: 'Schauen Sie sich die Inhalte des Tutorials über den Schnellüberblick oder das Hauptmenü an',
         icon: 'info',
         confirmButtonText: 'OK',
         confirmButtonColor: '#e4e4e7',
