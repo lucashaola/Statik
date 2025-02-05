@@ -43,6 +43,19 @@ function showContent(contentId) {
     const targetContent = document.getElementById(contentId);
     if (targetContent) {
         targetContent.classList.add('active');
+
+        // Reset scroll position of main content
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.scrollTop = 0; // This will reset the scroll position
+
+            // If you're using PerfectScrollbar, also update it
+            if (mainContent._ps) {
+                mainContent._ps.scrollTop = 0;
+                mainContent._ps.update();
+            }
+        }
+        unlockCategory(contentId);
     }
 
     initializeBookmark();
@@ -200,10 +213,10 @@ document.addEventListener('DOMContentLoaded', function () {
             scrollbarYMargin: 0,
             railYVisible: true
         });
-    }
 
-    closeResultsOnOutsideClick();
-    showContent('aktivierung'); // Preselect Aktivierung on page load
+        closeResultsOnOutsideClick();
+        showContent('aktivierung'); // Preselect Aktivierung on page load
+    }
 
     if (mainContent) {
         new PerfectScrollbar(mainContent, {
@@ -221,24 +234,3 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.removeItem('selectedCategory');
     }
 });
-
-function closeResultsOnOutsideClick(){
-    const searchContainer = document.querySelector('.search-container');
-    if (searchContainer) {
-        const results = document.querySelector('.results');
-        if (results) {
-            results.addEventListener('click', function (event) {
-                event.stopPropagation();
-            });
-        }
-
-        document.addEventListener('click', function (event) {
-            if (searchContainer && !searchContainer.contains(event.target)) {
-                const results = document.getElementById('results');
-                if (results) {
-                    results.style.display = 'none';
-                }
-            }
-        });
-    }
-}

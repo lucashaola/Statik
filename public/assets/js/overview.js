@@ -88,7 +88,7 @@ async function navigatePage(direction) {
             const result = await Swal.fire({
                 title: 'Sie haben alle Inhalte des Tutorials gesehen.',
                 text: 'Testen Sie nun das teilautomatisierte Fahren für mehr Sicherheit und Komfort! Gerne können Sie Ihr Wissen zuvor nochmal testen. Viel Spaß!',
-                icon: 'question',
+                icon: 'info',
                 showCancelButton: true,
                 cancelButtonText: 'Wissen testen',
                 confirmButtonText: 'Weiter',
@@ -98,9 +98,9 @@ async function navigatePage(direction) {
             });
 
             if (result.isConfirmed) {
-                window.location.href = '../../views/profile?view=test';
-            } else {
                 window.location.href = '../../views/welcome';
+            } else {
+                window.location.href = '../../views/profile?view=test';
             }
 
             return;

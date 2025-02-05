@@ -45,50 +45,34 @@ const progressTracker = {
 
         const userCode = localStorage.getItem('userCode');
         try {
-            const response = await fetch(`/api/users/${userCode}/viewed-slides/${category}`);
+            const response = await fetch(`/api/users/${userCode}/unlocked-categories`);
             const handledResponse = await this.handleResponse(response);
             if (!handledResponse) return [];
 
             const data = await handledResponse.json();
-            return data.viewedSlides || [];
+            const unlockedCategories = JSON.parse(data.unlocked_categories || '[]');
+            return unlockedCategories.includes(category) ? [0] : []; // Return [0] if category is unlocked, [] if not
         } catch (error) {
-            console.error('Error getting viewed slides:', error);
+            console.error('Error getting unlocked categories:', error);
             return [];
         }
     },
 
-    markSlideAsViewed: async function (category, slideIndex) {
-        if (!this.isUserLoggedIn()) {
-            return;
-        }
-
-        const userCode = localStorage.getItem('userCode');
-        try {
-            await fetch(`/api/users/${userCode}/viewed-slides/${category}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({slideIndex})
-            });
-
-            const viewedSlides = await this.getViewedSlides(category);
-            const totalSlides = document.querySelectorAll(`#${category} .slide`).length;
-            const progress = Math.round((viewedSlides.length / totalSlides) * 100);
-
-            await this.updateProgress(category, progress);
-        } catch (error) {
-            console.error('Error marking slide as viewed:', error);
-        }
-    },
-
-    calculateProgress: async function (category, totalSlides) {
+    calculateProgress: async function (category) {
         if (!this.isUserLoggedIn()) {
             return 0;
         }
 
-        const viewedSlides = await this.getViewedSlides(category);
-        return Math.round((viewedSlides.length / totalSlides) * 100);
+        const userCode = localStorage.getItem('userCode');
+        try {
+            const response = await fetch(`/api/users/${userCode}/unlocked-categories`);
+            const data = await response.json();
+            const unlockedCategories = JSON.parse(data.unlocked_categories || '[]');
+            return unlockedCategories.includes(category) ? 100 : 0;
+        } catch (error) {
+            console.error('Error calculating progress:', error);
+            return 0;
+        }
     },
 
     updateProgress: async function (category, progress) {
@@ -162,8 +146,9 @@ async function showProgressOverview() {
             return;
         }
 
-        const response = await fetch(`/api/users/${identificationCode}/progress`);
-        const progressData = await response.json();
+        const response = await fetch(`/api/users/${identificationCode}/unlocked-categories`);
+        const userData = await response.json();
+        const unlockedCategories = JSON.parse(userData.unlocked_categories || '[]');
 
         const categories = [
             {key: 'aktivierung', name: 'Aktivierung'},
@@ -181,6 +166,10 @@ async function showProgressOverview() {
             icon: `../../assets/icons/tutorial/${category.name}.svg`
         }));
 
+        const progressData = {};
+        categories.forEach(category => {
+            progressData[`${category.key}_progress`] = unlockedCategories.includes(category.key) ? 100 : 0;
+        });
         const totalProgress = progressData.total_progress || 0;
         const totalProgressHTML = `
             <div class="total-progress-container">

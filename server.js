@@ -29,22 +29,6 @@ const db = new sqlite3.Database('users.db', (err) => {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
 
-        db.run(`CREATE TABLE IF NOT EXISTS slide_progress (
-            identification_code TEXT PRIMARY KEY,
-            aktivierung_progress INTEGER DEFAULT 0,
-            verkehrszeichen_progress INTEGER DEFAULT 0,
-            geschwindigkeit_progress INTEGER DEFAULT 0,
-            stau_progress INTEGER DEFAULT 0,
-            ampelerkennung_progress INTEGER DEFAULT 0,
-            spurführung_progress INTEGER DEFAULT 0,
-            spurwechsel_progress INTEGER DEFAULT 0,
-            notbrems_progress INTEGER DEFAULT 0,
-            deaktivierung_progress INTEGER DEFAULT 0,
-            risiken_progress INTEGER DEFAULT 0,
-            viewed_slides TEXT DEFAULT '{}',
-            FOREIGN KEY (identification_code) REFERENCES profiles(identification_code)
-        )`);
-
         db.run(`CREATE TABLE IF NOT EXISTS test_progress (
             identification_code TEXT PRIMARY KEY,
             correctly_answered TEXT DEFAULT '{}',
@@ -101,49 +85,19 @@ app.post('/api/users', (req, res) => {
                 return;
             }
 
-            db.run(
-                `INSERT INTO slide_progress (identification_code) VALUES (?)`,
-                [identificationCode],
-                function (err) {
-                    if (err) {
-                        res.status(400).json({error: err.message});
-                        return;
-                    }
-
-                    res.json({
-                        identification_code: identificationCode,
-                        name: name,
-                        total_bonusPoints_score: 0,
-                        assistance_kilometer: 0
-                    });
-                }
-            );
-        }
-    );
-});
-
-app.get('/api/users', (req, res) => {
-    db.all(
-        `SELECT p.*, sp.* 
-         FROM profiles p 
-         LEFT JOIN slide_progress sp ON p.identification_code = sp.identification_code`,
-        [],
-        (err, rows) => {
-            if (err) {
-                res.status(400).json({error: err.message});
-                return;
-            }
-            res.json(rows);
+            res.json({
+                identification_code: identificationCode,
+                name: name,
+                total_bonusPoints_score: 0,
+                assistance_kilometer: 0
+            });
         }
     );
 });
 
 app.get('/api/users/:code', (req, res) => {
     db.get(
-        `SELECT p.*, sp.* 
-         FROM profiles p 
-         LEFT JOIN slide_progress sp ON p.identification_code = sp.identification_code 
-         WHERE p.identification_code = ?`,
+        `SELECT * FROM profiles WHERE identification_code = ?`,
         [req.params.code],
         (err, row) => {
             if (err) {
@@ -151,210 +105,6 @@ app.get('/api/users/:code', (req, res) => {
                 return;
             }
             res.json(row);
-        }
-    );
-});
-
-// Slide Progress Handling
-app.post('/api/users/:code/progress', (req, res) => {
-    const {code} = req.params;
-    const {category, progress} = req.body;
-
-    if (!code) {
-        return res.status(400).json({error: 'No user code provided'});
-    }
-
-    db.get('SELECT * FROM profiles WHERE identification_code = ?', [code], (err, user) => {
-        if (err) {
-            return res.status(500).json({error: err.message});
-        }
-
-        if (!user) {
-            return res.status(401).json({
-                error: 'User not found',
-                action: 'CLEAR_LOCAL_STORAGE'
-            });
-        }
-
-        const columnMapping = {
-            'aktivierung': 'aktivierung_progress',
-            'verkehrszeichen': 'verkehrszeichen_progress',
-            'geschwindigkeit': 'geschwindigkeit_progress',
-            'stau': 'stau_progress',
-            'ampelerkennung': 'ampelerkennung_progress',
-            'spurführung': 'spurführung_progress',
-            'spurwechsel': 'spurwechsel_progress',
-            'notbrems': 'notbrems_progress',
-            'deaktivierung': 'deaktivierung_progress',
-            'risiken': 'risiken_progress'
-        };
-
-        const dbColumn = columnMapping[category];
-
-        if (!dbColumn) {
-            return res.status(400).json({error: 'Invalid category'});
-        }
-
-        db.run(
-            `UPDATE slide_progress SET ${dbColumn} = ? WHERE identification_code = ?`,
-            [progress, code],
-            function (err) {
-                if (err) {
-                    return res.status(400).json({error: err.message});
-                }
-
-                db.get(
-                    `SELECT sp.*, tp.correctly_answered
-                     FROM slide_progress sp 
-                     LEFT JOIN test_progress tp ON sp.identification_code = tp.identification_code 
-                     WHERE sp.identification_code = ?`,
-                    [code],
-                    (err, row) => {
-                        if (err) {
-                            return res.status(400).json({error: err.message});
-                        }
-
-                        // Calculate slide part (90% max)
-                        const progressValues = Object.values(columnMapping).map(col => row[col] || 0);
-                        const slideProgress = progressValues.reduce((sum, val) => sum + val, 0) / progressValues.length;
-                        const slideProgressPart = Math.round(slideProgress * 0.9);
-
-                        // Calculate test part (10% max)
-                        const correctlyAnswered = JSON.parse(row.correctly_answered || '{}');
-                        let testProgressPart = 0;
-                        Object.keys(categoryQuestions).forEach(cat => {
-                            if (correctlyAnswered[cat]?.length === categoryQuestions[cat].length) {
-                                testProgressPart += 1; // Add 1% for each completed category
-                            }
-                        });
-
-                        const totalProgress = slideProgressPart + testProgressPart;
-
-                        db.run(
-                            'UPDATE profiles SET total_progress = ? WHERE identification_code = ?',
-                            [totalProgress, code],
-                            (err) => {
-                                if (err) {
-                                    return res.status(400).json({error: err.message});
-                                }
-                                res.json({
-                                    success: true,
-                                    progress: progress,
-                                    totalProgress: totalProgress
-                                });
-                            }
-                        );
-                    }
-                );
-            }
-        );
-    });
-});
-
-app.get('/api/users/:code/progress', (req, res) => {
-    const {code} = req.params;
-
-    if (!code) {
-        return res.json({error: 'No user code provided'});
-    }
-
-    db.get('SELECT * FROM profiles WHERE identification_code = ?', [code], (err, user) => {
-        if (err) {
-            return res.status(500).json({error: err.message});
-        }
-
-        if (!user) {
-            return res.status(401).json({
-                error: 'User not found',
-                action: 'CLEAR_LOCAL_STORAGE'
-            });
-        }
-
-        db.get(
-            `SELECT p.*, sp.* 
-             FROM profiles p 
-             LEFT JOIN slide_progress sp ON p.identification_code = sp.identification_code 
-             WHERE p.identification_code = ?`,
-            [code],
-            (err, row) => {
-                if (err) {
-                    return res.status(500).json({error: err.message});
-                }
-                res.json(row || {});
-            }
-        );
-    });
-});
-
-app.get('/api/users/:code/viewed-slides/:category', (req, res) => {
-    const {code, category} = req.params;
-
-    if (!code) {
-        return res.json({viewedSlides: []});
-    }
-
-    db.get('SELECT * FROM profiles WHERE identification_code = ?', [code], (err, user) => {
-        if (err) {
-            return res.status(500).json({error: err.message});
-        }
-
-        if (!user) {
-            return res.status(401).json({
-                error: 'User not found',
-                action: 'CLEAR_LOCAL_STORAGE'
-            });
-        }
-
-        db.get('SELECT viewed_slides FROM slide_progress WHERE identification_code = ?',
-            [code],
-            (err, row) => {
-                if (err) {
-                    return res.status(500).json({error: err.message});
-                }
-
-                const viewedSlides = JSON.parse(row?.viewed_slides || '{}');
-                res.json({
-                    viewedSlides: viewedSlides[category] || []
-                });
-            });
-    });
-});
-
-app.post('/api/users/:code/viewed-slides/:category', (req, res) => {
-    const {code, category} = req.params;
-    const {slideIndex} = req.body;
-
-    db.get('SELECT viewed_slides FROM slide_progress WHERE identification_code = ?',
-        [code],
-        (err, row) => {
-            if (err) {
-                return res.status(400).json({error: err.message});
-            }
-
-            if (!row) {
-                return res.json({success: false, message: 'User not found'});
-            }
-
-            const viewedSlides = JSON.parse(row.viewed_slides || '{}');
-
-            if (!viewedSlides[category]) {
-                viewedSlides[category] = [];
-            }
-
-            if (!viewedSlides[category].includes(slideIndex)) {
-                viewedSlides[category].push(slideIndex);
-            }
-
-            db.run(
-                'UPDATE slide_progress SET viewed_slides = ? WHERE identification_code = ?',
-                [JSON.stringify(viewedSlides), code],
-                (updateErr) => {
-                    if (updateErr) {
-                        return res.status(400).json({error: updateErr.message});
-                    }
-                    res.json({success: true});
-                }
-            );
         }
     );
 });

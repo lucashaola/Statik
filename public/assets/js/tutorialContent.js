@@ -195,6 +195,7 @@ const tutorialContent = {
                 text: "Das teilautomatisierte Fahren entbindet Sie nicht von der Verantwortung als Fahrer*in. <br>" +
                     "Es funktioniert in den meisten Fällen sehr gut, kann jedoch nicht alle Fahrsituationen abdecken." +
                     "Kommt das System an seine Grenzen, warnt es Sie und fordert zur Übernahme auf.",
+                media: "../../assets/pictures/overview/10-1.png",
                 addHr: true
             },
 

@@ -51,7 +51,28 @@ function initializeWelcomeScreen() {
         userSwitch.addEventListener("click", checkForExistingProfile);
     }
 
-    closeResultsOnOutsideClick(); //In SlideManager.js
+    closeResultsOnOutsideClick(); 
+}
+
+function closeResultsOnOutsideClick(){
+    const searchContainer = document.querySelector('.search-container');
+    if (searchContainer) {
+        const results = document.querySelector('.results');
+        if (results) {
+            results.addEventListener('click', function (event) {
+                event.stopPropagation();
+            });
+        }
+
+        document.addEventListener('click', function (event) {
+            if (searchContainer && !searchContainer.contains(event.target)) {
+                const results = document.getElementById('results');
+                if (results) {
+                    results.style.display = 'none';
+                }
+            }
+        });
+    }
 }
 
 function initializeProfileScreen() {
