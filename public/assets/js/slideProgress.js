@@ -298,6 +298,8 @@ async function showProgressOverview() {
                 <div class="slideProgress-progress-circles">
                             ${categories.map(category => renderCategoryItem(category, category.progress)).join('')}
                 </div>
+                <button class="test-btn">Testen</button>
+
             `;
 
             document.querySelectorAll('.slideProgress-progress-circle-item').forEach(item => {

@@ -31,7 +31,7 @@
         </svg>
     </button>
 
-    <button class="close-btn" onclick="window.history.back();">
+    <button class="close-btn" onclick="window.location.href = 'http://localhost:3000/views/welcome/';">
         <img class="close-icon" src="../../assets/icons/shared/Close.svg" alt="">
     </button>
 
@@ -163,19 +163,33 @@
                     <span class="page-indicator"></span>
                 </div>
                 <div class="slide" data-index="0">
+
                     <h2>Stauassistent</h2>
                     <p>Erkennt das Fahrzeug eine Stausituation (bei weniger als 60 km/h), wird der Stauassistent automatisch
-                        aktiviert. Im Display leuchtet das Symbol TRAFFIC ASSIST grün auf</p>
+                        aktiviert. Im Display leuchtet das Symbol TRAFFIC ASSIST <span class="green-text">ACC-Symbol</span> auf
+                        <img class="media" src="../../assets/pictures/overview/4-1.gif" alt=""></p>
+
                     <img class="arrow-right" onclick="changeSlide('stau', 1)"
                          src="../../assets/icons/shared/Arrow Right.svg" alt="">
                 </div>
                 <div class="slide" data-index="1" style="display: none;">
                     <img class="arrow-left" onclick="changeSlide('stau', -1)"
                          src="../../assets/icons/shared/Arrow Right.svg" alt="">
+
+                    Das Auto beschleunigt, bremst und lenkt dann selbstständig und hält den Abstand zum Vorderfahrzeug
+                    automatisch.
+                    <img class="media" src="../../assets/pictures/overview/4-2.gif" alt="">
+
                     <img class="arrow-right" onclick="changeSlide('stau', 1)"
                          src="../../assets/icons/shared/Arrow Right.svg" alt="">
                 </div>
                 <div class="slide" data-index="2" style="display: none;">
+                    Das Auto fährt aus dem Stillstand automatisch wieder an <span class="red-text">ODER:</span> 3. Drücke die <span class="blue-text">Set-Taste</span>,
+                    damit das Auto aus dem Stillstand automatisch wieder losfährt <br>
+                    Wenn der Stauassistent aktiviert ist, kannst Du die Hände vom Lenkrad nehmen. Dein Blick muss aber weiterhin
+                    auf die Straße gerichtet sein.
+                    <img class="media" src="../../assets/pictures/overview/4-3.jpg" alt="">
+
                     <img class="arrow-left" onclick="changeSlide('stau', -1)"
                          src="../../assets/icons/shared/Arrow Right.svg" alt="">
                 </div>
@@ -354,7 +368,7 @@
                     <img class="footer-icon" id="homeIcon" src="../../assets/icons/footer/Home.svg" alt="Home">
                 </a>
                 <a>
-                    <img class="footer-icon" id="menuIcon" src="../../assets/icons/footer/Navigation.svg" alt="Menu">
+                    <img class="footer-icon" id="navigationIcon" src="../../assets/icons/footer/Navigation.svg" alt="Navigation">
                 </a>
             </div>
 

@@ -48,7 +48,8 @@ const db = new sqlite3.Database('users.db', (err) => {
         db.run(`CREATE TABLE IF NOT EXISTS test_progress (
             identification_code TEXT PRIMARY KEY,
             correctly_answered TEXT DEFAULT '{}',
-            incorrectly_answered TEXT DEFAULT '{}',
+            currently_incorrectly_answered TEXT DEFAULT '{}',
+            all_time_incorrectly_answered TEXT DEFAULT '{}',
             FOREIGN KEY (identification_code) REFERENCES profiles(identification_code)
         )`);
 
@@ -360,31 +361,34 @@ app.post('/api/users/:code/viewed-slides/:category', (req, res) => {
 
 // Test Questions Handeling
 app.post('/api/test/:code/update', (req, res) => {
-    const {code} = req.params;
-    const {category, questionIndex, isCorrect} = req.body;
+    const { code } = req.params;
+    const { category, questionIndex, isCorrect } = req.body;
 
     if (!code || category === undefined || questionIndex === undefined || isCorrect === undefined) {
-        return res.status(400).json({error: 'Missing required fields'});
+        return res.status(400).json({ error: 'Missing required fields' });
     }
 
     db.get(
-        `SELECT tp.correctly_answered, tp.incorrectly_answered, p.total_progress 
-         FROM test_progress tp 
-         JOIN profiles p ON tp.identification_code = p.identification_code 
+        `SELECT correctly_answered, currently_incorrectly_answered, all_time_incorrectly_answered, p.total_progress
+         FROM test_progress tp
+                  JOIN profiles p ON tp.identification_code = p.identification_code
          WHERE tp.identification_code = ?`,
         [code],
         (err, row) => {
-            if (err) return res.status(500).json({error: err.message});
+            if (err) return res.status(500).json({ error: err.message });
 
             let correctlyAnswered = {};
-            let incorrectlyAnswered = {};
+            let currentlyIncorrectlyAnswered = {};
+            let allTimeIncorrectlyAnswered = {};
 
             try {
                 correctlyAnswered = row ? JSON.parse(row.correctly_answered || '{}') : {};
-                incorrectlyAnswered = row ? JSON.parse(row.incorrectly_answered || '{}') : {};
+                currentlyIncorrectlyAnswered = row ? JSON.parse(row.currently_incorrectly_answered || '{}') : {};
+                allTimeIncorrectlyAnswered = row ? JSON.parse(row.all_time_incorrectly_answered || '{}') : {};
 
                 if (!correctlyAnswered[category]) correctlyAnswered[category] = [];
-                if (!incorrectlyAnswered[category]) incorrectlyAnswered[category] = [];
+                if (!currentlyIncorrectlyAnswered[category]) currentlyIncorrectlyAnswered[category] = [];
+                if (!allTimeIncorrectlyAnswered[category]) allTimeIncorrectlyAnswered[category] = [];
 
                 const previousCompleted = Object.keys(categoryQuestions).filter(cat =>
                     correctlyAnswered[cat]?.length === categoryQuestions[cat].length
@@ -394,13 +398,16 @@ app.post('/api/test/:code/update', (req, res) => {
                     if (!correctlyAnswered[category].includes(questionIndex)) {
                         correctlyAnswered[category].push(questionIndex);
                     }
-                    incorrectlyAnswered[category] = incorrectlyAnswered[category]
+                    currentlyIncorrectlyAnswered[category] = currentlyIncorrectlyAnswered[category]
                         .filter(idx => idx !== questionIndex);
                 } else {
                     correctlyAnswered[category] = correctlyAnswered[category]
                         .filter(idx => idx !== questionIndex);
-                    if (!incorrectlyAnswered[category].includes(questionIndex)) {
-                        incorrectlyAnswered[category].push(questionIndex);
+                    if (!currentlyIncorrectlyAnswered[category].includes(questionIndex)) {
+                        currentlyIncorrectlyAnswered[category].push(questionIndex);
+                    }
+                    if (!allTimeIncorrectlyAnswered[category].includes(questionIndex)) {
+                        allTimeIncorrectlyAnswered[category].push(questionIndex);
                     }
                 }
 
@@ -408,25 +415,32 @@ app.post('/api/test/:code/update', (req, res) => {
                     correctlyAnswered[cat]?.length === categoryQuestions[cat].length
                 ).length;
 
-                // Calculate progress difference (1% per category)
                 const progressDifference = newCompleted - previousCompleted;
                 const newTotalProgress = (row.total_progress || 0) + progressDifference;
 
                 db.run(
-                    'UPDATE test_progress SET correctly_answered = ?, incorrectly_answered = ? WHERE identification_code = ?',
-                    [JSON.stringify(correctlyAnswered), JSON.stringify(incorrectlyAnswered), code],
+                    `UPDATE test_progress 
+                     SET correctly_answered = ?, currently_incorrectly_answered = ?, all_time_incorrectly_answered = ? 
+                     WHERE identification_code = ?`,
+                    [
+                        JSON.stringify(correctlyAnswered),
+                        JSON.stringify(currentlyIncorrectlyAnswered),
+                        JSON.stringify(allTimeIncorrectlyAnswered),
+                        code
+                    ],
                     (updateErr) => {
-                        if (updateErr) return res.status(500).json({error: updateErr.message});
+                        if (updateErr) return res.status(500).json({ error: updateErr.message });
 
                         db.run(
                             'UPDATE profiles SET total_progress = ? WHERE identification_code = ?',
                             [newTotalProgress, code],
                             (err) => {
-                                if (err) return res.status(500).json({error: err.message});
+                                if (err) return res.status(500).json({ error: err.message });
                                 res.json({
                                     success: true,
                                     correctlyAnswered,
-                                    incorrectlyAnswered,
+                                    currentlyIncorrectlyAnswered,
+                                    allTimeIncorrectlyAnswered,
                                     totalProgress: newTotalProgress
                                 });
                             }
@@ -434,7 +448,7 @@ app.post('/api/test/:code/update', (req, res) => {
                     }
                 );
             } catch (parseError) {
-                return res.status(500).json({error: 'Error parsing stored data'});
+                return res.status(500).json({ error: 'Error parsing stored data' });
             }
         }
     );
@@ -446,7 +460,7 @@ app.get('/api/test/:code', (req, res) => {
         [req.params.code],
         (err, row) => {
             if (err) {
-                res.status(400).json({error: err.message});
+                res.status(400).json({ error: err.message });
                 return;
             }
 
@@ -456,13 +470,14 @@ app.get('/api/test/:code', (req, res) => {
                     [req.params.code],
                     (err) => {
                         if (err) {
-                            res.status(400).json({error: err.message});
+                            res.status(400).json({ error: err.message });
                             return;
                         }
                         res.json({
                             identification_code: req.params.code,
                             correctly_answered: '{}',
-                            incorrectly_answered: '{}'
+                            currently_incorrectly_answered: '{}',
+                            all_time_incorrectly_answered: '{}'
                         });
                     }
                 );

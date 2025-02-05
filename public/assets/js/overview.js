@@ -86,12 +86,12 @@ async function navigatePage(direction) {
     if (currentPage === totalPages) {
         if (direction === 1) {
             const result = await Swal.fire({
-                title: 'Sie haben alle Folien abgeschlossen!',
-                text: 'Möchten Sie Ihr Wissen testen?',
+                title: 'Sie haben alle Inhalte des Tutorials gesehen.',
+                text: 'Testen Sie nun das teilautomatisierte Fahren für mehr Sicherheit und Komfort! Gerne können Sie Ihr Wissen zuvor nochmal testen. Viel Spaß!',
                 icon: 'question',
                 showCancelButton: true,
-                cancelButtonText: 'Nein, zurück zur Übersicht',
-                confirmButtonText: 'Ja, testen!',
+                cancelButtonText: 'Wissen testen',
+                confirmButtonText: 'Weiter',
                 confirmButtonColor: '#e4e4e7',
                 cancelButtonColor: '#e4e4e7',
                 reverseButtons: true,
@@ -99,6 +99,8 @@ async function navigatePage(direction) {
 
             if (result.isConfirmed) {
                 window.location.href = '../../views/profile?view=test';
+            } else {
+                window.location.href = '../../views/welcome';
             }
 
             return;

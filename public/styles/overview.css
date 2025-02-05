@@ -57,8 +57,15 @@ html {
 .scrollbar-container {
     position: relative;
     height: 100%;
-    padding-right: 50px; /* Adjust based on your needs */
+    padding-right: 50px;
 }
+
+hr {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 2em 0;
+}
+
 
 .close-btn {
     border: none;
@@ -228,7 +235,7 @@ html {
     padding-bottom: 60px;
     text-align: left;
     line-height: 1.6;
-    font-size: 1.2em;
+    font-size: 1.5em;
     width: 100%;
     position: relative;
 }
@@ -284,6 +291,12 @@ html {
 .bullet-points li {
     margin-bottom: 8px;
     line-height: 1.5;
+}
+
+.bullet-points .media {
+    display: block;
+    margin-left: 0;
+    margin-right: auto;
 }
 
 .button-container {

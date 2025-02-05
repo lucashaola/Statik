@@ -223,7 +223,7 @@ function showCompletedCategoryMessage(categoryName) {
 function showPartialCompletionMessage() {
     Swal.fire({
         title: 'Test abgeschlossen!',
-        text: 'Sie haben bereits alle verfügbaren Fragen richtig beantwortet. Schalten Sie mehr frei, indem Sie entweder die Schnellübersicht oder alle Folien zur Kategorie im detaillierten Tutorial anschauen.',
+        text: 'Sie haben bereits alle verfügbaren Fragen richtig beantwortet. Schalten Sie mehr frei, indem Sie entweder die Schnellübersicht oder alle Folien zur Kategorie im Tutorial anschauen.',
         icon: 'success',
         confirmButtonColor: '#6182b3'
     });
@@ -313,7 +313,7 @@ async function showTestOverview() {
             <div class="test-progress-circles">
                 ${categories.map(category => {
                 const correctlyAnsweredCategory = JSON.parse(testData.correctly_answered || '{}')[category.key] || [];
-                const incorrectlyAnswered = JSON.parse(testData.incorrectly_answered || '{}')[category.key] || [];
+                const incorrectlyAnswered = JSON.parse(testData.currently_incorrectly_answered || '{}')[category.key] || [];
                 const totalQuestionsCategory = categoryQuestions[category.key].length;
                 const isLocked = !unlockedCategories.includes(category.key);
     

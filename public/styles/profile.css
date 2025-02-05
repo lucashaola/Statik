@@ -77,11 +77,9 @@ html {
 }
 
 .overview-btn,
-.test-btn,
 .saved-btn,
 .bonus-btn {
-    width: 200px;
-    height: 60px;
+
     color: #333333;
     background-color: #e1e7f4;
     border: none;
@@ -93,14 +91,12 @@ html {
 }
 
 .overview-btn.selected,
-.test-btn.selected,
 .saved-btn.selected,
 .bonus-btn.selected {
     background-color: #c6d2eb;
 }
 
 .overview-btn:hover,
-.test-btn:hover,
 .saved-btn:hover,
 .bonus-btn:hover {
     background-color: #c6d2eb;

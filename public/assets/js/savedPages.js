@@ -81,7 +81,7 @@ function getCurrentPage() {
 
         return {
             page: activeContent.id,
-            displayName: 'Detailliertes Tutorial: ' + activeContent.id,
+            displayName: 'Tutorial: ' + activeContent.id,
             slideIndex: Array.from(activeContent.querySelectorAll('.slide')).indexOf(activeSlide)
         };
     } else {
@@ -150,7 +150,7 @@ async function showSavedPages() {
                         categoryTitles[category] || category,
                         contentData.content.heading,
                         contentData.content.text,
-                        'Detailliertes Tutorial: ' + categoryTitles[category]
+                        'Tutorial: ' + categoryTitles[category]
                     ));
                 }
             }

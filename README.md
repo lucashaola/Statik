@@ -56,7 +56,7 @@ how the entries update and interact.
 ├── test_progress                      // Tracks user's test performance
 │   ├── identification_code           
 │   ├── correctly_answered             // JSON object containing indices of correctly answered questions, divided by category, e.g., "aktivierung": [0, 1, 2]
-│   ├── incorrectly_answered           
+│   ├── currently_incorrectly_answered           
 │
 ├── saved_pages                        // Tracks user's saved pages
 │   ├── identification_code            
