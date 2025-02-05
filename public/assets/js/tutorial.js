@@ -10,6 +10,7 @@ const slideIndex = {
     'deaktivierung': 0,
     'risiken': 0
 };
+let sidebarPS, mainPS;
 
 function showContent(contentId) {
     // Handle sidebar selection
@@ -73,19 +74,20 @@ function filterResults() {
         return;
     }
 
-    const tutorialContent = JSON.parse(localStorage.getItem('tutorialContent') || '{}');
     let searchResults = [];
 
     Object.entries(tutorialContent).forEach(([contentId, content]) => {
-        content.slides.forEach((slide, index) => {
-            const title = slide.title || '';
-            const paragraph = slide.text || '';
+        content.content.forEach((slide, index) => {
+            const text = slide.text || '';
+            const subtext = slide.subtext || '';
 
-            if (title.toLowerCase().includes(searchTerm) ||
-                paragraph.toLowerCase().includes(searchTerm)) {
+            if (text.toLowerCase().includes(searchTerm) ||
+                subtext.toLowerCase().includes(searchTerm) ||
+                content.title.toLowerCase().includes(searchTerm)) {
                 searchResults.push({
-                    title: title,
-                    text: paragraph,
+                    title: content.title,
+                    text: text,
+                    subtext: subtext,
                     contentId: contentId,
                     slideIndex: index
                 });
@@ -96,96 +98,41 @@ function filterResults() {
     if (searchResults.length > 0) {
         resultsDiv.style.display = 'block';
         resultsDiv.innerHTML = searchResults.map(result => `
-        <div class="result-item" onclick="${window.location.pathname.includes('tutorial') ?
-            `showSearchResult('${result.contentId}', ${result.slideIndex})` :
+            <div class="result-item" onclick="${window.location.pathname.includes('tutorial') ?
+            `showSearchResult('${result.contentId}')` :
             `localStorage.setItem('selectedCategory', '${result.contentId}'); 
-             localStorage.setItem('selectedSlide', '${result.slideIndex}'); 
-             window.location.href='/views/tutorial'`}">
-            <strong>${tutorialContent[result.contentId].sidebarTitle}</strong><br>
-            <small>${result.text ? result.text.substring(0, 100) + '...' : ''}</small>
-        </div>
-    `).join('');
+                 localStorage.setItem('selectedSlide', '${result.slideIndex}'); 
+                 window.location.href='/views/tutorial'`}">
+                <strong>${tutorialContent[result.contentId].title}</strong><br>
+                <small>${result.text ? result.text.substring(0, 100) + '...' : ''}</small>
+                ${result.subtext ? `<br><small>${result.subtext}</small>` : ''}
+            </div>
+        `).join('');
     } else {
         resultsDiv.style.display = 'block';
         resultsDiv.innerHTML = '<div class="result-item">Keine Ergebnisse gefunden</div>';
     }
 }
 
-function showSearchResult(contentId, slideIndex) {
-    const contents = document.querySelectorAll('.main-content .content');
-    contents.forEach(content => {
-        content.classList.remove('active');
-    });
+function showSearchResult(contentId) {
+    showContent(contentId);
+    unlockCategory(contentId);
 
-    const selectedContent = document.getElementById(contentId);
-    if (selectedContent) {
-        selectedContent.classList.add('active');
-
-        const slides = selectedContent.querySelectorAll('.slide');
-        slides.forEach(slide => {
-            slide.style.display = 'none';
-        });
-
-        const selectedSlide = slides[slideIndex];
-        if (selectedSlide) {
-            selectedSlide.style.display = 'block';
-        }
-
-        // Mark slide as viewed and update progress
-        progressTracker.markSlideAsViewed(contentId, slideIndex);
-        const progress = progressTracker.calculateProgress(contentId, slides.length);
-        progressTracker.updateProgress(contentId, progress);
-        initializeBookmark();
-    }
-
-    const indicators = selectedContent.querySelectorAll('.pagination .page-indicator');
-    indicators.forEach((indicator, index) => {
-        indicator.classList.toggle('active', index === parseInt(slideIndex));
-    });
-
-    const sidebarItems = document.querySelectorAll('.sidebar-item');
-    sidebarItems.forEach(item => {
-        item.classList.remove('selected');
-    });
-
-    const matchingSidebarItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
-    if (matchingSidebarItem) {
-        matchingSidebarItem.classList.add('selected');
-
-        const sidebarContent = document.querySelector('.sidebar-content');
-        matchingSidebarItem.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest'
-        });
-    }
-
+    // Clean up search
     const resultsDiv = document.getElementById('results');
+    const searchTerm = document.querySelector('.search').value.toLowerCase();
     resultsDiv.style.display = 'none';
     document.querySelector('.search').value = '';
-}
 
-window.onload = function() {
-    if (window.location.pathname.includes('tutorial')) {
-        const tutorialContent = {};
-        document.querySelectorAll('.content').forEach(content => {
-            const id = content.id;
-            const sidebarTitle = document.querySelector(`.sidebar-item[onclick="showContent('${id}')"]`)?.textContent.trim();
-            tutorialContent[id] = {
-                sidebarTitle: sidebarTitle,
-                slides: Array.from(content.querySelectorAll('.slide')).map((slide, index) => ({
-                    title: slide.querySelector('h2')?.textContent || '',
-                    text: slide.querySelector('p')?.textContent || '',
-                    index: index
-                }))
-            };
-        });
-        localStorage.setItem('tutorialContent', JSON.stringify(tutorialContent));
+    // Scroll sidebar to selected item
+    const sidebarContent = document.querySelector('.sidebar-content');
+    const selectedItem = document.querySelector(`.sidebar-item[onclick="showContent('${contentId}')"]`);
+
+    if (sidebarContent && selectedItem) {
+        sidebarContent.scrollTop = selectedItem.offsetTop - 100;
     }
 
-    if (window.location.hash) {
-        const [contentId, slideIndex] = window.location.hash.slice(1).split('-');
-        showSearchResult(contentId, parseInt(slideIndex));
-    }
+    initializeBookmark();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -205,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize PerfectScrollbar
     const sidebarContent = document.querySelector('.sidebar-content');
     if (sidebarContent) {
-        new PerfectScrollbar(sidebarContent, {
+        sidebarPS = new PerfectScrollbar(sidebarContent, {
             wheelSpeed: 1,
             wheelPropagation: true,
             suppressScrollX: true,
@@ -219,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (mainContent) {
-        new PerfectScrollbar(mainContent, {
+        mainPS = new PerfectScrollbar(mainContent, {
             wheelSpeed: 1,
             suppressScrollX: true,
             wheelPropagation: false,
