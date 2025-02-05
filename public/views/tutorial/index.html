@@ -7,6 +7,7 @@
     <link href="../../assets/icons/shared/TUM.svg" rel="icon" type="image/x-icon">
     <link href="data:," rel="icon">
     <link href="../../styles/tutorial.css" rel="stylesheet">
+    <link href="../../styles/tutorialContent.css" rel="stylesheet">
     <link href="../../styles/footer.css" rel="stylesheet">
     <link href="../../assets/vendor/perfect-scrollbar.css" rel="stylesheet">
     <script src="../../assets/vendor/perfect-scrollbar.min.js"></script>
@@ -31,7 +32,7 @@
         </svg>
     </button>
 
-    <button class="close-btn" onclick="window.location.href = 'http://localhost:3000/views/welcome/';">
+    <button class="close-btn" onclick="window.location.href='/views/welcome/'">
         <img class="close-icon" src="../../assets/icons/shared/Close.svg" alt="">
     </button>
 
@@ -88,254 +89,7 @@
 
 
         <div class="main-content">
-            <div class="content" id="aktivierung">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    im jtes
-                    <img class="arrow-right" onclick="changeSlide('aktivierung', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('aktivierung', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                    <img class="arrow-right" onclick="changeSlide('aktivierung', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('aktivierung', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="verkehrszeichen">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    <h2>Verkehrszeichenassistent</h2>
-                    <img class="arrow-right" onclick="changeSlide('verkehrszeichen', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('verkehrszeichen', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                    <img class="arrow-right" onclick="changeSlide('verkehrszeichen', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('verkehrszeichen', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="geschwindigkeit">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    <img class="arrow-right" onclick="changeSlide('geschwindigkeit', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('geschwindigkeit', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                    <img class="arrow-right" onclick="changeSlide('geschwindigkeit', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('geschwindigkeit', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="stau">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-
-                    <h2>Stauassistent</h2>
-                    <p>Erkennt das Fahrzeug eine Stausituation (bei weniger als 60 km/h), wird der Stauassistent automatisch
-                        aktiviert. Im Display leuchtet das Symbol TRAFFIC ASSIST <span class="green-text">ACC-Symbol</span> auf
-                        <img class="media" src="../../assets/pictures/overview/4-1.gif" alt=""></p>
-
-                    <img class="arrow-right" onclick="changeSlide('stau', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('stau', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-
-                    Das Auto beschleunigt, bremst und lenkt dann selbstständig und hält den Abstand zum Vorderfahrzeug
-                    automatisch.
-                    <img class="media" src="../../assets/pictures/overview/4-2.gif" alt="">
-
-                    <img class="arrow-right" onclick="changeSlide('stau', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    Das Auto fährt aus dem Stillstand automatisch wieder an <span class="red-text">ODER:</span> 3. Drücke die <span class="blue-text">Set-Taste</span>,
-                    damit das Auto aus dem Stillstand automatisch wieder losfährt <br>
-                    Wenn der Stauassistent aktiviert ist, kannst Du die Hände vom Lenkrad nehmen. Dein Blick muss aber weiterhin
-                    auf die Straße gerichtet sein.
-                    <img class="media" src="../../assets/pictures/overview/4-3.jpg" alt="">
-
-                    <img class="arrow-left" onclick="changeSlide('stau', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="ampelerkennung">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    <img class="arrow-right" onclick="changeSlide('ampelerkennung', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('ampelerkennung', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                    <img class="arrow-right" onclick="changeSlide('ampelerkennung', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('ampelerkennung', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="spurführung">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    <img class="arrow-right" onclick="changeSlide('spurführung', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('spurführung', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-
-                    <img class="arrow-right" onclick="changeSlide('spurführung', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('spurführung', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="spurwechsel">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    <img class="arrow-right" onclick="changeSlide('spurwechsel', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('spurwechsel', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-
-                    <img class="arrow-right" onclick="changeSlide('spurwechsel', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('spurwechsel', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="notbrems">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    <img class="arrow-right" onclick="changeSlide('notbrems', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('notbrems', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-
-                    <img class="arrow-right" onclick="changeSlide('notbrems', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('notbrems', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="deaktivierung">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    <img class="arrow-right" onclick="changeSlide('deaktivierung', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('deaktivierung', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-
-                    <img class="arrow-right" onclick="changeSlide('deaktivierung', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('deaktivierung', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
-
-            <div class="content" id="risiken">
-                <div class="pagination">
-                    <span class="page-indicator active"></span>
-                    <span class="page-indicator"></span>
-                    <span class="page-indicator"></span>
-                </div>
-                <div class="slide" data-index="0">
-                    <h2>Risiken und Verantwortung</h2>
-                    <p>Risiken und Verantwortung Das teilautomatisierte Fahren entbindet Sie nicht von der Verantwortung als
-                        Fahrer*in. Es funktioniert in den meisten Fällen zwar sehr gut, aber das Auto kann auch Fehler
-                        machen, ohne Sie zu warnen. Achten Sie deshalb immer auf den Verkehr und die Umgebung. Sie müssen
-                        jederzeit sofort eingreifen können </p>
-                    <img class="arrow-right" onclick="changeSlide('risiken', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="1" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('risiken', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-
-                    <img class="arrow-right" onclick="changeSlide('risiken', 1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-                <div class="slide" data-index="2" style="display: none;">
-                    <img class="arrow-left" onclick="changeSlide('risiken', -1)"
-                         src="../../assets/icons/shared/Arrow Right.svg" alt="">
-                </div>
-            </div>
+            <!-- Content will be generated here in tutorial.js-->
         </div>
 
         <div class="footer">
@@ -398,10 +152,11 @@
 
 
     <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/tutorialContent.js"></script>
     <script src="../../assets/js/categoryQuestions.js"></script>
     <script src="../../assets/js/test.js"></script>
     <script src="../../assets/js/slideProgress.js"></script>
-    <script src="../../assets/js/slideManager.js"></script>
+    <script src="../../assets/js/tutorial.js"></script>
     <script src="../../assets/js/savedPages.js"></script>
 </body>
 </html>

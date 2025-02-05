@@ -1,4 +1,4 @@
-const totalPages = 10;
+const totalPages = Object.keys(tutorialContent).length;
 let currentPage = 1;
 
 function createDots() {
@@ -122,28 +122,42 @@ function scrollToTop() {
     }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
+    const contentContainer = document.querySelector('.content-container');
+
     if (window.location.pathname.includes('/views/overview')) {
+        Object.keys(tutorialContent).forEach((sectionId, index) => {
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'page'; // Base class
+            if (index === 0) pageDiv.classList.add('page-active'); // Make first page active
+            pageDiv.id = sectionId;
+            pageDiv.innerHTML = renderContent(sectionId, true);
+            contentContainer.appendChild(pageDiv);
+        });
+
         createDots();
         updatePages();
+
+        // Initialize scrollbar positioning
+        const bookmarkIcon = document.querySelector('.bookmark-icon');
+        if (bookmarkIcon) {
+            function updateScrollbarPosition() {
+                const bookmarkRect = bookmarkIcon.getBoundingClientRect();
+                const margin = window.innerWidth - bookmarkRect.right - 70;
+                document.documentElement.style.setProperty('--scrollbar-margin', margin + 'px');
+            }
+
+            updateScrollbarPosition();
+            window.addEventListener('resize', updateScrollbarPosition);
+        }
     }
 
-
-    const contentContainer = document.querySelector('.content-container');
-    const bookmarkIcon = document.querySelector('.bookmark-icon');
-
-    function updateScrollbarPosition() {
-        const bookmarkRect = bookmarkIcon.getBoundingClientRect();
-        const margin = window.innerWidth - bookmarkRect.right - 70;
-        document.documentElement.style.setProperty('--scrollbar-margin', margin + 'px');
+    // Initialize PerfectScrollbar
+    if (contentContainer) {
+        new PerfectScrollbar(contentContainer, {
+            wheelSpeed: 1,
+            swipeEasing: true,
+            suppressScrollX: true
+        });
     }
-
-    new PerfectScrollbar(contentContainer, {
-        wheelSpeed: 1,
-        suppressScrollX: true
-    });
-
-    updateScrollbarPosition();
-    window.addEventListener('resize', updateScrollbarPosition);
 });

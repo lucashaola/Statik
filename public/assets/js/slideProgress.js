@@ -298,7 +298,8 @@ async function showProgressOverview() {
                 <div class="slideProgress-progress-circles">
                             ${categories.map(category => renderCategoryItem(category, category.progress)).join('')}
                 </div>
-                <button class="test-btn">Testen</button>
+                <button class="test-btn" onclick="window.location.href='?view=test'"';">Testen</button>
+                
 
             `;
 
@@ -322,18 +323,19 @@ async function showProgressOverview() {
             });
         }
 
-        document.querySelectorAll('.slideProgress-progress-circle-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const categoryName = item.querySelector('.category-name').textContent;
-                const selectedCategory = categories.find(category => category.name === categoryName);
+        document.querySelector('.progress-slider').addEventListener('click', (event) => {
+            const item = event.target.closest('.slideProgress-progress-circle-item');
+            if (!item) return;
 
-                if (selectedCategory) {
-                    localStorage.setItem('selectedCategory', selectedCategory.key);
-                    window.location.href = '../../views/tutorial';
-                } else {
-                    console.error(`Category not found for name: ${categoryName}`);
-                }
-            });
+            const categoryName = item.querySelector('.category-name').textContent;
+            const selectedCategory = categories.find(category => category.name === categoryName);
+
+            if (selectedCategory) {
+                localStorage.setItem('selectedCategory', selectedCategory.key);
+                window.location.href = '../../views/tutorial';
+            } else {
+                console.error(`Category not found for name: ${categoryName}`);
+            }
         });
     } catch (error) {
         console.error('Error fetching progress:', error);

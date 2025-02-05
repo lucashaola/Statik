@@ -23,18 +23,6 @@ html {
     color: black;
 }
 
-.blue-text {
-    color: #5473d5;
-}
-
-.green-text {
-    color: #58a860;
-}
-
-.red-text {
-    color: #c55b71;
-}
-
 /* Perfect Scrollbar Styling*/
 .ps__rail-y {
     position: fixed;
@@ -59,13 +47,6 @@ html {
     height: 100%;
     padding-right: 50px;
 }
-
-hr {
-    border: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 2em 0;
-}
-
 
 .close-btn {
     border: none;
@@ -227,78 +208,7 @@ hr {
     display: block;
 }
 
-/* Page Styling */
-.page,
-.page-active {
-    max-width: 800px;
-    margin: 0 auto;
-    padding-bottom: 60px;
-    text-align: left;
-    line-height: 1.6;
-    font-size: 1.5em;
-    width: 100%;
-    position: relative;
-}
-
-.page {
-    display: none;
-}
-
-.page-active {
-    display: block;
-}
-
-.page h1 {
-    font-size: 2em;
-    margin-bottom: 30px;
-}
-
-.page p,
-.page-active p {
-    margin: 15px 0;
-}
-
-.media{
-    height: auto;
-    margin: 20px auto;
-    display: block;
-    border-radius: 8px;
-
-    width: 100%;
-    max-width: 400px;
-}
-
-.media-row {
-    display: flex;
-    gap: 10px;
-    max-width: 810px;
-    margin: 20px auto;
-}
-
-.inline-media {
-    height: 1.5em;
-    width: auto;
-    display: inline;
-    margin: 0 5px;
-    vertical-align: middle;
-}
-
-.bullet-points {
-    margin-left: 20px;
-    padding-left: 20px;
-}
-
-.bullet-points li {
-    margin-bottom: 8px;
-    line-height: 1.5;
-}
-
-.bullet-points .media {
-    display: block;
-    margin-left: 0;
-    margin-right: auto;
-}
-
+/* Page Styling in tutorialContents.css */
 .button-container {
     display: flex;
     justify-content: center;

@@ -11,49 +11,8 @@ const slideIndex = {
     'risiken': 0
 };
 
-function changeSlide(sectionId, direction) {
-    const slides = document.querySelectorAll(`#${sectionId} .slide`);
-    const totalSlides = slides.length;
-
-    let currentIndex = 0;
-    slides.forEach((slide, index) => {
-        if (slide.style.display === 'block') {
-            currentIndex = index;
-        }
-    });
-
-    let newIndex;
-    if (direction === 1 || direction === -1) {
-        newIndex = currentIndex + direction;
-        if (newIndex >= totalSlides) newIndex = 0;
-        if (newIndex < 0) newIndex = totalSlides - 1;
-    } else {
-        newIndex = parseInt(direction);
-    }
-
-    slideIndex[sectionId] = newIndex;
-
-    slides.forEach(slide => {
-        slide.style.display = 'none';
-    });
-
-    if (slides[newIndex]) {
-        slides[newIndex].style.display = 'block';
-
-        progressTracker.markSlideAsViewed(sectionId, newIndex);
-        const progress = progressTracker.calculateProgress(sectionId, totalSlides);
-        progressTracker.updateProgress(sectionId, progress);
-    }
-
-    const indicators = document.querySelectorAll(`#${sectionId} .pagination .page-indicator`);
-    indicators.forEach((indicator, index) => {
-        indicator.classList.toggle('active', index === newIndex);
-    });
-
-    initializeBookmark();
-}
-
-function showContent(contentId, selectFirstSlide = true) {
+function showContent(contentId) {
+    // Handle sidebar selection
     const previousSelected = document.querySelector('.sidebar-item.selected');
     if (previousSelected) {
         previousSelected.classList.remove('selected');
@@ -63,6 +22,7 @@ function showContent(contentId, selectFirstSlide = true) {
     if (selectedItem) {
         selectedItem.classList.add('selected');
 
+        // Handle sidebar scroll position
         const sidebarContent = document.querySelector('.sidebar-content');
         const ps = sidebarContent._ps;  // get PerfectScrollbar instance
         if (ps) {
@@ -76,22 +36,15 @@ function showContent(contentId, selectFirstSlide = true) {
         }
     }
 
+    // Show selected content
     const contents = document.querySelectorAll('.content');
     contents.forEach(content => content.classList.remove('active'));
 
     const targetContent = document.getElementById(contentId);
     if (targetContent) {
         targetContent.classList.add('active');
-
-        if (selectFirstSlide) {
-            const slides = targetContent.querySelectorAll('.slide');
-            if (slides.length > 0) {
-                progressTracker.markSlideAsViewed(contentId, 0);
-                const progress = progressTracker.calculateProgress(contentId, slides.length);
-                progressTracker.updateProgress(contentId, progress);
-            }
-        }
     }
+
     initializeBookmark();
 }
 
@@ -223,9 +176,20 @@ window.onload = function() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Generate content for each section
+    const mainContent = document.querySelector('.main-content');
+    Object.keys(tutorialContent).forEach(sectionId => {
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'content';
+        contentDiv.id = sectionId;
+        contentDiv.innerHTML = renderContent(sectionId);
+        mainContent.appendChild(contentDiv);
+    });
+
     const searchInput = document.querySelector('.search');
     if (searchInput) searchInput.value = '';
 
+    // Initialize PerfectScrollbar
     const sidebarContent = document.querySelector('.sidebar-content');
     if (sidebarContent) {
         new PerfectScrollbar(sidebarContent, {
@@ -236,28 +200,24 @@ document.addEventListener('DOMContentLoaded', function () {
             scrollbarYMargin: 0,
             railYVisible: true
         });
-
-        Object.keys(slideIndex).forEach(sectionId => {
-            const slides = document.querySelectorAll(`#${sectionId} .slide`);
-            if (slides.length > 0) slides[0].style.display = 'block';
-        });
-
-       closeResultsOnOutsideClick();
-
-        // Preselect Aktivierung on page load
-        showContent('aktivierung');
     }
 
+    closeResultsOnOutsideClick();
+    showContent('aktivierung'); // Preselect Aktivierung on page load
 
+    if (mainContent) {
+        new PerfectScrollbar(mainContent, {
+            wheelSpeed: 1,
+            suppressScrollX: true,
+            wheelPropagation: false,
+            swipeEasing: true,
+        });
+    }
+
+    // Handle selected category from localStorage
     const selectedCategory = localStorage.getItem('selectedCategory');
-    const selectedSlide = localStorage.getItem('selectedSlide');
-
     if (selectedCategory) {
         showContent(selectedCategory);
-        if (selectedSlide !== null) {
-            changeSlide(selectedCategory, parseInt(selectedSlide));
-            localStorage.removeItem('selectedSlide');
-        }
         localStorage.removeItem('selectedCategory');
     }
 });
