@@ -1,15 +1,3 @@
-const slideIndex = {
-    'aktivierung': 0,
-    'verkehrszeichen': 0,
-    'geschwindigkeit': 0,
-    'stau': 0,
-    'ampelerkennung': 0,
-    'spurführung': 0,
-    'spurwechsel': 0,
-    'notbrems': 0,
-    'deaktivierung': 0,
-    'risiken': 0
-};
 let sidebarPS, mainPS;
 const hasShownCompletionMessage = () => {
     const userCode = localStorage.getItem('userCode');
@@ -196,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         closeResultsOnOutsideClick();
-        showContent('aktivierung'); // Preselect Aktivierung on page load
     }
 
     if (mainContent) {

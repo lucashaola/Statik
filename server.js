@@ -73,6 +73,20 @@ app.get('/api/users/:code/verify', (req, res) => {
     });
 });
 
+app.get('/api/users', (req, res) => {
+    db.all(
+        `SELECT * FROM profiles`,
+        [],
+        (err, rows) => {
+            if (err) {
+                res.status(400).json({error: err.message});
+                return;
+            }
+            res.json(rows);
+        }
+    );
+});
+
 app.post('/api/users', (req, res) => {
     const {name, identificationCode} = req.body;
 

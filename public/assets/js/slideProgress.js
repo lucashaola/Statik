@@ -250,10 +250,26 @@ async function showProgressOverview() {
                     });
                 });
             }
+
+            document.querySelector('.progress-slider').addEventListener('click', (event) => {
+                const item = event.target.closest('.slideProgress-progress-circle-item');
+                if (!item) return;
+
+                const categoryName = item.querySelector('.category-name').textContent;
+                const selectedCategory = categories.find(category => category.name === categoryName);
+
+                if (selectedCategory) {
+                    localStorage.setItem('selectedCategory', selectedCategory.key);
+                    window.location.href = '../../views/tutorial';
+                } else {
+                    console.error(`Category not found for name: ${categoryName}`);
+                }
+            });
         } else {
             // Profile Screen
             progressOverview.innerHTML = `
                 <div class="overview-header">
+                    <h1>Fahrerassistenzsysteme</h1>
                     <h2>Gesamter Fortschritt</h2>
                         ${totalProgressHTML}
                 </div>
@@ -261,8 +277,11 @@ async function showProgressOverview() {
                 <div class="slideProgress-progress-circles">
                             ${categories.map(category => renderCategoryItem(category, category.progress)).join('')}
                 </div>
-                <button class="test-btn" onclick="window.location.href='?view=test'"';">Testen</button>
-                
+                <hr>
+                <div class="test-action-container">
+                    <h2 class="assistant-heading">Testen Sie Ihr Wissen: </h2>
+                    <button class="test-btn" onclick="window.location.href='?view=test'"';">Testen</button>
+                </div>
 
             `;
 
@@ -283,22 +302,21 @@ async function showProgressOverview() {
                 scrollbarYMargin: 0,
                 railYVisible: true
             });
+
+            document.querySelectorAll('.slideProgress-progress-circle-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const categoryName = item.querySelector('.category-name').textContent;
+                    const selectedCategory = categories.find(category => category.name === categoryName);
+
+                    if (selectedCategory) {
+                        localStorage.setItem('selectedCategory', selectedCategory.key);
+                        window.location.href = '../../views/tutorial';
+                    } else {
+                        console.error(`Category not found for name: ${categoryName}`);
+                    }
+                });
+            });
         }
-
-        document.querySelector('.progress-slider').addEventListener('click', (event) => {
-            const item = event.target.closest('.slideProgress-progress-circle-item');
-            if (!item) return;
-
-            const categoryName = item.querySelector('.category-name').textContent;
-            const selectedCategory = categories.find(category => category.name === categoryName);
-
-            if (selectedCategory) {
-                localStorage.setItem('selectedCategory', selectedCategory.key);
-                window.location.href = '../../views/tutorial';
-            } else {
-                console.error(`Category not found for name: ${categoryName}`);
-            }
-        });
     } catch (error) {
         console.error('Error fetching progress:', error);
     }
