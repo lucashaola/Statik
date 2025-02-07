@@ -186,7 +186,11 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
         } else if (!category) {
             (await hasLockedCategories() ? showPartialCompletionMessage() : showCompletionMessage());
         } else {
-            await showTestOverview();
+            if (await checkAllQuestionsAnsweredCorrectly()) {
+                showCompletionMessage();
+            } else{
+                await showTestOverview();
+            }                ``
         }
 
     } catch (error) {
@@ -231,8 +235,8 @@ function showPartialCompletionMessage() {
 
 function showCompletionMessage() {
     Swal.fire({
-        title: 'Test abgeschlossen!',
-        text: 'Sie haben alle Kategorien durchlaufen. Gut gemacht!',
+        title: 'Herzlichen Glückwunsch!',
+        text: 'Sie haben nun alle Fragen richtig beantwortet! Testen Sie nun das teilautomatisierte Fahren für mehr Sicherheit und Komfort! Viel Spaß!!',
         icon: 'success',
         confirmButtonColor: '#6182b3'
     });
@@ -271,6 +275,20 @@ async function updateTestProgress(identificationCode, category, questionIndex, i
     } catch (error) {
         console.error('Error updating test progress:', error);
     }
+}
+
+async function checkAllQuestionsAnsweredCorrectly() {
+    const identificationCode = localStorage.getItem('userCode');
+    const response = await fetch(`/api/test/${identificationCode}`);
+    const testData = await response.json();
+    
+    for (const category of Object.keys(categoryQuestions)) {
+        const correctlyAnswered = JSON.parse(testData.correctly_answered || '{}')[category] || [];
+        if (correctlyAnswered.length < categoryQuestions[category].length) {
+            return false;
+        }
+    }
+    return true;
 }
 
 async function showTestOverview() {

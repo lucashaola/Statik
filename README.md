@@ -22,10 +22,6 @@ npm install
 ```
 
 ## Run
-**Important!** For the search function to work on the Welcome Page, you must first access the Tutorial by selecting one
-of the categories displayed on the Welcome screen. These categories become visible only after logging in. This setup is
-a one-time process, as the information is saved in the web browser's localStorage. However, if you clear your cookies or
-browser data, you will need to repeat this step.
 ```shell
 npm run start
 ```

@@ -104,7 +104,7 @@
         ],
         ampelerkennung: [
             {
-                question: "Das Fahrzeug erkennt Ampeln und zeigt diese im Display an.",
+                question: "Bremst das Fahrzeug automatisch, wenn es eine rote Ampel erkannt hat und diese von Ihnen als Fahrer*in bestätigt wurde?",
                 options: [
                     {text: "Richtig", correct: true},
                     {text: "Falsch", correct: false},

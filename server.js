@@ -4,10 +4,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 const {JSDOM} = require('jsdom');
+const address = require('address');
 const eventTypes = require('./public/assets/js/eventTypes.js');
 const categoryQuestions = require('./public/assets/js/categoryQuestions.js');
 
 const app = express();
+const localIP = address.ip();
 const port = 3000;
 
 // Middleware
@@ -598,5 +600,5 @@ app.use((req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at: http://${localIP}:${port}`);
 });

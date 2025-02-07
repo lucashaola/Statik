@@ -164,8 +164,13 @@ const tutorialContent = {
                 addHr: true
             },
             {
-                text: "Im Stillstand müssen Sie übernehmen und manuell anfahren. Das teilautomatisierte Fahren kann wieder aktiviert werden, sobald „DRIVING ASSIST READY“ weiß im Display aufleuchtet.",
+                text: "Bevor es zum Zusammenstoß mit einem Hindernis, einer Person oder einem weiteren Fahrzeug kommt, bremst das Fahrzeug bis zum Stillstand ab.",
                 media: "../../assets/pictures/overview/8-2.gif",
+                addHr: true
+            },
+            {
+                text: "Im Stillstand müssen Sie übernehmen und manuell anfahren. Das teilautomatisierte Fahren kann wieder aktiviert werden, sobald „DRIVING ASSIST READY“ weiß im Display aufleuchtet.",
+                media: "../../assets/pictures/overview/1-1.gif",
             }
         ]
     },
@@ -179,7 +184,8 @@ const tutorialContent = {
             },
             {
                 text: "Es wird auch beendet, wenn Sie manuell Lenken oder das Bremspedal drücken.",
-                additionalMedia: "../../assets/pictures/overview/9-2.gif",
+                media: "../../assets/pictures/overview/9-2.gif",
+                additionalMedia: "../../assets/pictures/overview/9-3.gif",
                 addHr: true
             },
             {
@@ -214,7 +220,7 @@ const tutorialContent = {
     }
 };
 
-function renderContent(contentId, isOverview = false) {
+function renderContent(contentId) {
     const section = tutorialContent[contentId];
     let html = `<h1>${section.title}</h1>`;
 
@@ -224,15 +230,12 @@ function renderContent(contentId, isOverview = false) {
             html += `<p>${item.text}</p>`;
         }
 
-        // Handle media (single or multiple)
         if (item.media && item.additionalMedia) {
-            // If there's additional media, create a media row
             html += `<div class="media-row">
                 <img class="media" src="${item.media}" alt="">
                 <img class="media" src="${item.additionalMedia}" alt="">
             </div>`;
         } else if (item.media) {
-            // Single media
             html += `<img class="media" src="${item.media}" alt="">`;
         }
 
