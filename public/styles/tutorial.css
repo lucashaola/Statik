@@ -12,6 +12,7 @@ html, body {
     display: flex;
     flex-direction: column;
 
+    box-sizing: border-box;
     background: whitesmoke;
     color: #333333;
 }

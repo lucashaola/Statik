@@ -141,7 +141,7 @@ const tutorialContent = {
             {
                 text: "Das Spurwechsel-Symbol zeigt die Richtung des geplanten Spurwechsels an.",
                 media: "../../assets/pictures/overview/7-2-1.png",
-                additionalMedia: "../../assets/pictures/overview/7-2-2.png",
+                additionalSmalllMedia: "../../assets/pictures/overview/7-2-2.png",
                 addHr: true
             },
             {
@@ -234,6 +234,11 @@ function renderContent(contentId) {
             html += `<div class="media-row">
                 <img class="media" src="${item.media}" alt="">
                 <img class="media" src="${item.additionalMedia}" alt="">
+            </div>`;
+        } else if (item.media && item.additionalSmalllMedia) {
+            html += `<div class="media-row small-media-row">
+                <img class="small-media" src="${item.media}" alt="">
+                <img class="small-media" src="${item.additionalSmalllMedia}" alt="">
             </div>`;
         } else if (item.media) {
             html += `<img class="media" src="${item.media}" alt="">`;

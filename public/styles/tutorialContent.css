@@ -19,7 +19,7 @@
 
 .page,
 .page-active {
-    max-width: 800px;
+    max-width: 50em;
     margin: 0 auto;
     padding-bottom: 60px;
     text-align: left;
@@ -49,6 +49,7 @@
 .page p,
 .page-active p {
     margin: 15px 0;
+    margin-bottom: 30px;
     font-size: 1.5em;
 }
 
@@ -58,15 +59,25 @@
     display: block;
     border-radius: 8px;
 
-    width: 100%;
     max-width: 400px;
+}
+
+.small-media-row .small-media {
+    max-width: 30%;
+    align-items: center;
 }
 
 .media-row {
     display: flex;
     gap: 10px;
-    max-width: 810px;
     margin: 20px auto;
+    max-width: 50em;
+    justify-content: center;
+}
+
+.media-row .media {
+    max-width: calc(50% - 5px); /* Make sure two images fit within the row */
+    flex: 1; /* Allow images to scale evenly */
 }
 
 .inline-media {
