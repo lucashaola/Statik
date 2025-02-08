@@ -76,8 +76,8 @@
 }
 
 .media-row .media {
-    max-width: calc(50% - 5px); /* Make sure two images fit within the row */
-    flex: 1; /* Allow images to scale evenly */
+    max-width: calc(50% - 5px);
+    flex: 1;
 }
 
 .inline-media {

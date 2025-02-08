@@ -1,15 +1,14 @@
 const express = require('express');
+const os = require("os");
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 const {JSDOM} = require('jsdom');
-const address = require('address');
 const eventTypes = require('./public/assets/js/eventTypes.js');
 const categoryQuestions = require('./public/assets/js/categoryQuestions.js');
 
 const app = express();
-const localIP = address.ip();
 const port = 3000;
 
 // Middleware
@@ -598,6 +597,21 @@ app.get('/', (req, res) => {
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'public', 'views', 'welcome', 'index.html'));
 });
+
+
+function getLocalIPv4() {
+    const interfaces = os.networkInterfaces();
+    for (const interfaceName in interfaces) {
+        for (const iface of interfaces[interfaceName]) {
+            if (iface.family === "IPv4" && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return "127.0.0.1"; // Fallback to localhost if no external IPv4 is found
+}
+
+const localIP = getLocalIPv4();
 
 app.listen(port, () => {
     console.log(`Server running at: http://${localIP}:${port}`);
