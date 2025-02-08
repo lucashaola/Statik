@@ -599,19 +599,23 @@ app.use((req, res) => {
 });
 
 
-function getLocalIPv4() {
+function getIPv4(targetInterface) {
     const interfaces = os.networkInterfaces();
-    for (const interfaceName in interfaces) {
-        for (const iface of interfaces[interfaceName]) {
-            if (iface.family === "IPv4" && !iface.internal) {
-                return iface.address;
+
+    for (const name in interfaces) {
+        if (name.includes(targetInterface)) {
+            for (const iface of interfaces[name]) {
+                if (iface.family === "IPv4" && !iface.internal) {
+                    return iface.address;
+                }
             }
         }
     }
-    return "127.0.0.1"; // Fallback to localhost if no external IPv4 is found
+    return "Ein Fehler ist vorgefallen. ";
 }
 
-const localIP = getLocalIPv4();
+const networkInterface = "Wi-Fi";
+const localIP = getIPv4(networkInterface);
 
 app.listen(port, () => {
     console.log(`Server running at: http://${localIP}:${port}`);
