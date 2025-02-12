@@ -57,7 +57,7 @@ html {
     position: fixed;
     top: 15px;
     right: 20px;
-    z-index: 2;
+    z-index: 1;
 }
 
 .close-btn {
@@ -134,7 +134,7 @@ html {
     background: #93b5e9;
     color: white;
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
 .dot.active {
@@ -175,7 +175,7 @@ html {
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     background: #e1e7f4 none;
-    z-index: 1000; /* Necessary so button is clickable */
+    z-index: 1;
 }
 
 .bookmark-icon {
@@ -219,7 +219,7 @@ html {
     right: 0;
     padding: 20px;
     background: whitesmoke;
-    z-index: 100;
+    z-index: 1;
 }
 
 button {

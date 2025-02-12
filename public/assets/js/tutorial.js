@@ -47,11 +47,62 @@ function showContent(contentId) {
             sidebarContent.scrollTop = selectedItem.offsetTop - 100;
         }
 
-        unlockCategory(contentId);
-        updateUnlockedCategoryCheckmarks();
-    }
+        // Remove previous scroll handler if any
+        if (mainContent && mainContent._scrollHandler) {
+            // Check if Perfect Scrollbar is properly initialized
+            if (mainPS && mainPS.container) {
+                mainPS.container.removeEventListener('scroll', mainContent._scrollHandler);
+            } else {
+                mainContent.removeEventListener('scroll', mainContent._scrollHandler);
+            }
+            delete mainContent._scrollHandler;
+        }
 
-    initializeBookmark();
+        // Add scroll handler to unlock category when scrolled to bottom
+        if (mainContent) {
+            const handleScroll = () => {
+                let scrollTop, scrollHeight, clientHeight;
+
+                // Check if we're using Perfect Scrollbar
+                if (mainPS && mainPS.container) {
+                    scrollTop = mainPS.scrollTop;
+                    scrollHeight = mainPS.scrollHeight;
+                    clientHeight = mainPS.container.clientHeight;
+                } else {
+                    // Fallback to native scrolling
+                    scrollTop = mainContent.scrollTop;
+                    scrollHeight = mainContent.scrollHeight;
+                    clientHeight = mainContent.clientHeight;
+                }
+
+                const isAtBottom = scrollTop + clientHeight >= scrollHeight - 100;
+                if (isAtBottom) {
+                    unlockCategory(contentId);
+                    updateUnlockedCategoryCheckmarks();
+
+                    // Remove the event listener after unlocking
+                    if (mainPS && mainPS.container) {
+                        mainPS.container.removeEventListener('scroll', handleScroll);
+                    } else {
+                        mainContent.removeEventListener('scroll', handleScroll);
+                    }
+                    delete mainContent._scrollHandler;
+                }
+            };
+
+            // Add new scroll listener
+            if (mainPS && mainPS.container) {
+                mainPS.container.addEventListener('scroll', handleScroll);
+            } else {
+                mainContent.addEventListener('scroll', handleScroll);
+            }
+
+            // Store handler reference for cleanup
+            mainContent._scrollHandler = handleScroll;
+        }
+
+        initializeBookmark();
+    }
 }
 
 function showSearchResult(contentId) {

@@ -1,8 +1,5 @@
-let temperature = localStorage.getItem('temperature') ? parseInt(localStorage.getItem('temperature')) : 20;
-
 document.addEventListener('DOMContentLoaded', function () {
     preventDoubleTapZoom();
-    changeTemperature();
     initializeWelcomeScreen();
 
 
@@ -10,13 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
         initializeProfileScreen();
     }
 });
-
-function changeTemperature(change = 0) {
-    temperature += change;
-    localStorage.setItem('temperature', temperature);
-    document.getElementById("temperature-left").textContent = temperature + "°";
-    document.getElementById("temperature-right").textContent = temperature + "°";
-}
 
 function preventDoubleTapZoom() {
     document.addEventListener('touchstart', function (event) {

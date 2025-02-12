@@ -386,7 +386,7 @@ html {
     fill: none;
     stroke: #77a573ad;
     stroke-width: 2;
-    stroke-dasharray: 6.28;
+    stroke-dasharray: none;
     stroke-dashoffset: 0;
 }
 
@@ -394,8 +394,8 @@ html {
     fill: none;
     stroke: #77a573;
     stroke-width: 2;
-    stroke-dasharray: 6.28;
-    stroke-dashoffset: 6.28;
+    stroke-dasharray: 75.398; /* Circumference (2 * π * 12 ≈ 75.398) */
+    stroke-dashoffset: 75.398; /* Start fully hidden */
     transition: stroke-dashoffset 0.3s ease;
 }
 

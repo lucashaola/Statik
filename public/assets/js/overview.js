@@ -1,3 +1,4 @@
+let contentPS;
 const totalPages = Object.keys(tutorialContent).length;
 let currentPage = 1;
 
@@ -70,12 +71,44 @@ function updatePages() {
         }
     });
 
-    if (activeCategory) {
-        unlockCategory(activeCategory);
-    }
-
     scrollToTop();
     initializeBookmark();
+    setupScrollListener();
+}
+
+function setupScrollListener() {
+    const contentContainer = document.querySelector('.content-container');
+    if (!contentContainer) return;
+
+    const scrollElement = contentPS?.container || contentContainer;
+
+    // Cleanup previous listener
+    if (scrollElement._scrollHandler) {
+        scrollElement.removeEventListener('scroll', scrollElement._scrollHandler);
+        delete scrollElement._scrollHandler;
+    }
+
+    const handleScroll = () => {
+        const activePage = document.querySelector('.page-active');
+        if (!activePage) return;
+
+        const scrollTop = scrollElement.scrollTop;
+        const scrollHeight = scrollElement.scrollHeight;
+        const clientHeight = scrollElement.clientHeight;
+        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 100;
+
+        if (isAtBottom) {
+            unlockCategory(activeCategory);
+
+            // Cleanup listener
+            scrollElement.removeEventListener('scroll', handleScroll);
+            delete scrollElement._scrollHandler;
+        }
+    };
+
+    // Add listener to correct element
+    scrollElement._scrollHandler = handleScroll;
+    scrollElement.addEventListener('scroll', handleScroll);
 }
 
 async function navigatePage(direction) {
@@ -118,7 +151,8 @@ async function navigatePage(direction) {
 function scrollToTop() {
     const contentContainer = document.querySelector('.content-container');
     if (contentContainer) {
-        contentContainer.scrollTop = 0; // Resets the scroll position
+        contentContainer.scrollTop = 0;
+        contentPS?.update();
     }
 }
 
@@ -154,10 +188,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize PerfectScrollbar
     if (contentContainer) {
-        new PerfectScrollbar(contentContainer, {
+        // Destroy existing instance
+        if (contentPS) {
+            contentPS.destroy();
+            contentPS = null;
+        }
+
+        // Create new instance
+        contentPS = new PerfectScrollbar(contentContainer, {
             wheelSpeed: 1,
             swipeEasing: true,
             suppressScrollX: true
         });
+
+        contentPS.update();
+
+        // Add resize observer
+        new ResizeObserver(() => contentPS.update())
+            .observe(contentContainer);
     }
 });

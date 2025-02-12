@@ -86,9 +86,9 @@ const progressTracker = {
 
 function updateProgressCircle(element, progress) {
     const circle = element.querySelector('.progress-ring-progress');
-    const circumference = 2 * Math.PI * 12; // 2πr where r=8
+    const circumference = 2 * Math.PI * 12; // ~75.398
     const offset = circumference - (progress / 100) * circumference;
-    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+
     circle.style.strokeDashoffset = offset;
 
     if (progress === 100) {

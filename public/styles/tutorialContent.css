@@ -21,7 +21,6 @@
 .page-active {
     max-width: 50em;
     margin: 0 auto;
-    padding-bottom: 60px;
     text-align: left;
     line-height: 1.6;
     width: 100%;
@@ -49,7 +48,6 @@
 .page p,
 .page-active p {
     margin: 15px 0;
-    margin-bottom: 30px;
     font-size: 1.5em;
 }
 
@@ -59,7 +57,8 @@
     display: block;
     border-radius: 8px;
 
-    max-width: 400px;
+    max-width: 25em;
+    width: 100%;
 }
 
 .small-media-row .small-media {

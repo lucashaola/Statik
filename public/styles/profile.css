@@ -359,7 +359,7 @@ hr {
     fill: none;
     stroke: #77a573ad;
     stroke-width: 2;
-    stroke-dasharray: 6.28;
+    stroke-dasharray: 12.58;
     stroke-dashoffset: 0;
 }
 
@@ -367,8 +367,8 @@ hr {
     fill: none;
     stroke: #77a573;
     stroke-width: 2;
-    stroke-dasharray: 6.28;
-    stroke-dashoffset: 6.28;
+    stroke-dasharray: 12.58;
+    stroke-dashoffset: 12.58;
     transition: stroke-dashoffset 0.3s ease;
 }
 
