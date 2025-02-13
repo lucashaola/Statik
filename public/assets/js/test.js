@@ -1,19 +1,3 @@
-categories = [
-    {key: 'aktivierung', name: 'Aktivierung'},
-    {key: 'verkehrszeichen', name: 'Verkehrszeichenassistent'},
-    {key: 'geschwindigkeit', name: 'Adaptiver Geschwindigkeitsassistent'},
-    {key: 'stau', name: 'Stauassistent'},
-    {key: 'ampelerkennung', name: 'Ampelerkennung'},
-    {key: 'spurführung', name: 'Spurführungsassistent'},
-    {key: 'spurwechsel', name: 'Spurwechselassistent'},
-    {key: 'notbrems', name: 'Notbremsassistent'},
-    {key: 'deaktivierung', name: 'Deaktivierung'},
-    {key: 'risiken', name: 'Risiken und Verantwortung'}
-].map(category => ({
-    ...category,
-    icon: `../../assets/icons/tutorial/${category.name}.svg`
-}));
-
 async function showCategoryQuestions(category = null, retryQuestions = null) {
     const identificationCode = localStorage.getItem('userCode');
     if (!identificationCode) return;
@@ -361,8 +345,11 @@ async function showTestOverview() {
 
         document.querySelectorAll('.test-progress-circle-item').forEach(item => {
             const category = item.dataset.category;
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let isScrolling = false;
+            const movementThreshold = 10; // Pixels moved to consider it a scroll
 
-            // Click events for IPad
             const handler = async () => {
                 const isUnlocked = await isCategoryUnlocked(category);
                 if (isUnlocked) {
@@ -371,8 +358,35 @@ async function showTestOverview() {
                     await showLockedCategoryMessage();
                 }
             };
-            item.addEventListener('click', handler);
-            item.addEventListener('touchend', handler);
+
+            // Track touch start position
+            item.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                isScrolling = false;
+            }, { passive: true });
+
+            // Detect scroll gestures
+            item.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                const deltaX = Math.abs(touch.clientX - touchStartX);
+                const deltaY = Math.abs(touch.clientY - touchStartY);
+
+                if (deltaX > movementThreshold || deltaY > movementThreshold) {
+                    isScrolling = true;
+                }
+            }, { passive: true });
+
+            // Handle taps (only if not scrolling)
+            item.addEventListener('touchend', (e) => {
+                if (!isScrolling) {
+                    handler();
+                }
+                isScrolling = false; // Reset state
+            });
+
+            // Desktop click handler
+            item.addEventListener('click', handler)
 
             const correctlyAnsweredCategory = JSON.parse(testData.correctly_answered || '{}')[category] || [];
             const totalQuestionsCategory = categoryQuestions[category].length;

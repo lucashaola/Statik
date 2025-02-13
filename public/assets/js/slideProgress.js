@@ -130,21 +130,9 @@ async function showProgressOverview() {
         const userData = await response.json();
         const unlockedCategories = JSON.parse(userData.unlocked_categories || '[]');
 
-        const categories = [
-            {key: 'aktivierung', name: 'Aktivierung'},
-            {key: 'verkehrszeichen', name: 'Verkehrszeichenassistent'},
-            {key: 'geschwindigkeit', name: 'Adaptiver Geschwindigkeitsassistent'},
-            {key: 'stau', name: 'Stauassistent'},
-            {key: 'ampelerkennung', name: 'Ampelerkennung'},
-            {key: 'spurführung', name: 'Spurführungsassistent'},
-            {key: 'spurwechsel', name: 'Spurwechselassistent'},
-            {key: 'notbrems', name: 'Notbremsassistent'},
-            {key: 'deaktivierung', name: 'Deaktivierung'},
-            {key: 'risiken', name: 'Risiken und Verantwortung'}
-        ].map(category => ({
+        categories = categories.map(category => ({
             ...category,
-            progress: unlockedCategories.includes(category.key) ? 100 : 0,
-            icon: `../../assets/icons/tutorial/${category.name}.svg`
+            progress: unlockedCategories.includes(category.key) ? 100 : 0
         }));
 
         const totalProgress = Math.round((unlockedCategories.length / categories.length) * 100);
@@ -307,17 +295,48 @@ async function showProgressOverview() {
                 const categoryName = item.querySelector('.category-name').textContent;
                 const selectedCategory = categories.find(category => category.name === categoryName);
 
-                const handler = () => {
-                    if (selectedCategory) {
+                let touchStartX = 0;
+                let touchStartY = 0;
+                let isScrolling = false;
+                const movementThreshold = 10; // pixels moved to consider it a scroll
+
+                const handleTap = () => {
+                    if (!isScrolling && selectedCategory) {
                         localStorage.setItem('selectedCategory', selectedCategory.key);
                         window.location.href = '../../views/tutorial';
-                    } else {
-                        console.error(`Category not found for name: ${categoryName}`);
                     }
                 };
 
-                item.addEventListener('click', handler);
-                item.addEventListener('touchend', handler);
+                // Track touch start position
+                item.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    isScrolling = false; // Reset scroll flag
+                }, { passive: true });
+
+                // Detect if the user is scrolling (not tapping)
+                item.addEventListener('touchmove', (e) => {
+                    const touch = e.touches[0];
+                    const deltaX = Math.abs(touch.clientX - touchStartX);
+                    const deltaY = Math.abs(touch.clientY - touchStartY);
+
+                    // If movement exceeds threshold, mark it as scrolling
+                    if (deltaX > movementThreshold || deltaY > movementThreshold) {
+                        isScrolling = true;
+                    }
+                }, { passive: true });
+
+                // Fire only if it wasn't a scroll
+                item.addEventListener('touchend', (e) => {
+                    if (!isScrolling) {
+                        handleTap();
+                    }
+                    // Reset state
+                    isScrolling = false;
+                });
+
+                // Desktop click handler
+                item.addEventListener('click', handleTap);
             });
         }
     } catch (error) {

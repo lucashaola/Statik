@@ -174,13 +174,7 @@ async function areAllCategoriesUnlocked() {
         const userData = await response.json();
         const unlockedCategories = JSON.parse(userData.unlocked_categories || '[]');
 
-        const allCategories = [
-            'aktivierung', 'verkehrszeichen', 'geschwindigkeit',
-            'stau', 'ampelerkennung', 'spurführung',
-            'spurwechsel', 'notbrems', 'deaktivierung', 'risiken'
-        ];
-
-        return allCategories.every(category => unlockedCategories.includes(category));
+        return categories.every(category => unlockedCategories.includes(category));
     } catch (error) {
         console.error('Error checking categories:', error);
         return false;
