@@ -1,5 +1,4 @@
 const express = require('express');
-const os = require("os");
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -8,6 +7,7 @@ const {JSDOM} = require('jsdom');
 const eventTypes = require('./public/assets/js/eventTypes.js');
 const categoryQuestions = require('./public/assets/js/categoryQuestions.js');
 
+const os = require('os');
 const app = express();
 const port = 3000;
 
@@ -598,25 +598,24 @@ app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'public', 'views', 'welcome', 'index.html'));
 });
 
-
-function getIPv4(targetInterface) {
+function getWifiIP() {
     const interfaces = os.networkInterfaces();
 
-    for (const name in interfaces) {
-        if (name.includes(targetInterface)) {
-            for (const iface of interfaces[name]) {
-                if (iface.family === "IPv4" && !iface.internal) {
-                    return iface.address;
-                }
-            }
+    const targetInterfaces = ['WLAN', 'Wi-Fi'];
+    for (const name of targetInterfaces) {
+        const iface = interfaces[name];
+        if (iface) {
+            const ipv4 = iface.find(config =>
+                config.family === 'IPv4' &&
+                !config.internal
+            );
+            if (ipv4) return ipv4.address;
         }
     }
-    return "Ein Fehler ist vorgefallen. ";
+    return '0.0.0.0';
 }
 
-const networkInterface = "Wi-Fi";
-const localIP = getIPv4(networkInterface);
-
-app.listen(port, () => {
+const localIP = getWifiIP();
+app.listen(port, localIP, () => {
     console.log(`Server running at: http://${localIP}:${port}`);
 });

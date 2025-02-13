@@ -258,6 +258,27 @@
         ]
     };
 
+    categories = Object.keys(categoryQuestions).map(key => {
+        const nameMap = {
+            aktivierung: 'Aktivierung',
+            verkehrszeichen: 'Verkehrszeichenassistent',
+            geschwindigkeit: 'Adaptiver Geschwindigkeitsassistent',
+            stau: 'Stauassistent',
+            ampelerkennung: 'Ampelerkennung',
+            spurführung: 'Spurführungsassistent',
+            spurwechsel: 'Spurwechselassistent',
+            notbrems: 'Notbremsassistent',
+            deaktivierung: 'Deaktivierung',
+            risiken: 'Risiken und Verantwortung'
+        };
+
+        return {
+            key: key,
+            name: nameMap[key],
+            icon: `../../assets/icons/tutorial/${nameMap[key]}.svg`
+        };
+    });
+
     // Node.js environment
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = categoryQuestions;
@@ -267,24 +288,3 @@
         root.categoryQuestions = categoryQuestions;
     }
 })(typeof self !== 'undefined' ? self : this);
-
-categories = Object.keys(categoryQuestions).map(key => {
-    const nameMap = {
-        aktivierung: 'Aktivierung',
-        verkehrszeichen: 'Verkehrszeichenassistent',
-        geschwindigkeit: 'Adaptiver Geschwindigkeitsassistent',
-        stau: 'Stauassistent',
-        ampelerkennung: 'Ampelerkennung',
-        spurführung: 'Spurführungsassistent',
-        spurwechsel: 'Spurwechselassistent',
-        notbrems: 'Notbremsassistent',
-        deaktivierung: 'Deaktivierung',
-        risiken: 'Risiken und Verantwortung'
-    };
-
-    return {
-        key: key,
-        name: nameMap[key],
-        icon: `../../assets/icons/tutorial/${nameMap[key]}.svg`
-    };
-});
