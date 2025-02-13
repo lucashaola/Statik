@@ -304,17 +304,20 @@ async function showProgressOverview() {
             });
 
             document.querySelectorAll('.slideProgress-progress-circle-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const categoryName = item.querySelector('.category-name').textContent;
-                    const selectedCategory = categories.find(category => category.name === categoryName);
+                const categoryName = item.querySelector('.category-name').textContent;
+                const selectedCategory = categories.find(category => category.name === categoryName);
 
+                const handler = () => {
                     if (selectedCategory) {
                         localStorage.setItem('selectedCategory', selectedCategory.key);
                         window.location.href = '../../views/tutorial';
                     } else {
                         console.error(`Category not found for name: ${categoryName}`);
                     }
-                });
+                };
+
+                item.addEventListener('click', handler);
+                item.addEventListener('touchend', handler);
             });
         }
     } catch (error) {

@@ -16,6 +16,15 @@ function createDots() {
         dot.appendChild(span);
         dotContainer.appendChild(dot);
 
+        dot.addEventListener('click', () => {
+            // Prevent navigation if clicking the current page or a future page
+            if (i === currentPage || i > currentPage) return;
+            currentPage = i;
+            updateDots();
+            updatePages();
+        });
+        dotContainer.appendChild(dot);
+
         if (i < totalPages) {
             const line = document.createElement('div');
             line.className = 'connecting-line';

@@ -41,7 +41,7 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
                 if (remainingQuestionsInCategory.length > 0) {
                     hasRemainingQuestions = true;
 
-                    const isLocked = await categoryLocked(currentCategory);
+                    const isLocked = await isCategoryUnlocked(currentCategory);
                     if (!isLocked) continue;
 
                     const questionsToAdd = remainingQuestionsInCategory.map(question => ({
@@ -204,7 +204,7 @@ async function hasLockedCategories() {
     const testData = await response.json();
 
     for (const category of Object.keys(categoryQuestions)) {
-        const isLocked = await categoryLocked(category);
+        const isLocked = await isCategoryUnlocked(category);
         const correctlyAnswered = JSON.parse(testData.correctly_answered || '{}')[category] || [];
         const hasRemainingQuestions = categoryQuestions[category].length > correctlyAnswered.length;
 
@@ -362,14 +362,17 @@ async function showTestOverview() {
         document.querySelectorAll('.test-progress-circle-item').forEach(item => {
             const category = item.dataset.category;
 
-            item.addEventListener('click', async () => {
-                const isUnlocked = await categoryLocked(category);
+            // Click events for IPad
+            const handler = async () => {
+                const isUnlocked = await isCategoryUnlocked(category);
                 if (isUnlocked) {
                     await showCategoryQuestions(category);
                 } else {
                     await showLockedCategoryMessage();
                 }
-            });
+            };
+            item.addEventListener('click', handler);
+            item.addEventListener('touchend', handler);
 
             const correctlyAnsweredCategory = JSON.parse(testData.correctly_answered || '{}')[category] || [];
             const totalQuestionsCategory = categoryQuestions[category].length;
@@ -409,7 +412,7 @@ async function getUnlockedCategories() {
     return data.unlockedCategories;
 }
 
-async function categoryLocked(category) {
+async function isCategoryUnlocked(category) {
     const unlockedCategories = await getUnlockedCategories();
 
     if (unlockedCategories.includes(category)) {
