@@ -171,8 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('/views/overview')) {
         Object.keys(tutorialContent).forEach((sectionId, index) => {
             const pageDiv = document.createElement('div');
-            pageDiv.className = 'page'; // Base class
-            if (index === 0) pageDiv.classList.add('page-active'); // Make first page active
+            pageDiv.className = 'page';
+            if (index === 0) pageDiv.classList.add('page-active');
             pageDiv.id = sectionId;
             pageDiv.innerHTML = renderContent(sectionId, true);
             contentContainer.appendChild(pageDiv);
@@ -181,29 +181,40 @@ document.addEventListener('DOMContentLoaded', () => {
         createDots();
         updatePages();
 
-        // Initialize scrollbar positioning
+        // Initialize bookmark positioning
+        const bookmarkBtn = document.querySelector('.bookmark-btn');
         const bookmarkIcon = document.querySelector('.bookmark-icon');
-        if (bookmarkIcon) {
-            function updateScrollbarPosition() {
-                const bookmarkRect = bookmarkIcon.getBoundingClientRect();
-                const margin = window.innerWidth - bookmarkRect.right - 70;
-                document.documentElement.style.setProperty('--scrollbar-margin', margin + 'px');
+        const activePage = document.querySelector('.page-active');
+
+        if (bookmarkBtn && activePage && bookmarkIcon) {
+            function updatePositions() {
+                const pageRect = activePage.getBoundingClientRect();
+                const contentWidth = Math.min(pageRect.width, 50 * 16); // 50em in pixels
+                const leftPosition = pageRect.left + contentWidth;
+
+                // Update bookmark position
+                bookmarkBtn.style.left = `${leftPosition}px`;
+
+                // Update scrollbar position
+                requestAnimationFrame(() => {
+                    const bookmarkRect = bookmarkIcon.getBoundingClientRect();
+                    const margin = window.innerWidth - bookmarkRect.right - 70;
+                    document.documentElement.style.setProperty('--scrollbar-margin', margin + 'px');
+                });
             }
 
-            updateScrollbarPosition();
-            window.addEventListener('resize', updateScrollbarPosition);
+            updatePositions();
+            window.addEventListener('resize', updatePositions);
         }
     }
 
     // Initialize PerfectScrollbar
     if (contentContainer) {
-        // Destroy existing instance
         if (contentPS) {
             contentPS.destroy();
             contentPS = null;
         }
 
-        // Create new instance
         contentPS = new PerfectScrollbar(contentContainer, {
             wheelSpeed: 1,
             swipeEasing: true,
@@ -212,8 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contentPS.update();
 
-        // Add resize observer
-        new ResizeObserver(() => contentPS.update())
-            .observe(contentContainer);
+
     }
 });

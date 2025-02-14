@@ -9,6 +9,36 @@ const setCompletionMessageShown = () => {
     localStorage.setItem(`completionMessageShown_${userCode}`, 'true');
 };
 
+function createSidebar() {
+    const sidebarContent = document.querySelector('.sidebar-content');
+    sidebarContent.innerHTML = '';
+
+    categories.forEach(category => {
+        const sidebarItem = document.createElement('div');
+        sidebarItem.className = 'sidebar-item';
+
+        // Preserve the old onclick attribute format as a string
+        sidebarItem.setAttribute('onclick', `showContent('${category.key}')`);
+
+        // Add data-category for future-proofing (optional)
+        sidebarItem.dataset.category = category.key;
+
+        // Icon setup
+        const icon = document.createElement('img');
+        icon.className = 'icon';
+        icon.src = category.icon;
+        icon.alt = '';
+
+        // Text node
+        const text = document.createTextNode(category.name);
+
+        // Append elements
+        sidebarItem.appendChild(icon);
+        sidebarItem.appendChild(text);
+        sidebarContent.appendChild(sidebarItem);
+    });
+}
+
 function showContent(contentId) {
     // Handle sidebar selection
     const previousSelected = document.querySelector('.sidebar-item.selected');
@@ -142,7 +172,7 @@ async function updateUnlockedCategoryCheckmarks() {
 
         // Update sidebar items
         document.querySelectorAll('.sidebar-item').forEach(item => {
-            const categoryId = item.getAttribute('onclick').match(/'(.*?)'/)[1];
+            const categoryId = item.dataset.category;
 
             // Check if checkmark already exists, if not create it
             let checkmark = item.querySelector('.category-checkmark');
@@ -203,6 +233,8 @@ async function showCompletionPopup() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    createSidebar(categories);
+
     // Generate content for each section
     const mainContent = document.querySelector('.main-content');
     Object.keys(tutorialContent).forEach(sectionId => {

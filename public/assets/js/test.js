@@ -298,7 +298,7 @@ async function showTestOverview() {
 
         testOverviewContainer.innerHTML = `
             <div class="test-header">
-                <h1>Fahrassistentsysteme: Testfragen</h1>
+                <h1>Fahrerassistenzsysteme: Testfragen</h1>
                 <h2>Gesamter Fortschritt</h2>
                 <div class="total-progress-container">
                     <div class="total-progress-bar">

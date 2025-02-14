@@ -160,11 +160,9 @@ html {
 
 
 .bookmark-btn {
-    position: absolute;
-    top: 100%;
-    left: 20%;
+    position: fixed;
+    top: 120px;
     transform: translateX(-50%);
-    margin-top: 35px;
     border: none;
     cursor: pointer;
     height: 50px;
