@@ -2,7 +2,7 @@
     const categoryQuestions = {
         aktivierung: [
             {
-                question: "Wie können Sie als Fahrer*in das teilautomatisierte Fahren aktivieren?",
+                question: "Wie können Sie als Fahrer*in das teilautomatisierte Fahren (DRIVING ASSIST) aktivieren?",
                 options: [
                     {text: "Durch das Drücken des Bremspedals", correct: false},
                     {text: "Durch das Drücken der Aktivierungstaste", correct: true},
@@ -11,14 +11,14 @@
                 ]
             },
             {
-                question: "Leuchtet das Automationssymbol in weiß, ist das teilautomatisierte Fahren verfügbar.",
+                question: "Leuchtet „DRIVING ASSIST READY“ in weiß, ist das teilautomatisierte Fahren verfügbar.",
                 options: [
                     {text: "Richtig", correct: true},
                     {text: "Falsch", correct: false}
                 ]
             },
             {
-                question: "In welcher Farbe leuchtet das Symbol Automationssymbol bei erfolgreicher Aktivierung des teilautomatisierten Fahrens?",
+                question: "In welcher Farbe leuchtet das Symbol „DRIVING ASSIST“ bei erfolgreicher Aktivierung des teilautomatisierten Fahrens?",
                 options: [
                     {text: "Blau", correct: false},
                     {text: "Rot", correct: false},
@@ -29,23 +29,23 @@
         ],
         verkehrszeichen: [
             {
-                question: "Bei einem neuen Tempolimit wird die erkannte Geschwindigkeit automatisch übernommen.",
+                question: "Das Fahrzeug erkennt Tempolimits und andere Verkehrszeichen.",
                 options: [
                     {text: "Richtig", correct: true},
                     {text: "Falsch", correct: false},
                 ]
             },
             {
-                question: "Wo wird Ihnen als Fahrer*in das erkannte Tempolimit angezeigt?",
+                question: "Welche Taste nutzen Sie als Fahrer*in, um eine erkannte Geschwindigkeit zu übernehmen?",
                 options: [
-                    {text: "Im Seitenspiegel", correct: false},
-                    {text: "Im Display ", correct: true},
-                    {text: "Auf dem Lenkrad", correct: false},
+                    {text: "Abstandstaste", correct: false},
+                    {text: "Blinkerhebel", correct: false},
+                    {text: "Set-Taste", correct: true},
                     {text: "Aktivierungstaste 3", correct: false}
                 ]
             },
             {
-                question: "Können Sie als Fahrer*in während der teilautomatisierten Fahrt die Geschwindigkeit im teilautomatisierten Fahren manuell anpassen?",
+                question: "Können Sie als Fahrer*in die Geschwindigkeit nach der Übernahme manuell anpassen?\n",
                 options: [
                     {text: "Ja", correct: true},
                     {text: "Nein", correct: false},
@@ -68,58 +68,112 @@
                 ]
             },
             {
-                question: "Wie wird der eingestellte Abstand zum Vorderfahrzeug im Display symbolisch dargestellt?",
+                question: "Woran erkennen Sie als Fahrer*in, dass der ACC aktiviert ist?",
                 options: [
-                    {text: "Durch ein rotes Lenkrad", correct: false},
-                    {text: "Durch Blinken des Automationssymbols", correct: false},
-                    {text: "Durch Striche vor dem Fahrzeug", correct: true},
-                    {text: "Durch ein weißes Dreieck", correct: false}
+                    {text: "Am roten Symbol im Rückspiegel", correct: false},
+                    {text: "Am Blinken des Lenkradlichts", correct: false},
+                    {text: "Am grünen ACC-Symbol im Display", correct: true},
+                    {text: "Am weißen ACC-Symbol im Display", correct: false}
+                ]
+            }
+        ],
+        stau: [
+            {
+                question: "Der Stauassistent wird automatisch bei Geschwindigkeiten unter 60 km/h aktiviert.",
+                options: [
+                    {text: "Richtig", correct: true},
+                    {text: "Falsch", correct: false},
+                ]
+            },
+            {
+                question: "Wie fährt das Fahrzeug aus dem Stillstand wieder an?",
+                options: [
+                    {text: "Manuelles Anfahren durch den Fahrer", correct: true},
+                    {text: "Automatisch oder durch Drücken der Set-Taste", correct: false},
+                    {text: "Nur mit eingeschaltetem Blinker", correct: false},
+                    {text: "Durch leichtes Antippen des Bremspedals", correct: false}
+                ]
+            },
+            {
+                question: "Wenn der Stauassistent aktiv ist, können Sie als Fahrer*in den Blick von der Straße abwenden?",
+                options: [
+                    {text: "Richtig", correct: false},
+                    {text: "Falsch", correct: true}
                 ]
             }
         ],
         ampelerkennung: [
             {
-                question: "Erkennt das Fahrzeug Ampeln, wenn das teilautomatisierte Fahren aktiv ist?",
+                question: "Bremst das Fahrzeug automatisch, wenn es eine rote Ampel erkannt hat und diese von Ihnen als Fahrer*in bestätigt wurde?",
                 options: [
                     {text: "Richtig", correct: true},
                     {text: "Falsch", correct: false},
                 ]
             },
             {
-                question: "Das Fahrzeug bremst automatisch, wenn es eine rote Ampel erkannt hat.",
+                question: "Bremst das Fahrzeug automatisch, wenn es eine rote Ampel erkennt?",
                 options: [
-                    {text: "Richtig", correct: true},
-                    {text: "Falsch", correct: false},
+                    {text: "Ja", correct: false},
+                    {text: "Nein", correct: true},
                 ]
             },
             {
-                question: "Im Stillstand erkennt das Fahrzeug grüne Ampeln und fährt automatisch wieder los.",
+                question: "Wie signalisiert das System, dass eine rote Ampel von Ihnen als Fahrer*in bestätigt wurde?",
                 options: [
-                    {text: "Richtig", correct: false},
-                    {text: "Falsch", correct: true},
+                    {text: "Durch ein akustisches Signal", correct: false},
+                    {text: "Durch ein rotes Warnlicht", correct: false},
+                    {text: "Durch einen grünen Haken im Display", correct: true},
+                    {text: "Durch Vibrieren des Lenkrads\n", correct: false}
                 ]
             }
         ],
         spurführung: [
             {
-                question: "Ist das teilautomatisierte Fahren aktiv, hält das Fahrzeug die Spur selbstständig?",
+                question: "Welche Anzeige im Display bestätigt die Aktivierung des Spurhalteassistenten (LKA) im DRIVING ASSIST?",
+                options: [
+                    {text: "Ein rotes Lenkradsymbol", correct: false},
+                    {text: "Das grüne LKA-Symbol", correct: true},
+                    {text: "Die Geschwindigkeitsangabe", correct: false},
+                    {text: "Ein weißes Ausrufezeichen", correct: false}
+                ]
+            },
+            {
+                question: "Ist der Spurhalteassistent aktiv, hält das Fahrzeug die Spur selbstständig.",
                 options: [
                     {text: "Richtig", correct: true},
                     {text: "Falsch", correct: false},
                 ]
             },
             {
-                question: "Können Sie als Fahrer*in das Lenkrad loslassen, wenn das teilautomatisierten Fahren aktiv ist?",
+                question: "Können Sie als Fahrer*in das Lenkrad loslassen, wenn der Spurhalteassistent aktiv ist?",
                 options: [
-                    {text: "Ja", correct: true},
-                    {text: "Nein", correct: false},
+                    {text: "Ja", correct: false},
+                    {text: "Nein", correct: true},
+                ]
+            }
+        ],
+        spurwechsel: [
+            {
+                question: "Wie wird ein automatischer Spurwechsel durch Sie als Fahrer*in eingeleitet?",
+                options: [
+                    {text: "Durch das Betätigen des Bremspedals", correct: false},
+                    {text: "Durch eine Sprachanweisung", correct: false},
+                    {text: "Durch Antippen des Blinkers", correct: true},
+                    {text: "Durch Erkennen von Fahrbahnmarkierungen", correct: false}
                 ]
             },
             {
-                question: "Das Fahrzeug schlägt eigenständig Spurwechsel vor, auch wenn es die Verkehrssituation nicht zulässt.",
+                question: "Das Fahrzeug schlägt eigenständig einen Spurwechsel vor, auch wenn es die Verkehrssituation nicht zulässt.",
                 options: [
                     {text: "Richtig", correct: false},
                     {text: "Falsch", correct: true},
+                ]
+            },
+            {
+                question: "Müssen Sie als Fahrer*in einen vorgeschlagenen Spurwechsel durch das Fahrzeug immer bestätigen, bevor dieser ausgeführt wird?",
+                options: [
+                    {text: "Ja", correct: true},
+                    {text: "Nein", correct: false}
                 ]
             }
         ],
@@ -145,14 +199,14 @@
                 options: [
                     {text: "Der Fahrer wird dazu aufgefordert, selbst zu bremsen", correct: false},
                     {text: "Das Fahrzeug bremst automatisch bis zum Stillstand", correct: true},
-                    {text: "Das Fahrzeug reagiert gar nicht", correct: false},
+                    {text: "Der DRIVING ASSIST deaktiviert sich automatisch", correct: false},
                     {text: "Der Fahrer erhält nur eine visuelle Warnung", correct: false}
                 ]
             }
         ],
         deaktivierung: [
             {
-                question: "Wie kann das teilautomatisierte Fahren deaktiviert werden?",
+                question: "Wie kann der DRIVING ASSIST deaktiviert werden?",
                 options: [
                     {text: "Durch langes Drücken der Set-Taste", correct: false},
                     {text: "Durch kurzes Antippen des Blinkers", correct: false},
@@ -161,14 +215,14 @@
                 ]
             },
             {
-                question: "Kann das teilautomatisierte Fahren durch manuelles Eingreifen (z.B. Lenken oder Bremsen) durch Sie als Fahrer*in deaktiviert werden?",
+                question: "Kann der DRIVING ASSIST durch manuelles Eingreifen (z.B. Lenken oder Bremsen) durch Sie als Fahrer*in deaktiviert werden?",
                 options: [
                     {text: "Ja", correct: true},
                     {text: "Nein", correct: false},
                 ]
             },
             {
-                question: "Wie wird angezeigt, dass das teilautomatisierte Fahren deaktiviert wurde?",
+                question: "Wie wird angezeigt, dass der DRIVING ASSIST deaktiviert wurde?",
                 options: [
                     {text: "Durch ein rotes Ausrufezeichen im Display", correct: false},
                     {text: "Durch ein akustisches Signal", correct: false},
@@ -179,7 +233,7 @@
         ],
         risiken: [
             {
-                question: "Das teilautomatisierte Fahren entbindet Sie als Fahrer*in von der Verantwortung, sodass Sie nicht mehr aufmerksam sein müssen.",
+                question: "Das teilautomatisierte Fahren durch den DRIVING ASSIST entbindet Sie als Fahrer*in von der Verantwortung, sodass Sie nicht mehr aufmerksam sein müssen.",
                 options: [
                     {text: "Richtig", correct: false},
                     {text: "Falsch", correct: true},
@@ -193,24 +247,25 @@
                 ]
             },
             {
-                question: "Warum dürfen Sie sich als Fahrer*in nicht vollständig auf die Assistenzsysteme verlassen?",
+                question: "Warum dürfen Sie sich als Fahrer*in nicht vollständig auf die Assistenzsysteme im DRIVING ASSIST verlassen?",
                 options: [
                     {text: "Weil die Systeme zu langsam reagieren", correct: false},
                     {text: "Weil das teilautomatisierte Fahrzeug immer 10 km/h schneller fährt als erlaubt", correct: false},
                     {text: "Weil die Systeme Fehler machen können, ohne Sie als Fahrer*in zu warnen", correct: true},
-                    {text: "Weil das teilautomatisierte nur auf Autobahnen nutzbar ist", correct: false}
+                    {text: "Weil der DRIVING ASSIST nur auf Autobahnen nutzbar ist", correct: false}
                 ]
             }
         ]
     };
-
     categories = Object.keys(categoryQuestions).map(key => {
         const nameMap = {
             aktivierung: 'Aktivierung',
             verkehrszeichen: 'Verkehrszeichenassistent',
             geschwindigkeit: 'Abstandsregeltempomat',
             ampelerkennung: 'Ampelerkennung',
+            stau: 'Stauassistent',
             spurführung: 'Spurführungsassistent',
+            spurwechsel: 'Spurwechselassistent',
             notbrems: 'Notbremsassistent',
             deaktivierung: 'Deaktivierung',
             risiken: 'Risiken und Verantwortung',

@@ -38,10 +38,20 @@ a {
     margin-right: 50px;
 }
 
+.icon-center{
+    display: flex;
+}
+
+.icon-center a:last-of-type .footer-icon {
+    margin-right: 0;
+}
+
+/* Comment out if you don't want live simulation to be clickable
 #navigationIcon {
     opacity: 0.7;
     pointer-events: none;
 }
+ */
 
 .icon-left,
 .icon-right {

@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <a href="/views/welcome">
                     <img class="footer-icon" id="homeIcon" src="/assets/icons/footer/Home.svg" alt="Home">
                 </a>
-                <a>
+                <a href="/views/liveSimulation">
                     <img class="footer-icon" id="navigationIcon" src="/assets/icons/footer/Navigation.svg" alt="Navigation">
                 </a>
             </div>

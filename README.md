@@ -132,6 +132,7 @@ Every page is associated with one or more JavaScript files for specific function
 - Seat Heating Icon: https://thenounproject.com/icon/seat-heating-4600189/
 - Close Icon: https://thenounproject.com/icon/close-1292416/
 - Exchange Persons Icon: https://de.vecteezy.com/vektorkunst/28711707-benutzer-austausch-glyphe-symbol-zwei-menschen-oder-ersatz-person-im-verbinden-pfeil-kommunikation-kreis-handeln-personal-veranderung-mitarbeiter-aktualisierung-logo-vektor-illustration-design-auf-weiss-hintergrund-eps-10
+- Warning Icon: https://thenounproject.com/icon/warning-7536430/
 - Adaptive Cruise Control Icon: ISO 7000-2580
 - Lane Keeping Assistance Icon: ISO 7000-3128
 
