@@ -1,3 +1,9 @@
+/** This file contains functions for recording, sending, and displaying user events and bonus points. */
+
+/**
+Records event by sending a POST request to the server.
+It validates the event type, sends the event data and handles errors if the request fails.
+*/
 async function recordEvent(identificationCode, eventType) {
     const event = eventTypes[eventType];
     if (!event) {
@@ -27,6 +33,7 @@ async function recordEvent(identificationCode, eventType) {
     }
 }
 
+
 async function sendEvent(identificationCode, eventType) {
     try {
         const event = eventTypes[eventType];
@@ -51,6 +58,11 @@ async function sendEvent(identificationCode, eventType) {
     }
 }
 
+/**
+Displays a user's bonus points and event history. It fetches the user's bonus data
+and event history from the server, then renders a visual representation of the bonus points
+and a list of events with their scores and timestamps. It also handles cases where the user is not logged in.
+ */
 function showBonusOverview() {
     const bonusOverviewContainer = document.querySelector('.bonus-overview');
 

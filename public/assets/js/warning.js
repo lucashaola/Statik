@@ -19,6 +19,13 @@ function initializeWarningSystem() {
             display: true,
             position: 'middle'
         },
+        test: {
+            message: 'Second Warning Message',
+            display: true,
+            image: '/assets/pictures/warnings/warning.svg',
+
+            position: 'middle'
+        },
         third: {
             message: 'Third Warning Message',
             display: true,

@@ -1,3 +1,17 @@
+/**
+ * File defines the content structure for the tutorial.
+ * It organizes the tutorial into categories, each containing multiple content items with text, media and optional subtext or horizontal rules for visual separation.
+ *
+ * Each category containts:
+ *   - title: The title of the category.
+ *   - content: An array of content items, each containing:
+ *     - text: The main text content.
+ *     - media: The primary media (image or GIF) to display.
+ *     - additionalMedia: Optional secondary media to display alongside the primary media.
+ *     - additionalSmalllMedia: Optional smaller secondary media for specific layouts.
+ *     - subtext: Additional text or HTML content (e.g., bullet points) to display below the main content.
+ *     - addHr: A boolean flag to add a horizontal rule (`<hr>`) after the content item.
+*/
 const tutorialContent = {
     aktivierung: {
         title: "Aktivierung DRIVING ASSIST",
@@ -221,6 +235,7 @@ const tutorialContent = {
         ]
     }
 };
+
 
 function renderContent(contentId) {
     const section = tutorialContent[contentId];

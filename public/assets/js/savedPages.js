@@ -1,7 +1,9 @@
+/** Determines whether the current page is a tutorial or overview page. */
 function getCurrentPageType() {
     return window.location.href.includes('tutorial') ? 'tutorial' : 'overview';
 }
 
+/** updates bookmarks button state */
 async function initializeBookmark() {
     const bookmarkBtn = document.querySelector('.bookmark-btn');
     const identificationCode = localStorage.getItem('userCode');
@@ -26,6 +28,7 @@ async function initializeBookmark() {
     }
 }
 
+/** Toggles the bookmark state for the current page by making API calls to save or delete it */
 async function toggleBookmark() {
     const bookmarkBtn = document.querySelector('.bookmark-btn');
     const identificationCode = localStorage.getItem('userCode');
@@ -94,6 +97,7 @@ function getCurrentPage() {
     }
 }
 
+/** Fetches and displays all saved pages for the logged-in user */
 async function showSavedPages() {
     const savedPagesContainer = document.querySelector('.saved-pages');
     const identificationCode = localStorage.getItem('userCode');
@@ -182,6 +186,7 @@ async function showSavedPages() {
     }
 }
 
+/** Generates HTML for the saved page of the ptofile view */
 function createSavedPageHTML(category, index, pageType, categoryTitle, heading, text, displayName) {
     // Get content from tutorialContent without creating actual slides
     const content = tutorialContent[category];
@@ -207,6 +212,7 @@ function createSavedPageHTML(category, index, pageType, categoryTitle, heading, 
     `;
 }
 
+/** Navigates to a bookmarked page when clicked */
 function navigateToSlide(category, index, pageType) {
     localStorage.setItem('selectedCategory', category);
 

@@ -1,5 +1,5 @@
 # Assisted Driving
-This project is part of my Bachelor's thesis and focuses on designing and evaluating a Human-Machine Interface (HMI) for semi-automated driving.
+This project is part of my Bachelor's thesis and focuses on designing and evaluating a Human-Machine Interface (HMI) for partially automated driving.
 The primary goal of this HMI is to effectively communicate the functionalities and limitations of partial automated driving systems to users.
 
 ## Dependencies
@@ -31,7 +31,7 @@ This will start a Server running at http://localhost:3000
 All tables in the database are connected through a unique identification_code, which is randomly generated for each user.
 This code links data across multiple tables, ensuring that all user-related information remains consistent and easily accessible.
 If there are any uncertainties regarding how the data is organized, I recommend clicking through the project to observe 
-how the entries update and interact.
+how the entries update and interact. The database generates automatically.
 
 ```
 ├── profiles                           // Stores user information and overall progress
@@ -43,16 +43,11 @@ how the entries update and interact.
 │   ├── assistance_kilometer           // Total kilometers driven with assistance
 │   ├── created_at                     // Timestamp of profile creation
 │
-├── slide_progress                     // Tracks slide progress for different categories
-│   ├── identification_code            
-│   ├── aktivierung_progress           // Percentage of slides viewed for the "Aktivierung" category
-│   ├── ...
-│   ├── viewed_slides                  // JSON object containing indices of viewed slides per category, e.g., "aktivierung": [0, 2]
-│
 ├── test_progress                      // Tracks user's test performance
 │   ├── identification_code           
 │   ├── correctly_answered             // JSON object containing indices of correctly answered questions, divided by category, e.g., "aktivierung": [0, 1, 2]
-│   ├── currently_incorrectly_answered           
+│   ├── currently_incorrectly_answered  
+│   ├── all_time_incorrectly_answered                    
 │
 ├── saved_pages                        // Tracks user's saved pages
 │   ├── identification_code            
@@ -68,9 +63,8 @@ how the entries update and interact.
 │   ├── expiry_date                   
 ```
 
-
 ## Project Structure
-This project consists of four main pages: Overview, Profile, Tutorial, and Welcome. 
+This project consists of five main pages: Overview, Profile, Tutorial, Welcome, and LiveSimulation. 
 Each page has its own HTML file, while some content is dynamically created using JavaScript.
 JavaScript is also utilized to improve code reusability and maintainability.
 Every page is associated with one or more JavaScript files for specific functionality.
@@ -83,13 +77,16 @@ Every page is associated with one or more JavaScript files for specific function
 │           ├── bonusPoints           // Connection to the database: records and sends events for specific users to db. Also generates the bonus overview for the Profile page
 │           ├── categoryQuestions     // List of category questions
 │           ├── eventTypes            // List of event types (including score, message)
+│           ├── footer                // Footer (black part at the botttom of all screens) visual and functional code 
 │           ├── overview              // Creates the Overview page structure: manages the top section (clicking through, updates dot progres etc.)
 │           ├── savedPages            // Connection to the database: reads, saves, and deletes saved pages. Also generates the saved pages overview for the Profile page
-│           ├── script                // Shared JavaScript for all pages: initializes the footer, prevents zooming into the HMI, and initializes the Profile and Welcome screens
-│           ├── slideManager          // Manages slides for the Tutorial page: handles slide content, navigation, and the search function
-│           ├── slideProgress         // Connection to the database: tracks slide progress and updates percentage of viewed slides in dbs. Also generates the progress overview in the Welcome and Profile pages
+│           ├── script                // Shared JavaScript for all pages: prevents zooming into the HMI, and initializes the Profile and Welcome screens
+│           ├── slideProgress         // Connection to the database: tracks if a categories slide was seen and updates db accordingly. Also generates the progress overview in the Welcome and Profile pages
 │           ├── test                  // Connection to the database: unlocks categories, displays category questions. Also visualizes the Test page on the Profile page
+│           ├── tutorial              // Creates the tutorial content and adds it dynamically to each side
+│           ├── tutorialContent       // Defines what content is inside the quickoverview and main tutorial. 
 │           ├── userProfile           // Connection to the database: creates new profiles and displays existing profiles
+│           ├── warnings              // Creates warning messages for the LiveSimulation
 │       ├── pictures                  
 │       ├── vendors                   // Third-party libraries
 │           ├── perfect-scrollbar     // Custom scrollbar to handle disappearing scrollbars on iOS
@@ -98,9 +95,12 @@ Every page is associated with one or more JavaScript files for specific function
 │       ├── footer                    
 │       ├── overview                  
 │       ├── profile                   
-│       ├── tutorial                  
+│       ├── tutorial  
+│       ├── tutorialContent                  
+│       ├── warnigns                                  
 │       ├── welcome                   
 │   ├── views                         // HTML views for each page
+│       ├── liveSimulation                   
 │       ├── overview                  
 │       ├── profile                   
 │       ├── tutorial                  
@@ -108,11 +108,8 @@ Every page is associated with one or more JavaScript files for specific function
 ├── server.js                         
 ├── users.db                          // Database file created automatically when the first user creates a profile
 ```
-
-
-
-
-
+In category questions the categories for the WHOLE HMI gets defined - if you want to add/remove categories, you have to do it there.
+There each category also gets it's icon assigned
 
 
 ## Credits
@@ -138,6 +135,5 @@ Every page is associated with one or more JavaScript files for specific function
 
 All other remaining icons were either created by Sofia Burgard (sofia.burgard@web.de) or Miao Xinyi (miaoxinyi96@gmail.com)
 
-
-### Overview Pages
+### Animations of Tutorial Content
 All videos and images where created by Miao Xinyi (miaoxinyi96@gmail.com)

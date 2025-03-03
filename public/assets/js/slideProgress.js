@@ -1,3 +1,4 @@
+/** Contains methods for verifying users, calculating progress, and updating progress */
 const progressTracker = {
     verifyUser: async function () {
         const userCode = localStorage.getItem('userCode');
@@ -84,6 +85,7 @@ const progressTracker = {
     }
 };
 
+/** Updates the visual representation of progress based on the calculated progress */
 function updateProgressCircle(element, progress) {
     const circle = element.querySelector('.progress-ring-progress');
     const circumference = 2 * Math.PI * 12; // ~75.398
@@ -98,6 +100,7 @@ function updateProgressCircle(element, progress) {
     }
 }
 
+/* Renders the progress overview on the welcome or profile screen */
 async function showProgressOverview() {
     const identificationCode = localStorage.getItem('userCode');
     const progressOverview = document.querySelector('.progress-overview');

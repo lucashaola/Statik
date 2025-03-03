@@ -1,3 +1,16 @@
+/**
+ * This file defines a set of event types and their associated data score and message
+ * Each event type represents a specific scenario and includes:
+ * - score: A numerical value representing the points awarded or deducted for the event.
+ * - message: A descriptive message that explains the event and its impact on the user's bonus points.
+ *
+ * The eventTypes object is structured as follows:
+ * - Each key represents an event type (e.g., "welcome")
+ * - Each event type contains:
+ *   - score: The points associated with the event (positive or negative).
+ *   - message: A message describing the event, which can include HTML for formatting.
+ */
+
 (function (root) {
     const eventTypes = {
         welcome: {

@@ -1,4 +1,11 @@
 (function (root) {
+    /** categoryQuestions object is structured as follows:
+     * - Each key represents a category (e.g., "aktivierung", "verkehrszeichen").
+     * - Each category contains an array of question objects.
+     * - Each question object includes:
+     *   - `question`: The question text.
+     *   - `options`: An array of answer options, each with a `text` and a `correct` boolean indicating whether the option is correct.
+     */
     const categoryQuestions = {
         aktivierung: [
             {
@@ -257,6 +264,8 @@
             }
         ]
     };
+
+    /** categories array maps each category key to a name and an icon path, if you want to add a new category, the icon must be the same as the mapped name - e.g. Aktivierung*/
     categories = Object.keys(categoryQuestions).map(key => {
         const nameMap = {
             aktivierung: 'Aktivierung',

@@ -126,7 +126,13 @@ async function createNewProfile() {
 function generateIdentificationCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
-
+/**
+ * This file handles user profile management for the application, including:
+ * - Checking if a user already has a profile.
+ * - Creating a new profile with a unique identification code.
+ * - Displaying and selecting existing profiles.
+ * - Storing and retrieving user information (e.g., name, identification code) in `localStorage`.
+*/
 async function showExistingProfiles() {
     try {
         const response = await fetch('/api/users');

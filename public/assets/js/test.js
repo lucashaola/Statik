@@ -1,3 +1,4 @@
+/** Displays questions for a specific category or all unlocked categories */
 async function showCategoryQuestions(category = null, retryQuestions = null) {
     const identificationCode = localStorage.getItem('userCode');
     if (!identificationCode) return;
@@ -182,6 +183,7 @@ async function showCategoryQuestions(category = null, retryQuestions = null) {
     }
 }
 
+/** Checks if there are any locked categories with unanswered question, returns boolean */
 async function hasLockedCategories() {
     const identificationCode = localStorage.getItem('userCode');
     const response = await fetch(`/api/test/${identificationCode}`);
@@ -236,6 +238,7 @@ function showLockedCategoryMessage() {
     });
 }
 
+/** Updates the user's progress in the backend based on their answers */
 async function updateTestProgress(identificationCode, category, questionIndex, isCorrect) {
     try {
         const response = await fetch(`/api/test/${identificationCode}/update`, {
@@ -261,6 +264,7 @@ async function updateTestProgress(identificationCode, category, questionIndex, i
     }
 }
 
+/** Checks if all questions across all categories have been answered correctly */
 async function checkAllQuestionsAnsweredCorrectly() {
     const identificationCode = localStorage.getItem('userCode');
     const response = await fetch(`/api/test/${identificationCode}`);
@@ -275,6 +279,7 @@ async function checkAllQuestionsAnsweredCorrectly() {
     return true;
 }
 
+/** Displays an overview of the user's test progress, including overall progress and progress per category. It also allows users to start tests for specific categories or all available questions.*/
 async function showTestOverview() {
     const testOverviewContainer = document.querySelector('.test-overview');
     const identificationCode = localStorage.getItem('userCode');

@@ -2,6 +2,7 @@ let contentPS;
 const totalPages = Object.keys(tutorialContent).length;
 let currentPage = 1;
 
+/** Generates pagination dots and connecting lines to visually represent the tutorial's progress.*/
 function createDots() {
     const dotsContainer = document.getElementById('paginationDots');
 
@@ -47,6 +48,7 @@ function createDots() {
     updateDots();
 }
 
+/** Updates the appearance of dots and lines based on the current page. */
 function updateDots() {
     const dots = document.querySelectorAll('.dot');
     const lines = document.querySelectorAll('.connecting-line');
@@ -69,6 +71,7 @@ function updateDots() {
     });
 }
 
+/** Displays the active page and hides others, ensuring the correct content is shown. */
 function updatePages() {
     const pages = document.querySelectorAll('.content-container .page');
     pages.forEach((page, index) => {
@@ -85,6 +88,7 @@ function updatePages() {
     setupScrollListener();
 }
 
+/** Listens for scroll events to unlock the next page when the user reaches the bottom.*/
 function setupScrollListener() {
     const contentContainer = document.querySelector('.content-container');
     if (!contentContainer) return;
@@ -120,6 +124,7 @@ function setupScrollListener() {
     scrollElement.addEventListener('scroll', handleScroll);
 }
 
+/** Handles navigation between pages (forward and backward) and includes logic for transitioning to other views (e.g., welcome screen or knowledge test) after completing the tutorial. */
 async function navigatePage(direction) {
     if (currentPage === 1 && direction === -1) {
         window.location.href = '../../views/welcome';
@@ -157,6 +162,7 @@ async function navigatePage(direction) {
     }
 }
 
+/** Ensures the content container scrolls to the top when switching pages. */
 function scrollToTop() {
     const contentContainer = document.querySelector('.content-container');
     if (contentContainer) {
@@ -165,6 +171,7 @@ function scrollToTop() {
     }
 }
 
+/** Initializes the tutorial content, pagination dots, and PerfectScrollbar when the page loads. It also positions the bookmark button dynamically based on the active page's width. */
 document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.querySelector('.content-container');
 
@@ -222,7 +229,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         contentPS.update();
-
-
     }
 });

@@ -9,6 +9,7 @@ const setCompletionMessageShown = () => {
     localStorage.setItem(`completionMessageShown_${userCode}`, 'true');
 };
 
+/** Dynamically generates the sidebar with category items, including icons and click handlers.*/
 function createSidebar() {
     const sidebarContent = document.querySelector('.sidebar-content');
     sidebarContent.innerHTML = '';
@@ -39,6 +40,7 @@ function createSidebar() {
     });
 }
 
+/** Displays the content for the selected category and handles scroll events to unlock. */
 function showContent(contentId) {
     // Handle sidebar selection
     const previousSelected = document.querySelector('.sidebar-item.selected');
@@ -135,9 +137,9 @@ function showContent(contentId) {
     }
 }
 
+/** Navigates to a specific content item based on search */
 function showSearchResult(contentId) {
     showContent(contentId);
-    unlockCategory(contentId);
 
     // Clean up search
     const resultsDiv = document.getElementById('results');
@@ -148,6 +150,7 @@ function showSearchResult(contentId) {
     initializeBookmark();
 }
 
+/** Updates the sidebar to show checkmarks for unlocked categories. */
 async function updateUnlockedCategoryCheckmarks() {
     const identificationCode = localStorage.getItem('userCode');
 
@@ -232,6 +235,8 @@ async function showCompletionPopup() {
     }
 }
 
+/** Initializes sidebar, main content, and PerfectScrollbar when the page loads.
+Also handles navigation and completion popups when the user attempts to leave the tutorial.*/
 document.addEventListener('DOMContentLoaded', function () {
     createSidebar(categories);
 

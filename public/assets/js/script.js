@@ -44,6 +44,7 @@ function initializeWelcomeScreen() {
     closeResultsOnOutsideClick();
 }
 
+/** Closes the search results dropdown when clicking outside the search container */
 function closeResultsOnOutsideClick(){
     const searchContainer = document.querySelector('.search-container');
     if (searchContainer) {
@@ -65,6 +66,7 @@ function closeResultsOnOutsideClick(){
     }
 }
 
+/** Manages the profile screen, allowing users to switch between different views */
 function initializeProfileScreen() {
     const profileName = document.getElementById('profileName');
     const username = localStorage.getItem('userName');
@@ -124,6 +126,7 @@ function initializeProfileScreen() {
     setActiveView(viewParam || 'overview');
 }
 
+/** Filters and displays search results based on user input */
 function filterResults() {
     const searchInput = document.querySelector('.search');
     const resultsDiv = document.getElementById('results');
@@ -175,4 +178,3 @@ function filterResults() {
         resultsDiv.innerHTML = '<div class="result-item">Keine Ergebnisse gefunden</div>';
     }
 }
-
