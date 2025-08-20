@@ -51,7 +51,8 @@ async function createNewProfile() {
             scrollbarPadding: false,
             heightAuto: false,
             customClass: {
-                container: 'swal-container-custom'
+                container: 'swal-container-custom',
+                inputLabel: 'swal-input-label-large'
             },
             inputValidator: (value) => {
                 if (!value) {

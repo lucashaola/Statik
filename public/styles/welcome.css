@@ -23,6 +23,10 @@ html {
     color: black;
 }
 
+.swal-input-label-large {
+    font-size: 1.25em;
+}
+
 /* Header Styles */
 .header {
     width: 100%;
