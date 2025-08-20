@@ -220,17 +220,17 @@ async function showCompletionPopup() {
         text: 'Dann Testen Sie Ihr Wissen',
         icon: 'question',
         showCancelButton: true,
-        confirmButtonText: 'Weiter',
-        cancelButtonText: 'Wissen testen',
-        confirmButtonColor: '#e4e4e7',
+        confirmButtonText: 'Wissen testen',
+        cancelButtonText: 'Hauptmenü',
+        confirmButtonColor: '#8daddd',
         cancelButtonColor: '#e4e4e7',
         reverseButtons: true
     });
 
     if (result.isConfirmed) {
-        window.location.href = '/views/welcome';
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
         window.location.href = '/views/profile?view=test&startQuiz=true';
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+        window.location.href = '/views/welcome';
 
     }
 }

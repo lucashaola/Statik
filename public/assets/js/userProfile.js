@@ -8,7 +8,7 @@ function checkForExistingProfile(isButtonClick = false) {
     }
 
     Swal.fire({
-        title: 'Haben Sie bereits ein Profil in diesem teilautomatisierten Auto?',
+        title: 'Haben Sie bereits ein Profil in diesem teilautomatisierten Fahrzeug?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Ja',

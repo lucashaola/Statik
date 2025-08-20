@@ -21,6 +21,7 @@ html {
 .swal2-confirm,
 .swal2-cancel {
     color: black;
+    font-size: 1.3rem !important;
 }
 
 /* Perfect Scrollbar Styling*/
@@ -222,7 +223,7 @@ html {
 
 button {
     padding: 12px 30px;
-    font-size: 1.2em;
+    font-size: 1.5em;
     border-radius: 5px;
     border: none;
 }
